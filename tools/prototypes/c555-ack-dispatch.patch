@@ -1,0 +1,76 @@
+--- a/Source/42.20/media/lua/server/OMHTT/Damage.lua
++++ b/Source/42.20/media/lua/server/OMHTT/Damage.lua
+@@ -260,13 +260,17 @@
+     return true
+ end
+
+----@return nil
+-function Damage.tick()
+-    if queued == 0 or not isServer() then return end
++local startsLeft, msLeft = STARTS_PER_TICK, SLICE_MS
++local servicing = false
++
++---@param visits number Maximum FIFO lanes to visit
++---@return nil
++local function service(visits)
++    if servicing or startsLeft <= 0 or msLeft <= 0 then return end
++    servicing = true
+     local now = getTimestampMs()
+     local serverNow = GameTime.getServerTimeMills()
+-    local started = 0
+-    for _ = 1, laneCount do
++    for _ = 1, visits do
+         local lane = firstLane
+         firstLane = lane.following
+         if not firstLane then
+@@ -303,7 +307,7 @@
+                 else
+                     second = nil
+                 end
+-                started = started + 1
++                startsLeft = startsLeft - 1
+                 dispatch(job, second)
+             elseif job.callback then
+                 job.callback(0, "cancelled")
+@@ -315,8 +319,26 @@
+             byVictim[zombie] = nil
+             laneCount = laneCount - 1
+         end
+-        if started >= STARTS_PER_TICK or getTimestampMs() - now >= SLICE_MS then return end
+-    end
++        if startsLeft == 0 or getTimestampMs() - now >= msLeft then break end
++    end
++    msLeft = msLeft - (getTimestampMs() - now)
++    servicing = false
++end
++
++---@param zombie IsoZombie Victim whose owner receipt has fully settled
++---@return nil
++function CombatServer.afterApplied(zombie)
++    -- Only advance the front lane. An acknowledgement never jumps a waiting victim.
++    if firstLane and firstLane.zombie == zombie and not active[zombie] and not ActiveTime.paused() then
++        service(1)
++    end
++end
++
++---@return nil
++function Damage.tick()
++    if not isServer() then return end
++    startsLeft, msLeft = STARTS_PER_TICK, SLICE_MS
++    if queued > 0 then service(laneCount) end
+ end
+
+ Events.OnTick.Add(Damage.tick)
+--- a/Source/42.20/media/lua/server/OMHTT/DefenseCombatServer.lua
++++ b/Source/42.20/media/lua/server/OMHTT/DefenseCombatServer.lua
+@@ -155,7 +155,10 @@
+     finish(job, lost, reason)
+     if reason == "applied" then
+         announce(job, hit, result)
++        if S.afterApplied and not result.lethal and job.zombie:getOwner() then
++            S.afterApplied(job.zombie)
++        end
+     end
+ end
+
+ ---@param job table Pending operation

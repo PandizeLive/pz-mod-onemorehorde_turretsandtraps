@@ -1,0 +1,39 @@
+{
+  "version": "0.2.32",
+  "sourceCommit": "ad64418d0541c85d238851167948c0b7946cdc31",
+  "tag": "test/v0.2.32",
+  "installed": "C:\\Users\\bandi\\Zomboid\\mods",
+  "packages": {
+    "OneMoreHorde_Traps": 95,
+    "OneMoreHorde_Turrets": 119
+  },
+  "filesVerified": 214,
+  "sourceFilesVerified": 178,
+  "backup": "C:\\Users\\bandi\\Zomboid_Modding\\OMH\\Turrets & Traps\\diagnostics\\p1c1\\install-backups\\20261007-221650-1507",
+  "backupsVerified": [
+    {
+      "package": "OneMoreHorde_Traps",
+      "version": "0.2.31",
+      "filesVerified": 101
+    },
+    {
+      "package": "OneMoreHorde_Turrets",
+      "version": "0.2.31",
+      "filesVerified": 119
+    }
+  ],
+  "archive": "C:\\Users\\bandi\\Zomboid_Modding\\OMH\\Turrets & Traps\\artifacts\\OMHTT-0.2.32.zip",
+  "archiveSHA256": "0b511862983f6aaf7c55547e1b7733475e1b681c0d6fd1c862acef64ff903a4b",
+  "kahluaAssertions": 3728,
+  "nativeWrite": "passed",
+  "nativeRead": "passed",
+  "nativeSelections": [
+    "traps",
+    "turrets",
+    "both"
+  ],
+  "clientAcceptance": "pending focused owner test",
+  "savePolicy": "fresh worlds",
+  "publication": "none",
+  "hostedLootLab": "unchanged 0.2.28 baseline"
+}

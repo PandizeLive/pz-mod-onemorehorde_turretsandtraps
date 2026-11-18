@@ -1,0 +1,1204 @@
+{
+  "version": "0.2.71.8",
+  "checkpoint": "C544",
+  "ownerChoice": "C543 1A approved 2026-11-01",
+  "assertions": 50554,
+  "sourceFiles": 465,
+  "packageFiles": 641,
+  "summary": "cases=166 angleCases=144 zeroHitAngles=0 wakeMs=0 motorMs=1300 delayedReceipts=250ms distantReports=10000 distantMotorCalls=0 distantMs=18.30589997768402 liveClients=0 crowdActors=32 packetP95Ms=2.6841999888420105 packetMaxMs=3.538800001144409",
+  "angleCases": [
+    {
+      "entries": 1,
+      "bearing": 0,
+      "hits": 31,
+      "crossings": 31,
+      "wakeMs": 0,
+      "motorMs": 1300
+    },
+    {
+      "entries": 1,
+      "bearing": 5,
+      "hits": 32,
+      "crossings": 32,
+      "wakeMs": 0,
+      "motorMs": 1300
+    },
+    {
+      "entries": 1,
+      "bearing": 10,
+      "hits": 32,
+      "crossings": 32,
+      "wakeMs": 0,
+      "motorMs": 1300
+    },
+    {
+      "entries": 1,
+      "bearing": 15,
+      "hits": 32,
+      "crossings": 32,
+      "wakeMs": 0,
+      "motorMs": 1300
+    },
+    {
+      "entries": 1,
+      "bearing": 20,
+      "hits": 32,
+      "crossings": 32,
+      "wakeMs": 0,
+      "motorMs": 1300
+    },
+    {
+      "entries": 1,
+      "bearing": 25,
+      "hits": 32,
+      "crossings": 32,
+      "wakeMs": 0,
+      "motorMs": 1300
+    },
+    {
+      "entries": 1,
+      "bearing": 30,
+      "hits": 32,
+      "crossings": 32,
+      "wakeMs": 0,
+      "motorMs": 1300
+    },
+    {
+      "entries": 1,
+      "bearing": 35,
+      "hits": 32,
+      "crossings": 32,
+      "wakeMs": 0,
+      "motorMs": 1300
+    },
+    {
+      "entries": 1,
+      "bearing": 40,
+      "hits": 32,
+      "crossings": 32,
+      "wakeMs": 0,
+      "motorMs": 1300
+    },
+    {
+      "entries": 1,
+      "bearing": 45,
+      "hits": 32,
+      "crossings": 32,
+      "wakeMs": 0,
+      "motorMs": 1300
+    },
+    {
+      "entries": 1,
+      "bearing": 50,
+      "hits": 32,
+      "crossings": 32,
+      "wakeMs": 0,
+      "motorMs": 1300
+    },
+    {
+      "entries": 1,
+      "bearing": 55,
+      "hits": 32,
+      "crossings": 32,
+      "wakeMs": 0,
+      "motorMs": 1300
+    },
+    {
+      "entries": 1,
+      "bearing": 60,
+      "hits": 32,
+      "crossings": 32,
+      "wakeMs": 0,
+      "motorMs": 1300
+    },
+    {
+      "entries": 1,
+      "bearing": 65,
+      "hits": 32,
+      "crossings": 32,
+      "wakeMs": 0,
+      "motorMs": 1300
+    },
+    {
+      "entries": 1,
+      "bearing": 70,
+      "hits": 32,
+      "crossings": 32,
+      "wakeMs": 0,
+      "motorMs": 1300
+    },
+    {
+      "entries": 1,
+      "bearing": 75,
+      "hits": 32,
+      "crossings": 32,
+      "wakeMs": 0,
+      "motorMs": 1300
+    },
+    {
+      "entries": 1,
+      "bearing": 80,
+      "hits": 32,
+      "crossings": 32,
+      "wakeMs": 0,
+      "motorMs": 1300
+    },
+    {
+      "entries": 1,
+      "bearing": 85,
+      "hits": 32,
+      "crossings": 32,
+      "wakeMs": 0,
+      "motorMs": 1300
+    },
+    {
+      "entries": 1,
+      "bearing": 90,
+      "hits": 32,
+      "crossings": 32,
+      "wakeMs": 0,
+      "motorMs": 1300
+    },
+    {
+      "entries": 1,
+      "bearing": 95,
+      "hits": 32,
+      "crossings": 32,
+      "wakeMs": 0,
+      "motorMs": 1300
+    },
+    {
+      "entries": 1,
+      "bearing": 100,
+      "hits": 32,
+      "crossings": 32,
+      "wakeMs": 0,
+      "motorMs": 1300
+    },
+    {
+      "entries": 1,
+      "bearing": 105,
+      "hits": 32,
+      "crossings": 32,
+      "wakeMs": 0,
+      "motorMs": 1300
+    },
+    {
+      "entries": 1,
+      "bearing": 110,
+      "hits": 32,
+      "crossings": 32,
+      "wakeMs": 0,
+      "motorMs": 1300
+    },
+    {
+      "entries": 1,
+      "bearing": 115,
+      "hits": 32,
+      "crossings": 32,
+      "wakeMs": 0,
+      "motorMs": 1300
+    },
+    {
+      "entries": 1,
+      "bearing": 120,
+      "hits": 32,
+      "crossings": 32,
+      "wakeMs": 0,
+      "motorMs": 1300
+    },
+    {
+      "entries": 1,
+      "bearing": 125,
+      "hits": 32,
+      "crossings": 32,
+      "wakeMs": 0,
+      "motorMs": 1300
+    },
+    {
+      "entries": 1,
+      "bearing": 130,
+      "hits": 32,
+      "crossings": 32,
+      "wakeMs": 0,
+      "motorMs": 1300
+    },
+    {
+      "entries": 1,
+      "bearing": 135,
+      "hits": 32,
+      "crossings": 32,
+      "wakeMs": 0,
+      "motorMs": 1300
+    },
+    {
+      "entries": 1,
+      "bearing": 140,
+      "hits": 32,
+      "crossings": 32,
+      "wakeMs": 0,
+      "motorMs": 1300
+    },
+    {
+      "entries": 1,
+      "bearing": 145,
+      "hits": 32,
+      "crossings": 32,
+      "wakeMs": 0,
+      "motorMs": 1300
+    },
+    {
+      "entries": 1,
+      "bearing": 150,
+      "hits": 31,
+      "crossings": 31,
+      "wakeMs": 0,
+      "motorMs": 1300
+    },
+    {
+      "entries": 1,
+      "bearing": 155,
+      "hits": 31,
+      "crossings": 31,
+      "wakeMs": 0,
+      "motorMs": 1300
+    },
+    {
+      "entries": 1,
+      "bearing": 160,
+      "hits": 31,
+      "crossings": 31,
+      "wakeMs": 0,
+      "motorMs": 1300
+    },
+    {
+      "entries": 1,
+      "bearing": 165,
+      "hits": 31,
+      "crossings": 31,
+      "wakeMs": 0,
+      "motorMs": 1300
+    },
+    {
+      "entries": 1,
+      "bearing": 170,
+      "hits": 31,
+      "crossings": 31,
+      "wakeMs": 0,
+      "motorMs": 1300
+    },
+    {
+      "entries": 1,
+      "bearing": 175,
+      "hits": 31,
+      "crossings": 31,
+      "wakeMs": 0,
+      "motorMs": 1300
+    },
+    {
+      "entries": 4,
+      "bearing": 0,
+      "hits": 31,
+      "crossings": 31,
+      "wakeMs": 0,
+      "motorMs": 1300
+    },
+    {
+      "entries": 4,
+      "bearing": 5,
+      "hits": 32,
+      "crossings": 32,
+      "wakeMs": 0,
+      "motorMs": 1300
+    },
+    {
+      "entries": 4,
+      "bearing": 10,
+      "hits": 32,
+      "crossings": 32,
+      "wakeMs": 0,
+      "motorMs": 1300
+    },
+    {
+      "entries": 4,
+      "bearing": 15,
+      "hits": 32,
+      "crossings": 32,
+      "wakeMs": 0,
+      "motorMs": 1300
+    },
+    {
+      "entries": 4,
+      "bearing": 20,
+      "hits": 32,
+      "crossings": 32,
+      "wakeMs": 0,
+      "motorMs": 1300
+    },
+    {
+      "entries": 4,
+      "bearing": 25,
+      "hits": 32,
+      "crossings": 32,
+      "wakeMs": 0,
+      "motorMs": 1300
+    },
+    {
+      "entries": 4,
+      "bearing": 30,
+      "hits": 32,
+      "crossings": 32,
+      "wakeMs": 0,
+      "motorMs": 1300
+    },
+    {
+      "entries": 4,
+      "bearing": 35,
+      "hits": 32,
+      "crossings": 32,
+      "wakeMs": 0,
+      "motorMs": 1300
+    },
+    {
+      "entries": 4,
+      "bearing": 40,
+      "hits": 32,
+      "crossings": 32,
+      "wakeMs": 0,
+      "motorMs": 1300
+    },
+    {
+      "entries": 4,
+      "bearing": 45,
+      "hits": 32,
+      "crossings": 32,
+      "wakeMs": 0,
+      "motorMs": 1300
+    },
+    {
+      "entries": 4,
+      "bearing": 50,
+      "hits": 32,
+      "crossings": 32,
+      "wakeMs": 0,
+      "motorMs": 1300
+    },
+    {
+      "entries": 4,
+      "bearing": 55,
+      "hits": 32,
+      "crossings": 32,
+      "wakeMs": 0,
+      "motorMs": 1300
+    },
+    {
+      "entries": 4,
+      "bearing": 60,
+      "hits": 32,
+      "crossings": 32,
+      "wakeMs": 0,
+      "motorMs": 1300
+    },
+    {
+      "entries": 4,
+      "bearing": 65,
+      "hits": 32,
+      "crossings": 32,
+      "wakeMs": 0,
+      "motorMs": 1300
+    },
+    {
+      "entries": 4,
+      "bearing": 70,
+      "hits": 32,
+      "crossings": 32,
+      "wakeMs": 0,
+      "motorMs": 1300
+    },
+    {
+      "entries": 4,
+      "bearing": 75,
+      "hits": 32,
+      "crossings": 32,
+      "wakeMs": 0,
+      "motorMs": 1300
+    },
+    {
+      "entries": 4,
+      "bearing": 80,
+      "hits": 32,
+      "crossings": 32,
+      "wakeMs": 0,
+      "motorMs": 1300
+    },
+    {
+      "entries": 4,
+      "bearing": 85,
+      "hits": 32,
+      "crossings": 32,
+      "wakeMs": 0,
+      "motorMs": 1300
+    },
+    {
+      "entries": 4,
+      "bearing": 90,
+      "hits": 32,
+      "crossings": 32,
+      "wakeMs": 0,
+      "motorMs": 1300
+    },
+    {
+      "entries": 4,
+      "bearing": 95,
+      "hits": 32,
+      "crossings": 32,
+      "wakeMs": 0,
+      "motorMs": 1300
+    },
+    {
+      "entries": 4,
+      "bearing": 100,
+      "hits": 32,
+      "crossings": 32,
+      "wakeMs": 0,
+      "motorMs": 1300
+    },
+    {
+      "entries": 4,
+      "bearing": 105,
+      "hits": 32,
+      "crossings": 32,
+      "wakeMs": 0,
+      "motorMs": 1300
+    },
+    {
+      "entries": 4,
+      "bearing": 110,
+      "hits": 32,
+      "crossings": 32,
+      "wakeMs": 0,
+      "motorMs": 1300
+    },
+    {
+      "entries": 4,
+      "bearing": 115,
+      "hits": 32,
+      "crossings": 32,
+      "wakeMs": 0,
+      "motorMs": 1300
+    },
+    {
+      "entries": 4,
+      "bearing": 120,
+      "hits": 32,
+      "crossings": 32,
+      "wakeMs": 0,
+      "motorMs": 1300
+    },
+    {
+      "entries": 4,
+      "bearing": 125,
+      "hits": 32,
+      "crossings": 32,
+      "wakeMs": 0,
+      "motorMs": 1300
+    },
+    {
+      "entries": 4,
+      "bearing": 130,
+      "hits": 32,
+      "crossings": 32,
+      "wakeMs": 0,
+      "motorMs": 1300
+    },
+    {
+      "entries": 4,
+      "bearing": 135,
+      "hits": 32,
+      "crossings": 32,
+      "wakeMs": 0,
+      "motorMs": 1300
+    },
+    {
+      "entries": 4,
+      "bearing": 140,
+      "hits": 32,
+      "crossings": 32,
+      "wakeMs": 0,
+      "motorMs": 1300
+    },
+    {
+      "entries": 4,
+      "bearing": 145,
+      "hits": 32,
+      "crossings": 32,
+      "wakeMs": 0,
+      "motorMs": 1300
+    },
+    {
+      "entries": 4,
+      "bearing": 150,
+      "hits": 31,
+      "crossings": 31,
+      "wakeMs": 0,
+      "motorMs": 1300
+    },
+    {
+      "entries": 4,
+      "bearing": 155,
+      "hits": 31,
+      "crossings": 31,
+      "wakeMs": 0,
+      "motorMs": 1300
+    },
+    {
+      "entries": 4,
+      "bearing": 160,
+      "hits": 31,
+      "crossings": 31,
+      "wakeMs": 0,
+      "motorMs": 1300
+    },
+    {
+      "entries": 4,
+      "bearing": 165,
+      "hits": 31,
+      "crossings": 31,
+      "wakeMs": 0,
+      "motorMs": 1300
+    },
+    {
+      "entries": 4,
+      "bearing": 170,
+      "hits": 31,
+      "crossings": 31,
+      "wakeMs": 0,
+      "motorMs": 1300
+    },
+    {
+      "entries": 4,
+      "bearing": 175,
+      "hits": 31,
+      "crossings": 31,
+      "wakeMs": 0,
+      "motorMs": 1300
+    },
+    {
+      "entries": 8,
+      "bearing": 0,
+      "hits": 31,
+      "crossings": 31,
+      "wakeMs": 0,
+      "motorMs": 1300
+    },
+    {
+      "entries": 8,
+      "bearing": 5,
+      "hits": 32,
+      "crossings": 32,
+      "wakeMs": 0,
+      "motorMs": 1300
+    },
+    {
+      "entries": 8,
+      "bearing": 10,
+      "hits": 32,
+      "crossings": 32,
+      "wakeMs": 0,
+      "motorMs": 1300
+    },
+    {
+      "entries": 8,
+      "bearing": 15,
+      "hits": 32,
+      "crossings": 32,
+      "wakeMs": 0,
+      "motorMs": 1300
+    },
+    {
+      "entries": 8,
+      "bearing": 20,
+      "hits": 32,
+      "crossings": 32,
+      "wakeMs": 0,
+      "motorMs": 1300
+    },
+    {
+      "entries": 8,
+      "bearing": 25,
+      "hits": 32,
+      "crossings": 32,
+      "wakeMs": 0,
+      "motorMs": 1300
+    },
+    {
+      "entries": 8,
+      "bearing": 30,
+      "hits": 32,
+      "crossings": 32,
+      "wakeMs": 0,
+      "motorMs": 1300
+    },
+    {
+      "entries": 8,
+      "bearing": 35,
+      "hits": 32,
+      "crossings": 32,
+      "wakeMs": 0,
+      "motorMs": 1300
+    },
+    {
+      "entries": 8,
+      "bearing": 40,
+      "hits": 32,
+      "crossings": 32,
+      "wakeMs": 0,
+      "motorMs": 1300
+    },
+    {
+      "entries": 8,
+      "bearing": 45,
+      "hits": 32,
+      "crossings": 32,
+      "wakeMs": 0,
+      "motorMs": 1300
+    },
+    {
+      "entries": 8,
+      "bearing": 50,
+      "hits": 32,
+      "crossings": 32,
+      "wakeMs": 0,
+      "motorMs": 1300
+    },
+    {
+      "entries": 8,
+      "bearing": 55,
+      "hits": 32,
+      "crossings": 32,
+      "wakeMs": 0,
+      "motorMs": 1300
+    },
+    {
+      "entries": 8,
+      "bearing": 60,
+      "hits": 32,
+      "crossings": 32,
+      "wakeMs": 0,
+      "motorMs": 1300
+    },
+    {
+      "entries": 8,
+      "bearing": 65,
+      "hits": 32,
+      "crossings": 32,
+      "wakeMs": 0,
+      "motorMs": 1300
+    },
+    {
+      "entries": 8,
+      "bearing": 70,
+      "hits": 32,
+      "crossings": 32,
+      "wakeMs": 0,
+      "motorMs": 1300
+    },
+    {
+      "entries": 8,
+      "bearing": 75,
+      "hits": 32,
+      "crossings": 32,
+      "wakeMs": 0,
+      "motorMs": 1300
+    },
+    {
+      "entries": 8,
+      "bearing": 80,
+      "hits": 32,
+      "crossings": 32,
+      "wakeMs": 0,
+      "motorMs": 1300
+    },
+    {
+      "entries": 8,
+      "bearing": 85,
+      "hits": 32,
+      "crossings": 32,
+      "wakeMs": 0,
+      "motorMs": 1300
+    },
+    {
+      "entries": 8,
+      "bearing": 90,
+      "hits": 32,
+      "crossings": 32,
+      "wakeMs": 0,
+      "motorMs": 1300
+    },
+    {
+      "entries": 8,
+      "bearing": 95,
+      "hits": 32,
+      "crossings": 32,
+      "wakeMs": 0,
+      "motorMs": 1300
+    },
+    {
+      "entries": 8,
+      "bearing": 100,
+      "hits": 32,
+      "crossings": 32,
+      "wakeMs": 0,
+      "motorMs": 1300
+    },
+    {
+      "entries": 8,
+      "bearing": 105,
+      "hits": 32,
+      "crossings": 32,
+      "wakeMs": 0,
+      "motorMs": 1300
+    },
+    {
+      "entries": 8,
+      "bearing": 110,
+      "hits": 32,
+      "crossings": 32,
+      "wakeMs": 0,
+      "motorMs": 1300
+    },
+    {
+      "entries": 8,
+      "bearing": 115,
+      "hits": 32,
+      "crossings": 32,
+      "wakeMs": 0,
+      "motorMs": 1300
+    },
+    {
+      "entries": 8,
+      "bearing": 120,
+      "hits": 32,
+      "crossings": 32,
+      "wakeMs": 0,
+      "motorMs": 1300
+    },
+    {
+      "entries": 8,
+      "bearing": 125,
+      "hits": 32,
+      "crossings": 32,
+      "wakeMs": 0,
+      "motorMs": 1300
+    },
+    {
+      "entries": 8,
+      "bearing": 130,
+      "hits": 32,
+      "crossings": 32,
+      "wakeMs": 0,
+      "motorMs": 1300
+    },
+    {
+      "entries": 8,
+      "bearing": 135,
+      "hits": 32,
+      "crossings": 32,
+      "wakeMs": 0,
+      "motorMs": 1300
+    },
+    {
+      "entries": 8,
+      "bearing": 140,
+      "hits": 32,
+      "crossings": 32,
+      "wakeMs": 0,
+      "motorMs": 1300
+    },
+    {
+      "entries": 8,
+      "bearing": 145,
+      "hits": 32,
+      "crossings": 32,
+      "wakeMs": 0,
+      "motorMs": 1300
+    },
+    {
+      "entries": 8,
+      "bearing": 150,
+      "hits": 31,
+      "crossings": 31,
+      "wakeMs": 0,
+      "motorMs": 1300
+    },
+    {
+      "entries": 8,
+      "bearing": 155,
+      "hits": 31,
+      "crossings": 31,
+      "wakeMs": 0,
+      "motorMs": 1300
+    },
+    {
+      "entries": 8,
+      "bearing": 160,
+      "hits": 31,
+      "crossings": 31,
+      "wakeMs": 0,
+      "motorMs": 1300
+    },
+    {
+      "entries": 8,
+      "bearing": 165,
+      "hits": 31,
+      "crossings": 31,
+      "wakeMs": 0,
+      "motorMs": 1300
+    },
+    {
+      "entries": 8,
+      "bearing": 170,
+      "hits": 31,
+      "crossings": 31,
+      "wakeMs": 0,
+      "motorMs": 1300
+    },
+    {
+      "entries": 8,
+      "bearing": 175,
+      "hits": 31,
+      "crossings": 31,
+      "wakeMs": 0,
+      "motorMs": 1300
+    },
+    {
+      "entries": 12,
+      "bearing": 0,
+      "hits": 31,
+      "crossings": 31,
+      "wakeMs": 0,
+      "motorMs": 1300
+    },
+    {
+      "entries": 12,
+      "bearing": 5,
+      "hits": 32,
+      "crossings": 32,
+      "wakeMs": 0,
+      "motorMs": 1300
+    },
+    {
+      "entries": 12,
+      "bearing": 10,
+      "hits": 32,
+      "crossings": 32,
+      "wakeMs": 0,
+      "motorMs": 1300
+    },
+    {
+      "entries": 12,
+      "bearing": 15,
+      "hits": 32,
+      "crossings": 32,
+      "wakeMs": 0,
+      "motorMs": 1300
+    },
+    {
+      "entries": 12,
+      "bearing": 20,
+      "hits": 32,
+      "crossings": 32,
+      "wakeMs": 0,
+      "motorMs": 1300
+    },
+    {
+      "entries": 12,
+      "bearing": 25,
+      "hits": 32,
+      "crossings": 32,
+      "wakeMs": 0,
+      "motorMs": 1300
+    },
+    {
+      "entries": 12,
+      "bearing": 30,
+      "hits": 32,
+      "crossings": 32,
+      "wakeMs": 0,
+      "motorMs": 1300
+    },
+    {
+      "entries": 12,
+      "bearing": 35,
+      "hits": 32,
+      "crossings": 32,
+      "wakeMs": 0,
+      "motorMs": 1300
+    },
+    {
+      "entries": 12,
+      "bearing": 40,
+      "hits": 32,
+      "crossings": 32,
+      "wakeMs": 0,
+      "motorMs": 1300
+    },
+    {
+      "entries": 12,
+      "bearing": 45,
+      "hits": 32,
+      "crossings": 32,
+      "wakeMs": 0,
+      "motorMs": 1300
+    },
+    {
+      "entries": 12,
+      "bearing": 50,
+      "hits": 32,
+      "crossings": 32,
+      "wakeMs": 0,
+      "motorMs": 1300
+    },
+    {
+      "entries": 12,
+      "bearing": 55,
+      "hits": 32,
+      "crossings": 32,
+      "wakeMs": 0,
+      "motorMs": 1300
+    },
+    {
+      "entries": 12,
+      "bearing": 60,
+      "hits": 32,
+      "crossings": 32,
+      "wakeMs": 0,
+      "motorMs": 1300
+    },
+    {
+      "entries": 12,
+      "bearing": 65,
+      "hits": 32,
+      "crossings": 32,
+      "wakeMs": 0,
+      "motorMs": 1300
+    },
+    {
+      "entries": 12,
+      "bearing": 70,
+      "hits": 32,
+      "crossings": 32,
+      "wakeMs": 0,
+      "motorMs": 1300
+    },
+    {
+      "entries": 12,
+      "bearing": 75,
+      "hits": 32,
+      "crossings": 32,
+      "wakeMs": 0,
+      "motorMs": 1300
+    },
+    {
+      "entries": 12,
+      "bearing": 80,
+      "hits": 32,
+      "crossings": 32,
+      "wakeMs": 0,
+      "motorMs": 1300
+    },
+    {
+      "entries": 12,
+      "bearing": 85,
+      "hits": 32,
+      "crossings": 32,
+      "wakeMs": 0,
+      "motorMs": 1300
+    },
+    {
+      "entries": 12,
+      "bearing": 90,
+      "hits": 32,
+      "crossings": 32,
+      "wakeMs": 0,
+      "motorMs": 1300
+    },
+    {
+      "entries": 12,
+      "bearing": 95,
+      "hits": 32,
+      "crossings": 32,
+      "wakeMs": 0,
+      "motorMs": 1300
+    },
+    {
+      "entries": 12,
+      "bearing": 100,
+      "hits": 32,
+      "crossings": 32,
+      "wakeMs": 0,
+      "motorMs": 1300
+    },
+    {
+      "entries": 12,
+      "bearing": 105,
+      "hits": 32,
+      "crossings": 32,
+      "wakeMs": 0,
+      "motorMs": 1300
+    },
+    {
+      "entries": 12,
+      "bearing": 110,
+      "hits": 32,
+      "crossings": 32,
+      "wakeMs": 0,
+      "motorMs": 1300
+    },
+    {
+      "entries": 12,
+      "bearing": 115,
+      "hits": 32,
+      "crossings": 32,
+      "wakeMs": 0,
+      "motorMs": 1300
+    },
+    {
+      "entries": 12,
+      "bearing": 120,
+      "hits": 32,
+      "crossings": 32,
+      "wakeMs": 0,
+      "motorMs": 1300
+    },
+    {
+      "entries": 12,
+      "bearing": 125,
+      "hits": 32,
+      "crossings": 32,
+      "wakeMs": 0,
+      "motorMs": 1300
+    },
+    {
+      "entries": 12,
+      "bearing": 130,
+      "hits": 32,
+      "crossings": 32,
+      "wakeMs": 0,
+      "motorMs": 1300
+    },
+    {
+      "entries": 12,
+      "bearing": 135,
+      "hits": 32,
+      "crossings": 32,
+      "wakeMs": 0,
+      "motorMs": 1300
+    },
+    {
+      "entries": 12,
+      "bearing": 140,
+      "hits": 32,
+      "crossings": 32,
+      "wakeMs": 0,
+      "motorMs": 1300
+    },
+    {
+      "entries": 12,
+      "bearing": 145,
+      "hits": 32,
+      "crossings": 32,
+      "wakeMs": 0,
+      "motorMs": 1300
+    },
+    {
+      "entries": 12,
+      "bearing": 150,
+      "hits": 31,
+      "crossings": 31,
+      "wakeMs": 0,
+      "motorMs": 1300
+    },
+    {
+      "entries": 12,
+      "bearing": 155,
+      "hits": 31,
+      "crossings": 31,
+      "wakeMs": 0,
+      "motorMs": 1300
+    },
+    {
+      "entries": 12,
+      "bearing": 160,
+      "hits": 31,
+      "crossings": 31,
+      "wakeMs": 0,
+      "motorMs": 1300
+    },
+    {
+      "entries": 12,
+      "bearing": 165,
+      "hits": 31,
+      "crossings": 31,
+      "wakeMs": 0,
+      "motorMs": 1300
+    },
+    {
+      "entries": 12,
+      "bearing": 170,
+      "hits": 31,
+      "crossings": 31,
+      "wakeMs": 0,
+      "motorMs": 1300
+    },
+    {
+      "entries": 12,
+      "bearing": 175,
+      "hits": 31,
+      "crossings": 31,
+      "wakeMs": 0,
+      "motorMs": 1300
+    }
+  ],
+  "nativeChecks": {
+    "server-write.log": {
+      "passed": true,
+      "sha256": "a55df43f4ada1feb25d7d330912c7d1920c13f138e497e234dcb6b4e8b545227"
+    },
+    "server-read.log": {
+      "passed": true,
+      "sha256": "0c8dd91a2400709ac3c4cfe97ebd6861ede6c49fa83124cf8f5a2d90054ff45b"
+    },
+    "packages-traps.json": {
+      "passed": true,
+      "sha256": "bdf53da744fc4f324d6ea56b5423faccc56238b56af23fc8ff41829f65f144f6"
+    },
+    "packages-turrets.json": {
+      "passed": true,
+      "sha256": "7b77791f0ae3b6eabc9ac08c2eb3e3a5cf778c8fa4bba7d71e954a7c2a575176"
+    },
+    "packages-both.json": {
+      "passed": true,
+      "sha256": "de33335346cc77eba587d649ab6de13c07cffc8d21717c7aae411393e48ffa24"
+    }
+  },
+  "negativeControl": {
+    "sourceTag": "test/v0.2.71.7",
+    "sourceSHA256": "62e8c8a8b181a139f5a16aac96761c22135e36350b081d4364b3b4acf2c9b2da",
+    "schedulerSHA256": "d29b8e87b864b6cebb862bfd0ee90512a9bbac22b45268af9d451708afb1d425",
+    "method": "Exact released rotary and scheduler modules reloaded after the current suite, then matched 144-case scheduler replay",
+    "expectedFailure": "C543 real four-entry scheduler leaves rotary contact gaps",
+    "matched": true,
+    "returncode": 1,
+    "connectedClients": 0
+  },
+  "connectedClients": 0,
+  "renderedAcceptance": "pending",
+  "limits": [
+    "Kahlua scheduler/report cases use world/network adapters and a delayed damage sink.",
+    "Native checks use actual engine objects but zero connected clients.",
+    "Moving contact positions use bounded short linear interpolation; no rendered collision guarantee.",
+    "Report freshness remains250ms; lost/stale intervals do not invent catch-up damage.",
+    "Crowd timing measures32 reported actors near one rotary, not server-wide FPS."
+  ]
+}

@@ -11,8 +11,8 @@ module Base {
             bonusHealth = 0,
             isThumpable = true,
             breakSound = BreakObject,
-            OnIsValid = OMHTT_TurretWorld.onIsValid,
-            OnCreate = OMHTT_TurretWorld.onCreate,
+            OnIsValid = OMHTT_TurretPlacement.valid,
+            OnCreate = OMHTT_TurretPlacement.create,
             face E {
                 layer {
                     row = omhtt_turret_01_16,
@@ -36,11 +36,11 @@ module Base {
         }
         component CraftRecipe {
             timedAction = BuildLowNoTool,
-            time = 200,
+            time = 250,
             category = OMHTurrets,
             Tooltip = UI_OMHTT_DeployTurretDescription,
             needToBeLearn = false,
-            OnAddToMenu = OMHTT_TurretMenuAvailable,
+            OnAddToMenu = OMHTT_PlacementMenu,
             OnTest = OMHTT_Turret.recipeInput,
             inputs {
                 item 1 [Base.OMHTTTurretBase] flags[ItemCount],

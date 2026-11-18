@@ -1,0 +1,33 @@
+{
+  "version": "0.2.71",
+  "clientLoadedVersion": "0.2.71",
+  "serverLoadedVersion": "0.2.71",
+  "rotaryImpactExceptions": 45,
+  "rendererReplay": {
+    "motorDegreesPerSecond": 180,
+    "peakDegreesPer10ms": 18,
+    "peakAtMsAfterStop": 1020
+  },
+  "freshReportStaleNativeRejectionReproduced": true,
+  "assertions": 41772,
+  "correctedBuild": false,
+  "connectedReplay": false,
+  "files": [
+    {
+      "file": "diagnostics/c527/client-console.txt",
+      "sha256": "53f68e38ef2dafbc4a8a30ce7a2208bb6175eb88a537bb9c44c82279c5b82637"
+    },
+    {
+      "file": "diagnostics/c527/server-console.txt",
+      "sha256": "d703cb324a3e10788ce20f2f2fdfc8092e27fa6a2c23b0721600dad83e6ddc30"
+    },
+    {
+      "file": "diagnostics/c527/server-mod.info",
+      "sha256": "d2e82cfbbecca04b72f0f15e18762b6ca17d21d9ae2284bb773dcf42a6a9fcf5"
+    },
+    {
+      "file": "diagnostics/c527/rotary-replay.log",
+      "sha256": "79461a231a59d5c440641c61062335e9dfc470dad0e7955a4e536584e07845d0"
+    }
+  ]
+}

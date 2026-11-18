@@ -40,3 +40,8 @@ for now = 0, 100000, 100 do
     end
 end
 check(shots == 85 and ammo == 0 and state.loaded == 0, "Full reserve yields exactly 85 shots without duplicating loaded ammo")
+state = {loaded = 0, pending = 1, reloadReady = 310000, nextShot = 310000}
+check(Cycle.update(state, 12, config, 10000) == "Reloading" and state.reloadReady == 11000,
+    "Legacy wall-clock deadline after a five-minute pause is bounded to a real reload")
+check(Cycle.update(state, 12, config, 11000) == "Ready" and state.loaded == 1,
+    "Repair completes without waiting through the paused minutes or creating ammo")

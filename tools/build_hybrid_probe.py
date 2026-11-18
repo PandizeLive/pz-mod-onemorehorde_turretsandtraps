@@ -30,7 +30,7 @@ def build():
         normals.extend([normal / np.linalg.norm(normal)] * 4)
     vector_rows = lambda values: ",\n".join(";".join(f"{v:.6f}" for v in row) + ";" for row in values) + ";\n"
     face_rows = ",\n".join("3;" + ",".join(str(i) for i in face) + ";" for face in triangles) + ";\n"
-    mesh = "xof 0303txt 0032\nMesh OMHTTProbeHead {\n" + str(len(positions)) + ";\n" + vector_rows(positions)
+    mesh = "xof 0303txt 0032\nMesh OMHTTTurretProbe {\n" + str(len(positions)) + ";\n" + vector_rows(positions)
     mesh += str(len(triangles)) + ";\n" + face_rows
     mesh += "MeshNormals {\n" + str(len(normals)) + ";\n" + vector_rows(normals) + str(len(triangles)) + ";\n" + face_rows + "}\n"
     mesh += "MeshTextureCoords {\n" + str(len(positions)) + ";\n" + vector_rows([[0.5, 0.5]] * len(positions)) + "}\n}\n"

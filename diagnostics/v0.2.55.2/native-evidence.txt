@@ -1,0 +1,9 @@
+write: LOG  : Lua          f:0 st:392,244,820> [OMHTT-C300] native-stockpile-head=bidirectional exact-item=yes offline-nearby=yes theft=blocked net-action=constructed
+write: LOG  : General      f:0 st:392,247,715> [OMHTT-Smoke] native-persistence mode=write parts=28 health=37 maxHealth=200 identity=valid collision=preserved owner=preserved legacy=8 edges=8 outline=4 reinforced=8 orientation=preserved
+write: LOG  : General      f:0 st:392,256,725> Shutdown handling finished
+read: LOG  : Lua          f:0 st:392,527,147> [OMHTT-C300] native-stockpile-head=bidirectional exact-item=yes offline-nearby=yes theft=blocked net-action=constructed
+read: LOG  : General      f:0 st:392,529,482> [OMHTT-Smoke] native-persistence mode=read parts=28 health=37 maxHealth=200 identity=valid collision=preserved owner=preserved legacy=8 edges=8 outline=4 reinforced=8 orientation=preserved
+read: LOG  : General      f:0 st:392,538,620> Shutdown handling finished
+{"selection": "traps", "version": "0.2.55.2", "passed": true, "seconds": 37.2}
+{"selection": "turrets", "version": "0.2.55.2", "passed": true, "seconds": 38.0}
+{"selection": "both", "version": "0.2.55.2", "passed": true, "seconds": 39.5}

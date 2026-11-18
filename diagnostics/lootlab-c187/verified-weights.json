@@ -1,0 +1,176 @@
+{
+  "revision": 196,
+  "updatedAt": "2026-10-12 22:26:27 UTC",
+  "rowsWritten": 0,
+  "changedDatabase": false,
+  "tierWeights": {
+    "Abundant": 20,
+    "Common": 18,
+    "Uncommon": 14,
+    "Rare": 10,
+    "Epic": 6,
+    "Legendary": 3,
+    "Mythic": 1
+  },
+  "groups": {
+    "Abundant": [
+      {
+        "id": "Reload",
+        "name": "Reload",
+        "weight": 20
+      },
+      {
+        "id": "Accuracy",
+        "name": "Accuracy",
+        "weight": 20
+      },
+      {
+        "id": "Regulator",
+        "name": "Regulator",
+        "weight": 20
+      }
+    ],
+    "Common": [
+      {
+        "id": "Filter",
+        "name": "Filter",
+        "weight": 18
+      },
+      {
+        "id": "RapidFire",
+        "name": "Rapid-Fire",
+        "weight": 18
+      },
+      {
+        "id": "Range",
+        "name": "Range",
+        "weight": 18
+      },
+      {
+        "id": "Magazine",
+        "name": "Magazine",
+        "weight": 18
+      }
+    ],
+    "Uncommon": [
+      {
+        "id": "Firing",
+        "name": "Firing",
+        "weight": 14
+      },
+      {
+        "id": "MotionDetection",
+        "name": "Detection",
+        "weight": 14
+      },
+      {
+        "id": "CapacitySmall",
+        "name": "Small Expansion Kit",
+        "weight": 14
+      }
+    ],
+    "Rare": [
+      {
+        "id": "Detection360",
+        "name": "360",
+        "weight": 10
+      },
+      {
+        "id": "Suppression",
+        "name": "Suppression",
+        "weight": 10
+      },
+      {
+        "id": "Velocity",
+        "name": "Velocity",
+        "weight": 10
+      },
+      {
+        "id": "Critical",
+        "name": "Critical",
+        "weight": 10
+      },
+      {
+        "id": "Piercing",
+        "name": "Piercing",
+        "weight": 10
+      }
+    ],
+    "Epic": [
+      {
+        "id": "Capacity",
+        "name": "Medium Expansion Kit",
+        "weight": 6
+      },
+      {
+        "id": "Splitter",
+        "name": "Splitter",
+        "weight": 6
+      },
+      {
+        "id": "InitialBlow",
+        "name": "Initial Blow",
+        "weight": 6
+      },
+      {
+        "id": "Impact",
+        "name": "Impact",
+        "weight": 6
+      },
+      {
+        "id": "Conservation",
+        "name": "Conservation",
+        "weight": 6
+      }
+    ],
+    "Legendary": [
+      {
+        "id": "CapacityLarge",
+        "name": "Large Expansion Kit",
+        "weight": 3
+      },
+      {
+        "id": "Fragment",
+        "name": "Fragment",
+        "weight": 3
+      },
+      {
+        "id": "Execute",
+        "name": "Execute",
+        "weight": 3
+      },
+      {
+        "id": "Martyrdom",
+        "name": "Martyrdom",
+        "weight": 3
+      },
+      {
+        "id": "Tack",
+        "name": "Tack",
+        "weight": 3
+      }
+    ],
+    "Mythic": [
+      {
+        "id": "Autoloader",
+        "name": "Autoloader",
+        "weight": 1
+      },
+      {
+        "id": "FiringEnhanced",
+        "name": "Enhanced Firing",
+        "weight": 1
+      },
+      {
+        "id": "MotionDetectionEnhanced",
+        "name": "Enhanced Detection",
+        "weight": 1
+      },
+      {
+        "id": "Synergy",
+        "name": "Synergy",
+        "weight": 1
+      }
+    ]
+  }
+}

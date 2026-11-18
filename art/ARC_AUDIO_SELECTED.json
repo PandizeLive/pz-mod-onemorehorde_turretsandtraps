@@ -1,0 +1,20 @@
+{
+  "selection": "S1B",
+  "event": "event:/Object/Radio/Zap",
+  "game": "42.21.0",
+  "source_sha256": "4528d069bf5a75f0dd4542db70a2af85bfa94eeed9c4c3978e33c9230b8d7920",
+  "output_sha256": "b84b6fc2fe2174a8352d69de7090d99bad134dd07ebe629c388ed66a20f99bf9",
+  "seconds": 1.06125,
+  "peak": 0.6799604296684265,
+  "rms": 0.05146362912462723,
+  "bytes": 15678,
+  "pitch": [
+    0.95,
+    1.05
+  ],
+  "normalization_db": 14,
+  "playback_gain": 1.3,
+  "impact": "DismantleFailed",
+  "impact_gain": 2,
+  "impact_limit": "Four starts per 100 wall-clock milliseconds per client"
+}

@@ -1,0 +1,78 @@
+{
+  "errors": [],
+  "measurements": [
+    {
+      "width": 1048,
+      "name": "Native slim",
+      "scroll": 1048,
+      "overflows": []
+    },
+    {
+      "width": 1048,
+      "name": "Radio segments",
+      "scroll": 1048,
+      "overflows": []
+    },
+    {
+      "width": 1048,
+      "name": "Readable gauges",
+      "scroll": 1048,
+      "overflows": []
+    },
+    {
+      "width": 704,
+      "name": "Native slim",
+      "scroll": 704,
+      "overflows": []
+    },
+    {
+      "width": 704,
+      "name": "Radio segments",
+      "scroll": 704,
+      "overflows": []
+    },
+    {
+      "width": 704,
+      "name": "Readable gauges",
+      "scroll": 704,
+      "overflows": []
+    },
+    {
+      "width": 358,
+      "name": "Native slim",
+      "scroll": 358,
+      "overflows": []
+    },
+    {
+      "width": 358,
+      "name": "Radio segments",
+      "scroll": 358,
+      "overflows": []
+    },
+    {
+      "width": 358,
+      "name": "Readable gauges",
+      "scroll": 358,
+      "overflows": []
+    },
+    {
+      "width": 288,
+      "name": "Native slim",
+      "scroll": 288,
+      "overflows": []
+    },
+    {
+      "width": 288,
+      "name": "Radio segments",
+      "scroll": 288,
+      "overflows": []
+    },
+    {
+      "width": 288,
+      "name": "Readable gauges",
+      "scroll": 288,
+      "overflows": []
+    }
+  ],
+  "interactions": "access and unassign passed"
+}

@@ -33,7 +33,9 @@ def main():
         native = (output / ('server-' + mode + '.log')).read_text(encoding='utf-8')
         assert '[OMHTT-Smoke] native-persistence mode=' + mode in native and 'Shutdown handling finished' in native
         if (ROOT / 'Source/42.20/media/scripts/OMHTT_BedSpikes.txt').exists():
-            assert '[OMHTT-Beds] persistence mode=' + mode + ' parts=24' in native, 'Missing native bed persistence proof'
+            assert '[OMHTT-Beds] persistence mode=' + mode + ' parts=32' in native, 'Missing native bed persistence proof'
+        if (ROOT / 'Source/42.20/media/scripts/OMHTT_Barbs.txt').exists():
+            assert '[OMHTT-Barbs] persistence mode=' + mode + ' pairs=8' in native, 'Missing native barb persistence proof'
     for selection in ['traps', 'turrets', 'both']:
         result = json.loads((output / ('packages-' + selection + '.json')).read_text())
         assert result['version'] == version and result['passed'], 'Missing current package isolation proof'
@@ -68,7 +70,7 @@ def main():
               'kahluaAssertions': int(assertions[1]), 'nativeWrite': 'passed', 'nativeRead': 'passed',
               'nativeSelections': ['traps', 'turrets', 'both'],
               'clientAcceptance': 'pending focused owner test', 'savePolicy': 'fresh worlds',
-              'publication': 'none', 'hostedLootLab': 'unchanged 0.2.28 baseline'}
+              'publication': 'none', 'hostedLootLab': json.loads((output / 'lootlab-release.json').read_text()) if (output / 'lootlab-release.json').exists() else 'No hosted update recorded for this release'}
     (output / 'local-release.json').write_text(json.dumps(record, indent=2) + '\n')
     print(json.dumps(record, indent=2))
 

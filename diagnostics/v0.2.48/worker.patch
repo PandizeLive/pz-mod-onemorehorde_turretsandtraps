@@ -1,0 +1,35 @@
+--- a/cloudflare-api/src/loot-lab-settings.ts
++++ b/cloudflare-api/src/loot-lab-settings.ts
+@@ -4 +4 @@
+-const BASELINE = 'T&T 0.2.47';
++const BASELINE = 'T&T 0.2.48';
+@@ -45 +45 @@
+-  const normalized = /^T&T 0\.2\.(2[6-9]|3[0-9]|4[0-6])$/.test(value.baseline as string);
++  const normalized = /^T&T 0\.2\.(2[6-9]|3[0-9]|4[0-7])$/.test(value.baseline as string);
+@@ -82 +82 @@
+-      body=parsed;scenario=validateScenario(body.scenario);
++      body=parsed;scenario=validateScenario(object(body.scenario)&&body.scenario.baseline==='T&T 0.2.47'?{...body.scenario,baseline:BASELINE}:body.scenario);
+--- a/cloudflare-api/tests/loot-lab-settings.test.ts
++++ b/cloudflare-api/tests/loot-lab-settings.test.ts
+@@ -117 +117 @@
+- assert.equal(b.sync.value.global,1);assert.equal(b.sync.value.items.Firing,.5);assert.equal(b.sync.value.items.Filter,2);assert.equal(b.sync.value.items.Autoloader,1);
++ assert.equal(b.sync.value.global,defaults.global);assert.equal(b.sync.value.items.Firing,defaults.items.Firing);assert.equal(b.sync.value.items.Filter,defaults.items.Filter);assert.equal(b.sync.value.items.Autoloader,defaults.items.Autoloader);
+@@ -150 +150 @@
+- assert.equal(upgraded.baseline,'T&T 0.2.47');
++ assert.equal(upgraded.baseline,'T&T 0.2.48');
+@@ -168 +168 @@
+- assert.equal(upgraded.baseline,'T&T 0.2.47');assert.equal(upgraded.global,2.7);assert.equal(upgraded.items.Conservation,3.5);
++ assert.equal(upgraded.baseline,'T&T 0.2.48');assert.equal(upgraded.global,2.7);assert.equal(upgraded.items.Conservation,3.5);
+@@ -189 +189 @@
+- assert.equal(initial.revision,7);assert.deepEqual(initial.scenario.tierWeights,defaults.tierWeights);
++ assert.equal(initial.revision,7);assert.deepEqual(initial.scenario.tierWeights,Object.fromEntries(Object.keys(defaults.tierWeights).map(k=>[k,null])));
+@@ -211,0 +212,9 @@
++
++
++test('0.2.47 clients preserve saved tuning and tier anchors across the 0.2.48 baseline',async()=>{
++ const f=fixture(),old={...structuredClone(defaults),baseline:'T&T 0.2.47',global:2,items:{...defaults.items,Synergy:0.5}};
++ const response=await f.request('PUT',{revision:0,scenario:old});assert.equal(response.status,200);
++ const result=await response.json() as any;assert.equal(result.scenario.baseline,defaults.baseline);assert.equal(result.scenario.global,2);assert.equal(result.scenario.items.Synergy,0.5);assert.deepEqual(result.scenario.tierWeights,old.tierWeights);
++ const invalid={...old,unexpected:true};assert.equal((await f.request('PUT',{revision:1,scenario:invalid})).status,400);
++ const missing=structuredClone(old);delete missing.items.Tack;assert.equal((await f.request('PUT',{revision:1,scenario:missing})).status,400);
++});

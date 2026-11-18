@@ -1,6 +1,6 @@
 # Artwork and audio brief
 
-Status: technical asset plan plus one owner-authorized [white cube placeholder](placeholders/cube_turret/README.md). No final art, concept art, production textures or sounds have been created.
+Status updated 2026-10-09: final visual art remains owner-sourced and pending. The playable build uses authorized technical placeholders, native firearm models/sounds, owner-supplied potato thump/splat variants and prepared suppression audio. See [audio brief](AUDIO_BRIEF.md) and [current review](../docs/REVIEW_v0.2.36.1.md); registration is not audible acceptance. The [white cube placeholder](placeholders/cube_turret/README.md) remains a technical asset, not final art direction.
 
 2026-09-29: [Hybrid rendering probe and provisional artist handoff](../docs/PHASE_2_HYBRID_RENDER_PROBE.md) evaluates a separate tile base and native 3D head. Cube-only native import/StaticMesh processing pass; in-game alignment, lighting, occlusion and graphics-setting fallback still need owner acceptance. Keep editable head sources separate from the base; do not finalize axes, scale or export presets yet.
 
@@ -18,8 +18,8 @@ Keep editable originals separate from exported game assets when production begin
 | --- | --- |
 | Potato turret | Supported facings, idle/shot/recovery, loaded/empty, damaged, disabled |
 | Potato impact | Brief visible pop/splat and temporary fragments; matching impact sound; bounded cleanup |
-| Bed spikes / Punji | Footprint readable for automatic player jumping, intact/worn/spent; excavation choice unresolved; visible synchronized traversal |
-| Spike Barrier / Cheval | Solid non-vaultable silhouette and matching footprint, facing, intact/damaged/destroyed |
+| Bed Spikes | 1x2 repeated tile; one image reused for both parts; player brush-through/trip and zombie forward-collapse readability; intact/worn/spent feedback without multiplying texture variants |
+| Spike Barrier | Directional 1x2 footprint, native vaulting with front/end risk and safe rear, facing and condition readability |
 | Barbed barricade | Overlay matching supported native hosts/sides, worn wire, no host visual mismatch |
 | Concertina | Intact/crushed/spent, contact-area readability |
 | Poke Floor | Retracted/extension/extended/retraction/reset; unmistakable traversal state |
@@ -27,7 +27,7 @@ Keep editable originals separate from exported game assets when production begin
 | Control unit | Individual/all-compatible-linked selection, explicit target-group status, disabled state and readable permissions feedback; passive objects not presented as target-configurable |
 | Dart/firearm/explosive devices | Deferred to their accepted prototypes and supported facings |
 
-The potato pop is a gameplay requirement even though splash damage is tiny. The owner/art source will determine its actual appearance and sound. Verify effect consistency for nearby observers and avoid one permanent world object per particle.
+The potato pop is a gameplay requirement even though splash damage is tiny. Owner-supplied audio and a bounded technical brown projectile/splat are implemented; final visual appearance remains an owner/artist decision. Observer consistency requires future multiplayer work; avoid one permanent world object per particle.
 
 ## Asset provenance
 

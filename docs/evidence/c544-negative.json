@@ -1,0 +1,10 @@
+{
+  "sourceTag": "test/v0.2.71.7",
+  "sourceSHA256": "62e8c8a8b181a139f5a16aac96761c22135e36350b081d4364b3b4acf2c9b2da",
+  "schedulerSHA256": "d29b8e87b864b6cebb862bfd0ee90512a9bbac22b45268af9d451708afb1d425",
+  "method": "Exact released rotary and scheduler modules reloaded after the current suite, then matched 144-case scheduler replay",
+  "expectedFailure": "C543 real four-entry scheduler leaves rotary contact gaps",
+  "matched": true,
+  "returncode": 1,
+  "connectedClients": 0
+}

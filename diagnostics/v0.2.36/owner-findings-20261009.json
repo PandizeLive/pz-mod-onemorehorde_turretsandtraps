@@ -1,0 +1,21 @@
+{
+  "version": "0.2.36",
+  "date": "2026-10-09",
+  "ownerFinding": "Normal collapsible under OMH: Turrets is redundant; recommends standalone base with Heads/Modules groups",
+  "status": "organization failed owner review; other acceptance pending",
+  "scope": "C111 documentation and persistent review instructions; gameplay correction not yet approved",
+  "console": "diagnostics/captures/20261009-204321-3664/console.txt",
+  "consoleSHA256": "9a1f7c1eb8c0afcea7a8a02fddeaf874da5dc894402f90f295080d883b0b8edf",
+  "loaded": {
+    "version": "0.2.36",
+    "traps": true,
+    "turrets": true,
+    "game": "42.21"
+  },
+  "afterLatestStartup": {
+    "errorLines": 5,
+    "exceptionOrStackTraceLines": 0,
+    "errors": "Native CellLoader missing vegetation_groundcover_01 tiles 22,18,23,19,21; causation unassigned"
+  },
+  "fullTestCompleted": false
+}

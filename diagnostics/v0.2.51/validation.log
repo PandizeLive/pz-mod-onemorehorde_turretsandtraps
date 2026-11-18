@@ -1,0 +1,19 @@
+Native animation parser: two strike markers matched, SetVariable bindings resolved
+Native bed animation parser: walking/running brush nodes valid, no tree injury events
+Native trip parser: player/zombie forward clips and complete landing/recovery markers valid
+Native JSON translation loading and substitution: 893 keys passed
+Kahlua compilation: 172 runtime/translation files passed
+Optional audit: deaths=10000 repeats=10000 packs=1500 emptyPoolCorpseDrop=false mockDeathBatchMs=25.727000027894974 partialGrantRollback=pass removeRollback=pass revealCreateItems=0 revealFrames=500 newFrameItems=0 newFrameWraps=0 mockRenderBatchMs=9.754600018262863 smallViewportOverflowPx=0 tooltipFrames=600 tooltipWraps=1
+Native packet serialization: 24 packets; largest=390 bytes
+Proc test-double stress: bursts=160 zombies=486 callbacks=450 maxCallbackMs=3.9167999923229218 drainMs=289.08069998025894
+Void foundation audit: conversion=600 groups=2 mockBatchMs=3.367599993944168 nativeTablePersistence=pass clientMutationGuards=pass integration=pending
+Multiplayer audit: authorityAndOwnerProtocol=pass contactAndPresentation=pass liveDedicated=zero-client-probe liveListen=pending liveTwoClient=pending
+MP transfer mock stress: items=600 batches=30 maxBatchMs=7.076299995183945 elapsedMs=135.79439997673035
+Assertions passed: 20441.0
+C247 content: finiteVirtualMagazine=pass exactModuleDebt=pass mixedPayload=pass boundedGrenadeLineage=pass lureNoCatchup=pass
+World/player/network/UI objects were test doubles; in-game acceptance remains pending.
+Failed to load file Guid table.
+Failed to load file Guid table.
+Failed to load file Guid table.
+Failed to load file Guid table.
+Failed to load file Guid table.

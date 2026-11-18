@@ -1,0 +1,47 @@
+{
+  "version": "0.2.71",
+  "sourceCommit": "bd42f0837530ba8b2865499bd314c38db983116f",
+  "tag": "test/v0.2.71",
+  "packages": {
+    "OneMoreHorde_Traps": 245,
+    "OneMoreHorde_Turrets": 391
+  },
+  "filesVerified": 636,
+  "sourceFilesVerified": 461,
+  "backupsVerified": [
+    {
+      "package": "OneMoreHorde_Traps",
+      "version": "0.2.70.11",
+      "filesVerified": 242
+    },
+    {
+      "package": "OneMoreHorde_Turrets",
+      "version": "0.2.70.11",
+      "filesVerified": 389
+    }
+  ],
+  "archiveSHA256": "8620fb0bcccd3bb901c68e3bee082e42821e1f1723bed5b685966ef4675f97b1",
+  "kahluaAssertions": 41863,
+  "nativeWrite": "passed",
+  "nativeRead": "passed",
+  "nativeSelections": [
+    "traps",
+    "turrets",
+    "both"
+  ],
+  "publication": "none",
+  "workshopStageFilesVerified": 636,
+  "previousStageVersion": "0.2.70.11",
+  "previousStageFilesVerified": 631,
+  "pageMetadataAndPreview": "byte-identical",
+  "connectedAcceptance": "pending",
+  "newWorldRequiredForThisPatch": false,
+  "artistHandoff": {
+    "file": "artifacts/OMHTT-Artist-Handoff-v0.2.71.zip",
+    "sha256": "3f701b53a099a8ad4ad10ef5997aa2e9d7c9781185600b14d5a2e5bd87c74169",
+    "uniquePayloads": 164,
+    "aliases": 47,
+    "tetherNailCableIncluded": true,
+    "pokeStabilizersIncluded": true
+  }
+}

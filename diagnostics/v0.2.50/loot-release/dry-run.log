@@ -1,0 +1,20 @@
+
+ ⛅️ wrangler 4.125.0
+────────────────────
+✨ Read 12 files from the assets directory C:\Users\bandi\Zomboid_Modding\OMH\Turrets & Traps\.tmp\loot-c247\source\cloudflare-api\assets
+Total Upload: 108.15 KiB / gzip: 26.95 KiB
+Your Worker has access to the following bindings:
+Binding                                                                      Resource
+env.DB (omh-leaderboard)                                                     D1 Database
+env.SCORE_EXPORTS (omh-score-exports)                                        R2 Bucket
+env.MEDIA (omh-media)                                                        R2 Bucket
+env.LOOT_LAB_ASSETS                                                          Assets
+env.ALLOWED_ORIGINS ("https://onemorehorde.com,https://www....")             Environment Variable
+env.ADMIN_ENABLED ("true")                                                   Environment Variable
+env.ADMIN_HOSTS ("admin.onemorehorde.com,omh-leaderboar...")                 Environment Variable
+env.ADMIN_EMAIL_ALLOWLIST ("abandiofficial@gmail.com")                       Environment Variable
+env.MEDIA_PUBLIC_URL ("https://media.onemorehorde.com")                      Environment Variable
+env.SUPPORTED_MOD_VERSION ("0.6.3,0.6.9.6,0.6.9.7,0.6.16.3,0.6.16.4")        Environment Variable
+env.SUPPORTED_GAME_VERSION ("42.20.3,42.20.4")                               Environment Variable
+
+--dry-run: exiting now.

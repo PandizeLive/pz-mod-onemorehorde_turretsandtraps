@@ -1,0 +1,18 @@
+# Patch 0.2.57 — Poke Floor and shared battery power
+
+Owner approval: C339, implementing the final C333–C338 contract in [R4C2](checkpoints/R4C2_POKE_FLOOR.md). This is a development patch, not a Workshop release.
+
+## Player behavior
+
+- **Poke Floor:** one walkable, non-thumpable tile, contact-activated without input links or modules. Eligible zombie occupancy repeats a 1.5-second cycle; an upward strike deals 50 damage per zombie. A player traversal scratch/fall result requests a visible cycle; injury requires the player still to be present at the strike. Unpowered contact causes no injury. Disable stops new cycles and lets the current cycle retract.
+- **Service and crafting:** 200 HP, one wear per cycle that actually damages a victim, 0.05 percentage points of battery charge per paid cycle, including misses. Repair uses two Scrap Metal and ten seconds; pickup takes ten seconds and preserves condition, exact battery, fractional charge, owner and disabled state. Disable and let the trap retract before servicing. Standard crafting uses a Tire Pump; improvised uses two Metal Pipes and requires Mechanics 2 instead of 1. Both use four Metal Bars, two Small Metal Sheets, four Electronics Scrap, two Electric Wire and eight Screws; keep screwdriver and wrench/pipe wrench. Electrical 2, thirty-second craft, 20 Mechanics XP and 10 Electrical XP. The temporary white plate changes height during activation; final art is still owner-supplied.
+- **Controller bank:** Car Batteries replace ordinary Battery power. Store multiple exact batteries; charged spares are selected automatically and depleted batteries remain recoverable. The 500-weight supply limit and 48-hour Controller-only idle baseline remain. Assigned devices can draw actual bank charge within the existing same-floor 20-tile range while loaded; device costs are additional. Controller mains power does not supply free energy through the bank.
+- **Turret power:** default local car battery, then assigned Controller bank. Grid Module adds local mains and eligible generator supply before those fallbacks, with existing generator fuel costs. No automatic battery charging. Projectile and rotary consumption share the authoritative debit path; Siphon only refunds energy spent from the same turret-local battery.
+- **Grid Module:** one ordinary slot, nonstackable, all heads, Mythic with assigned loot weight 1. Included in game loot, Module Packs, Sandbox, local LootLab and the hosted catalog. Existing owner weights/tier choices are preserved.
+- **Controller trap management:** Poke Floor appears among Defenses, with condition and contact/disabled status. Open Manage offers power and battery service; physical pickup/repair still require reach. It accepts no trigger links.
+
+## Authority, performance and verification
+
+Timed actions validate exact device/item identity, source/destination, permissions, range and service state on the server. Power is selected again at the actual attack debit; shared requests cannot spend the same remaining charge twice. Battery candidates are scanned in bounded slices, identities are cached, and network charge updates are batched. Poke checks only occupants of its tile on the existing control tick; clocks do not produce catch-up volleys after a pause. No pcall/xpcall was added.
+
+See [tests](TEST_v0.2.57.md) for measured evidence and the short owner test. Native headless probes have no connected players. Rendered motion, connected combat presentation and balance acceptance remain pending. Traps-only, Turrets-only and combined selections are checked separately. Fixed dart emitter remains the next separate R4C2 content slice; beam sensors remain R4C3.

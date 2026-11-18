@@ -1,0 +1,7 @@
+{
+  "version": "0.2.43",
+  "closedLuaDependencies": true,
+  "uniqueSandboxOptions": 138,
+  "independentEntries": true,
+  "sharedFilesIdentical": 31
+}

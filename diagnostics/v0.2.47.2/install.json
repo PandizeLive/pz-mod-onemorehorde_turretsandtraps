@@ -1,0 +1,12 @@
+{
+    "tag":  "test/v0.2.47.2",
+    "version":  "0.2.47.2",
+    "installedAt":  "2026-10-12T16:45:00.3040867-04:00",
+    "packages":  [
+                     "OneMoreHorde_Traps",
+                     "OneMoreHorde_Turrets"
+                 ],
+    "destination":  "C:\\Users\\bandi\\Zomboid\\mods",
+    "retiredCombined":  false,
+    "backup":  "C:\\Users\\bandi\\Zomboid_Modding\\OMH\\Turrets \u0026 Traps\\diagnostics\\p1c1\\install-backups\\20261012-164458-6842"
+}

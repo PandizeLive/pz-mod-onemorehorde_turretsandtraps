@@ -1,6 +1,8 @@
 local C = {}
+local ActiveTime = require("OMHTT/ActiveTime")
+local clock = ActiveTime.new(true)
 local session = tostring(getTimestampMs())
-local now, previous = nil, nil
+local now = nil
 
 ---@return number milliseconds Active real time
 ---@nodiscard
@@ -13,10 +15,7 @@ end
 function C.tick()
     local wall = getTimestampMs()
     if now == nil then now = wall end
-    if previous and not GameTime.isGamePaused() then
-        now = now + math.min(100, math.max(0, wall - previous))
-    end
-    previous = wall
+    now = now + ActiveTime.step(clock)
 end
 
 ---@param state table Persisted cycle

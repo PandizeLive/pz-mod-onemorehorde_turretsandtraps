@@ -1,0 +1,17 @@
+module Base {
+    model OMHTTArc {
+        mesh = OMHTT_Arc,
+        texture = OMHTT/Arc,
+        scale = 1.0,
+        static = true,
+        shader = OMHTTEmissive,
+    }
+    item OMHTTTurretArcVisual {
+        DisplayName = OMH Arc Visual,
+        ItemType = base:normal,
+        Weight = 0,
+        Hidden = true,
+        Icon = ElectronicsScrap,
+        WorldStaticModel = OMHTTArc,
+    }
+}

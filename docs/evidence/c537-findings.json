@@ -1,0 +1,25 @@
+{
+  "version": "0.2.71.4",
+  "missingReplies": 74,
+  "distinctMissingIds": 4,
+  "missingIdsEverCreationIndexed": 0,
+  "pendingQueueCounts": [
+    0
+  ],
+  "nativeActorCountsAtMissing": [
+    19,
+    27
+  ],
+  "clientNativeContainerPacketErrors": 4,
+  "serverTurretDetailedLogging": false,
+  "diagnosticAssertions": 17,
+  "totalKahluaAssertions": 44375,
+  "scope": "Investigation only; mock suite and current native script inspection, no connected replay or fix proof.",
+  "evidenceHashes": {
+    "client-console.txt": "167ca16fbf3c9bc679a770350c68c3618a3a2290efb9a9e95117f01103f09f14",
+    "server-console.txt": "30ef9e9fc647834472744412433f73957958f174900d70105b75dd617a65b1f0",
+    "settings-Testing_SandboxVars.lua": "1dd1f316f55d79e4c5a58941e9e6fb9a33d6ffc18b66104fa090099b5eb2f5db",
+    "audit.lua": "ea09614fd2a7fd3b3b509fc467f5141c0b01f0d05a98a77ddb9608eb1cf22472",
+    "audit-output.txt": "530bb8d166eb942f43641a8fc4e80ee4b293e419ecff71b72c5367feefba9bc4"
+  }
+}

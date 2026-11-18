@@ -1,0 +1,8 @@
+{
+  "version": "0.2.53.4",
+  "requiredLuaDependenciesClosed": true,
+  "reviewedOptionalTrapsDependencies": 10,
+  "uniqueSandboxOptions": 160,
+  "independentEntries": true,
+  "sharedFilesIdentical": 66
+}

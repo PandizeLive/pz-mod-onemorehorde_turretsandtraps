@@ -45,7 +45,7 @@ module Base {
             needToBeLearn = false,
             SkillRequired = Woodwork:1,
             xpAward = Woodwork:10,
-            OnAddToMenu = OMHTT_ConstructionMenuAvailable,
+            OnAddToMenu = OMHTT_PlacementHidden,
             inputs {
                 item 1 tags[base:sharpknife;base:meatcleaver] mode:keep flags[Prop1;DontRecordInput;IsNotDull;MayDegradeLight],
                 item 4 [Base.Plank;Base.SpearCrafted],
@@ -98,10 +98,10 @@ module Base {
             category = OMHTraps,
             Tags = Carpentry,
             needToBeLearn = false,
-            OnAddToMenu = OMHTT_ConstructionMenuAvailable,
-            OnTest = OMHTT_Construction.portableInputAllowed,
+            OnAddToMenu = OMHTT_PlacementMenu,
+            OnTest = OMHTT_Construction.deploymentInputAllowed,
             inputs {
-                item 1 [Base.OMHTTSpikeBarrierItem],
+                item 1 [Base.OMHTTTrapSpikeBarrier],
             }
         }
     }
@@ -149,10 +149,10 @@ module Base {
             category = OMHTraps,
             Tags = Carpentry,
             needToBeLearn = false,
-            OnAddToMenu = OMHTT_ConstructionMenuAvailable,
-            OnTest = OMHTT_Construction.portableInputAllowed,
+            OnAddToMenu = OMHTT_PlacementMenu,
+            OnTest = OMHTT_Construction.deploymentInputAllowed,
             inputs {
-                item 1 [Base.OMHTTReinforcedBarrierItem],
+                item 1 [Base.OMHTTTrapSpikeBarrierReinforced],
             }
         }
     }

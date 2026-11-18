@@ -1,0 +1,25 @@
+# 0.2.35 focused owner test
+
+Restart Zomboid with the updated entries. Use the test world; turn off instant actions/Build Cheat for timing and ingredient checks. Keep enough inventory space for crafting output.
+
+1. **Menus:** Crafting shows Normal / Reinforced / Packed. Building shows the corresponding placeable defenses in Normal/Reinforced, without duplicate prototypes or packs.
+2. **Building:** Place one already-crafted Spike Barrier with no raw materials (five seconds). Then build Bed Spikes from ingredients: original craft cost/time/XP, followed by placement. Cancel the placement once: the crafted item stays available. A loaded turret placed through Building must retain its contents.
+3. **Manage:** Check the centered 4/6/6 rows and a Large kit's 16 accessible slots. Base/Improvised/Small/Medium/Large capacities remain 2/4/8/12/16; no missing controls/items.
+4. **Spikes:** Lure a few zombies over a bed. Trips should land on it, cause damage and allow surviving zombies to recover, without launching them past it.
+
+Report only failures. Afterward capture/read console.txt through OMH.cmd; verify both reported versions and inspect errors without treating silence as proof of visual acceptance. Do not repeat the old full test or claim dense-load performance from this round.
+
+Status: owner reported issues on 2026-10-09; corrective scope under discussion. Unmentioned checks remain unconfirmed.
+
+## Owner findings and console review, 2026-10-09
+
+- **Organization mismatch:** screenshot shows Normal / Packed / Reinforced as top-level categories; owner intended the expandable dropdown/group names. Proposal: restore OMH: Traps / OMH: Turrets parents, with Normal / Reinforced / Packed groups inside Crafting; corresponding placeable groups in Building. Packed remains crafting-only. Native ISRecipeScrollingListBox.addGroup supports expandable group rows separately from category selection.
+- **Trip correction failed rendered acceptance:** zombies still fly forward. The 0.2.35 deferred-movement flag parsed successfully but did not solve the owner's visible problem. Native Bob_RunStumble is still selected. Candidates include the native forward knockdown clip Zombie_HitDeath_HeadTop (knockeddown-headTop/HeadTopFall.xml, FallOnFront=true and SetOnFloor events) and fence/window-end fall Bob_ClimbWindowEnd_Fall. Prefer evaluating the forward collapse first; fence/window clips assume traversal geometry. Neither replacement has been rendered or measured for this trap. Preserve nonfatal native recovery and actual-on-bed damage; do not promise a fix from metadata alone.
+- **Building repetition:** owner must click Place Trap again after each placement. BarrierPlacement explicitly sets dragNilAfterPlace=true and HybridBuild reuses that one-item inventory path. Native ISBuildPanel uses dragNilAfterPlace=false / blockAfterPlace=true and restarts through onStopCraft. Proposal: a Building session that rebinds the next exact item (or crafts once per confirmed placement), keeps rotation/preview, and ends on cancel or insufficient requirements. Simply leaving a consumed item's cursor active is unsafe; no automatic stockpile crafting.
+- **Missing audio:** owner hears no trip/impact. The custom zombie OMHTTBedTrip node contains no sound event, and BedRuntime applies damage without spike audio. Installed sounds_zombie_foley.txt registers ZombieTrip and BodyHitGround; native fence/window-start and fall nodes reference them. sounds_melee_spears.txt registers SpearCraftedHit and SpearCraftedStab. Proposal: native trip/landing cues plus one crafted-spear impact per actual damaging fall, suppressing duplicates across both bed tiles. Native-event availability is verified; audible suitability still needs audition/in-game acceptance. Do not add AI-hearing attraction or damage changes merely to add playback.
+
+Captured through root OMH.cmd: diagnostics/captures/20261009-195420-8666/console.txt, SHA-256 39a4c144d4592830312ea3ef5f8efc28b4d5df7eed709f41ff559caaf58938fb. Two packages-ready markers both identify 0.2.35, Traps+Turrets, game 42.21. After the latest marker: zero ERROR/Exception/STACK TRACE matches, 13 summarized/direct bed-trip requests and 10 bed-fall/damage events. These are not paired actor measurements or a landing success rate. Earlier initialization includes native map/asset and Firearms translation warnings/errors. Build Cheat appears in placement diagnostics, so this capture does not certify ordinary ingredient costs or timings. No audio recording or proof of unmentioned passes. [Structured findings](../diagnostics/v0.2.35/owner-findings-20261009.json).
+
+Read-only diagnosis and findings are recorded under C109 and mirrored under C108. No 0.2.36 implementation or additional acceptance is claimed; discuss/approve corrective scope before changing gameplay under the project working agreement.
+
+C110 approves the corrective [0.2.36 patch](PATCH_v0.2.36.md). Use its [focused test](TEST_v0.2.36.md) instead of repeating this round; the failures above remain historical evidence.

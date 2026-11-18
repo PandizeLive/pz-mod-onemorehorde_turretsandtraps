@@ -22,10 +22,18 @@ public final class NativeTurretProbe {
         }
         System.out.println("[OMHTT-Smoke] native-distance-parity samples=16 passed=true");
         Class<?> sounds = Class.forName("zombie.GameSounds");
+        for (String tier : new String[]{"Abundant","Common","Uncommon","Rare","Epic","Legendary","Mythic"}) {
+            Object sound = sounds.getMethod("getSound", String.class).invoke(null, "OMHTTPack" + tier);
+            java.util.List<?> clips = (java.util.List<?>)sound.getClass().getField("clips").get(sound);
+            check(clips.size() == 1, "Pack tier must have exactly one authored clip");
+            check(((String)call(clips.get(0), "getFile", new Class<?>[0])).equals("media/sound/OMHTTPack" + tier + ".wav"), "Wrong rarity file");
+            check(!sound.getClass().getField("is3d").getBoolean(sound), "Rarity sound must be UI-only");
+        }
+        System.out.println("[OMHTT-Smoke] native-rarity-sounds tiers=7 clips=7 spatial=false");
         for (String kind : new String[]{"Fire", "Impact"}) {
             Object sound = sounds.getMethod("getSound", String.class).invoke(null, "OMHTTPotato" + kind);
             java.util.List<?> clips = (java.util.List<?>)sound.getClass().getField("clips").get(sound);
-            check(clips.size() == 2, "Expected two custom potato sound variants");
+            check(clips.size() == 202, "Expected two custom potato samples with 101 native pitches each");
             for (Object clip : clips) {
                 String file = (String)call(clip, "getFile", new Class<?>[0]);
                 check(file.contains(kind.equals("Fire") ? "potato_thump_" : "potato_splat_"), "Wrong potato sound asset");
@@ -35,37 +43,44 @@ public final class NativeTurretProbe {
         for (String name : new String[]{"M9Shoot", "M1911Shoot", "DesertEagleShoot", "M36Shoot", "M625Shoot", "MagnumShoot", "JS2000ShotgunShoot", "DoubleBarrelShotgunShoot", "SawnOffJS2000ShotgunShoot", "SawnOffDoubleBarrelShotgunShoot", "JS14Shoot", "L92Shoot", "L94Shoot", "M14Shoot", "M16Shoot", "MSR700Shoot", "MSR788Shoot", "TrapperCarbineShoot"}) {
             Object sound = sounds.getMethod("getSound", String.class).invoke(null, "OMHTTSuppressed" + name);
             java.util.List<?> clips = (java.util.List<?>)sound.getClass().getField("clips").get(sound);
-            check(clips.size() == 1, "Suppressed sound not registered: " + name);
+            check(clips.size() == 101, "Suppressed pitch clips not registered: " + name);
             check(((String)call(clips.get(0), "getFile", new Class<?>[0])).endsWith(name + "_layered.ogg"), "Wrong suppressed audio");
         }
         Object reload = sounds.getMethod("getSound", String.class).invoke(null, "OMHTTPotatoReload");
         java.util.List<?> reloadClips = (java.util.List<?>)reload.getClass().getField("clips").get(reload);
-        check(reloadClips.size() == 1 && ((String)call(reloadClips.get(0), "getFile", new Class<?>[0])).endsWith("stormyShotgunInsertRound.wav"), "Potato reload sound not registered");
+        check(reloadClips.size() == 101 && ((String)call(reloadClips.get(0), "getFile", new Class<?>[0])).endsWith("stormyShotgunInsertRound.wav"), "Potato reload pitch clips not registered");
         Object suppressed = sounds.getMethod("getSound", String.class).invoke(null, "OMHTTPotatoSuppressed");
-        check(((java.util.List<?>)suppressed.getClass().getField("clips").get(suppressed)).size() == 2, "Potato suppressed variations missing");
+        check(((java.util.List<?>)suppressed.getClass().getField("clips").get(suppressed)).size() == 202, "Potato suppressed pitch variations missing");
         System.out.println("[OMHTT-Smoke] native-suppression sounds=18 potato=2 reload=native");
         Class<?> emitter = Class.forName("zombie.audio.BaseSoundEmitter");
         emitter.getMethod("playSound", String.class);
-        emitter.getMethod("setPitch", long.class, float.class);
-        System.out.println("[OMHTT-Smoke] native-potato-audio clips=4 randomized=true pitch-method=verified playback=untested");
+        System.out.println("[OMHTT-Smoke] native-potato-audio samples=4 randomized=true pitch=clip playback=untested");
         Class<?> picker = Class.forName("zombie.inventory.ItemPickerJava");
         picker.getMethod("Parse").invoke(null);
         Object pools = picker.getField("ProceduralDistributions").get(null);
-        int modules = 0;
+        int modules = 0, packs = 0;
         for (String name : new String[]{"ElectronicStoreMisc", "CrateElectronics", "MechanicShelfElectric", "ArmyStorageElectronics", "ElectricianTools", "GunStoreAccessories", "ToolCabinetMechanics", "GarageTools", "CrateTools", "ToolStoreTools", "ToolStoreMisc", "MechanicShelfTools", "GarageMechanics", "CrateMechanics", "ElectronicStoreComputers", "ElectronicStoreHAMRadio"}) {
             Object pool = call(pools, "get", new Class<?>[]{Object.class}, name);
             check(pool != null, "Missing native loot pool: " + name);
             Object[] items = (Object[])pool.getClass().getField("items").get(pool);
+            int poolPacks = 0;
             for (Object item : items) {
                 String type = (String)item.getClass().getField("itemName").get(item);
-                if ((type.startsWith("Base.OMHTTModule") || type.startsWith("Base.OMHTTExpansionKit"))) {
+                if (type.equals("Base.OMHTTModulePack")) {
+                    packs++;
+                    poolPacks++;
+                    check(item.getClass().getField("chance").getFloat(item) > 0, "Zero native pack loot weight");
+                } else if (type.startsWith("Base.OMHTTModule")) {
                     modules++;
                     check(item.getClass().getField("chance").getFloat(item) > 0, "Zero native module loot weight");
                 }
             }
+            check(poolPacks == 1, "Expected exactly one pack entry per native pool: " + name);
         }
-        check(modules == 121, "Native loot parser did not retain all module entries");
-        System.out.println("[OMHTT-Smoke] native-module-loot-parser pools=16 items=121 weights=positive");
+        check(modules == 246, "Native loot parser did not retain all module entries");
+        System.out.println("[OMHTT-Smoke] native-module-loot-parser pools=16 items=246 weights=positive");
+        check(packs == 16, "Native loot parser did not retain all pack entries");
+        System.out.println("[OMHTT-Smoke] native-pack-loot-parser pools=16 packs=16 weights=positive");
         Class<?> squareType = Class.forName("zombie.iso.IsoGridSquare");
         Class<?> cellType = Class.forName("zombie.iso.IsoCell");
         Class<?> movingType = Class.forName("zombie.iso.IsoMovingObject");

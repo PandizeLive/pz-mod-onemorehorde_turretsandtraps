@@ -1,0 +1,47 @@
+{
+  "version": "0.2.54",
+  "sourceCommit": "d809cdbf135a28d782ba5a9538e6452aaa9688f9",
+  "tag": "test/v0.2.54",
+  "installed": "C:\\Users\\bandi\\Zomboid\\mods",
+  "packages": {
+    "OneMoreHorde_Traps": 141,
+    "OneMoreHorde_Turrets": 233
+  },
+  "filesVerified": 374,
+  "sourceFilesVerified": 293,
+  "backup": "C:\\Users\\bandi\\Zomboid_Modding\\OMH\\Turrets & Traps\\diagnostics\\p1c1\\install-backups\\20261018-123304-1024",
+  "backupsVerified": [
+    {
+      "package": "OneMoreHorde_Traps",
+      "version": "0.2.53.11",
+      "filesVerified": 140
+    },
+    {
+      "package": "OneMoreHorde_Turrets",
+      "version": "0.2.53.11",
+      "filesVerified": 230
+    }
+  ],
+  "archive": "C:\\Users\\bandi\\Zomboid_Modding\\OMH\\Turrets & Traps\\artifacts\\OMHTT-0.2.54.zip",
+  "archiveSHA256": "60f9694b4b665147604dbf525cef78f0e73aa6189c755b3a697c2d926d14f95f",
+  "kahluaAssertions": 21643,
+  "nativeWrite": "passed",
+  "nativeRead": "passed",
+  "nativeSelections": [
+    "traps",
+    "turrets",
+    "both"
+  ],
+  "clientAcceptance": "pending focused owner test",
+  "savePolicy": "fresh worlds",
+  "publication": "none",
+  "hostedLootLab": {
+    "status": "not-deployed",
+    "reason": "Existing Cloudflare login expired; authenticated live-source comparison unavailable.",
+    "localCatalog": "0.2.54, 32 component controls including Siphon",
+    "localValidation": "model, weights, tiers, appearance, cloud catalog, desktop and mobile browser checks passed",
+    "accountDataChanged": false,
+    "productionChanged": false,
+    "pending": "Renew Cloudflare login, reconcile live Worker source and publish the validated catalog/assets."
+  }
+}

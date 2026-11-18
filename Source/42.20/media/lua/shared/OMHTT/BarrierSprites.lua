@@ -58,7 +58,7 @@ function Sprites.ensure(object, record, reason)
         Diagnostics.emit("barrier-restoration", {id = record.id, origin = reason, x = square:getX(), y = square:getY(),
             z = square:getZ(), previousSprite = tostring(oldName), sprite = desired, spriteId = object:getSprite():getID(),
             entity = config:getObjectInfo():getName(), nativeConfigValid = config:isValid(), changed = changed,
-            facing = record.facing, condition = record.condition, owner = record.testOwner})
+            facing = record.facing, condition = record.condition, owner = record.testOwner}, nil, nil, "traps")
     end
     return changed
 end

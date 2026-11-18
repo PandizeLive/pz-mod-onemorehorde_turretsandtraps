@@ -1,0 +1,82 @@
+[
+  {
+    "source": "C:\\Users\\bandi\\Zomboid_Modding\\OMH\\Images\\Traps & Turrets\\Modules\\Performance\\performance_base2.png",
+    "target": "Source\\42.20\\media\\textures\\Item_OMHTT_ModulePerformance.png",
+    "sha256": "347387437274597615df2fb093eb2deb7f848b37d4a7ed5df76eb4e5ec81bfc6"
+  },
+  {
+    "source": "C:\\Users\\bandi\\Zomboid_Modding\\OMH\\Images\\Traps & Turrets\\Modules\\Performance\\performance_abundant2.png",
+    "target": "Source\\42.20\\media\\textures\\OMHTT\\Modules\\performance_abundant.png",
+    "sha256": "dd4a65ae814c1aad8a539b06bcee8594dba447197d03c2f5b0c306c2898a5e55"
+  },
+  {
+    "source": "C:\\Users\\bandi\\Zomboid_Modding\\OMH\\Images\\Traps & Turrets\\Modules\\Performance\\performance_common2.png",
+    "target": "Source\\42.20\\media\\textures\\OMHTT\\Modules\\performance_common.png",
+    "sha256": "287eaf2e3c857c7a094bb45498fab7ada94b77f64144b2ee8d091dcb91365fbe"
+  },
+  {
+    "source": "C:\\Users\\bandi\\Zomboid_Modding\\OMH\\Images\\Traps & Turrets\\Modules\\Performance\\performance_uncommon2.png",
+    "target": "Source\\42.20\\media\\textures\\OMHTT\\Modules\\performance_uncommon.png",
+    "sha256": "dc256f9a4b8b3e3d4e79729b58f3608d2e4e739fc0745fc5b52c57ca4dd5eb9e"
+  },
+  {
+    "source": "C:\\Users\\bandi\\Zomboid_Modding\\OMH\\Images\\Traps & Turrets\\Modules\\Performance\\performance_rare2.png",
+    "target": "Source\\42.20\\media\\textures\\OMHTT\\Modules\\performance_rare.png",
+    "sha256": "883f3227ce68814b99eb0d5f751833e3fa6bf44efc0c3e4de7913ec937c08bb9"
+  },
+  {
+    "source": "C:\\Users\\bandi\\Zomboid_Modding\\OMH\\Images\\Traps & Turrets\\Modules\\Performance\\performance_Epic2.png",
+    "target": "Source\\42.20\\media\\textures\\OMHTT\\Modules\\performance_epic.png",
+    "sha256": "79588784428b54e684d0ed86989cb4053269bbdaca8e57c03525afc0b0c76db4"
+  },
+  {
+    "source": "C:\\Users\\bandi\\Zomboid_Modding\\OMH\\Images\\Traps & Turrets\\Modules\\Performance\\performance_legendary2.png",
+    "target": "Source\\42.20\\media\\textures\\OMHTT\\Modules\\performance_legendary.png",
+    "sha256": "7d7d97a11f4b26e93d161dc56b5ecbbe3fa70e5b029efaddc0f5f3d6fc58642f"
+  },
+  {
+    "source": "C:\\Users\\bandi\\Zomboid_Modding\\OMH\\Images\\Traps & Turrets\\Modules\\Performance\\performance_mythic2.png",
+    "target": "Source\\42.20\\media\\textures\\OMHTT\\Modules\\performance_mythic.png",
+    "sha256": "cc0afddb2cb3fdcea3c5aecd31555a1236e6189dbe4921b7e3173c435704d8c6"
+  },
+  {
+    "source": "C:\\Users\\bandi\\Zomboid_Modding\\OMH\\Images\\Traps & Turrets\\Modules\\Utility\\utility_base.png",
+    "target": "Source\\42.20\\media\\textures\\Item_OMHTT_ModuleUtility.png",
+    "sha256": "f1f058f3e7fb41761e0dfaed23ac7057a1c789f6735b9a674fb8f9eb12497ee6"
+  },
+  {
+    "source": "C:\\Users\\bandi\\Zomboid_Modding\\OMH\\Images\\Traps & Turrets\\Modules\\Utility\\utility_abundant.png",
+    "target": "Source\\42.20\\media\\textures\\OMHTT\\Modules\\utility_abundant.png",
+    "sha256": "3bf056842f3f0d244de10ed06d3db8037c738343df112c24b2993dbe9126675a"
+  },
+  {
+    "source": "C:\\Users\\bandi\\Zomboid_Modding\\OMH\\Images\\Traps & Turrets\\Modules\\Utility\\utility_common.png",
+    "target": "Source\\42.20\\media\\textures\\OMHTT\\Modules\\utility_common.png",
+    "sha256": "e951a7df0ee1b552ba5089a2793ed8138a7a1bfe250f642d9ebb90f02fa84f7b"
+  },
+  {
+    "source": "C:\\Users\\bandi\\Zomboid_Modding\\OMH\\Images\\Traps & Turrets\\Modules\\Utility\\utility_uncommon.png",
+    "target": "Source\\42.20\\media\\textures\\OMHTT\\Modules\\utility_uncommon.png",
+    "sha256": "0ea38441a96c246587500aeddb1f30f3f94c07ce73e0b912382a982518ac13cd"
+  },
+  {
+    "source": "C:\\Users\\bandi\\Zomboid_Modding\\OMH\\Images\\Traps & Turrets\\Modules\\Utility\\utility_rare.png",
+    "target": "Source\\42.20\\media\\textures\\OMHTT\\Modules\\utility_rare.png",
+    "sha256": "2c4fc2111f9b079e5b9a95741cc7c4efdc8de78954752924819a063ced7f8117"
+  },
+  {
+    "source": "C:\\Users\\bandi\\Zomboid_Modding\\OMH\\Images\\Traps & Turrets\\Modules\\Utility\\utility_epic.png",
+    "target": "Source\\42.20\\media\\textures\\OMHTT\\Modules\\utility_epic.png",
+    "sha256": "ab0daaf0e608425f6993874be72180d872f168bab9301411113f2088e2678c45"
+  },
+  {
+    "source": "C:\\Users\\bandi\\Zomboid_Modding\\OMH\\Images\\Traps & Turrets\\Modules\\Utility\\utility_legendary.png",
+    "target": "Source\\42.20\\media\\textures\\OMHTT\\Modules\\utility_legendary.png",
+    "sha256": "053fae01b4cd8addfdb175b7178fafbf42a53f45e016a664d2a106310b5067f9"
+  },
+  {
+    "source": "C:\\Users\\bandi\\Zomboid_Modding\\OMH\\Images\\Traps & Turrets\\Modules\\Utility\\utility_mythic.png",
+    "target": "Source\\42.20\\media\\textures\\OMHTT\\Modules\\utility_mythic.png",
+    "sha256": "5226a303f8564e5feaf0cb812d76a1d4ed799d4f4c2427fb5a99e6dc02313b15"
+  }
+]

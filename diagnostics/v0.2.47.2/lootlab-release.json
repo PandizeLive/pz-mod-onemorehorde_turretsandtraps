@@ -1,0 +1,90 @@
+{
+  "baseline": "T&T 0.2.47",
+  "feature": "Draft tier-list editor",
+  "workerVersion": "6fcaff5f-804c-4d0f-a6ea-b1cc9a91a35d",
+  "apiTests": 78,
+  "focusedRerun": 23,
+  "browser": "Drag/drop, keyboard tier assignment, individual override, confirm/cancel, mobile bounds, native audition playback passed",
+  "accountTuning": "No account values changed by deployment; Confirm applies only edited weights through existing save/sync",
+  "backendChange": "One authenticated allowlisted asset: tier-list.js",
+  "verification": {
+    "phase": "after",
+    "productionBundleMatches": true,
+    "sha256": "08fe695d023d98290b8f7fe1df03b6a81f5a94c2cd61f69ec7536fcb75f6f5f3",
+    "checks": [
+      {
+        "path": "/admin/",
+        "anonymousStatus": 302,
+        "accessLogin": true
+      },
+      {
+        "path": "/admin/LootLab",
+        "anonymousStatus": 302,
+        "accessLogin": true
+      },
+      {
+        "path": "/admin/LootLab/",
+        "anonymousStatus": 302,
+        "accessLogin": true
+      },
+      {
+        "path": "/admin/LootLab/data.js",
+        "anonymousStatus": 302,
+        "accessLogin": true
+      },
+      {
+        "path": "/admin/LootLab/model.js",
+        "anonymousStatus": 302,
+        "accessLogin": true
+      },
+      {
+        "path": "/admin/LootLab/tier-list.js",
+        "anonymousStatus": 302,
+        "accessLogin": true
+      },
+      {
+        "path": "/admin/LootLab/map-controls.js",
+        "anonymousStatus": 302,
+        "accessLogin": true
+      },
+      {
+        "path": "/admin/LootLab/settings-sync.js",
+        "anonymousStatus": 302,
+        "accessLogin": true
+      },
+      {
+        "path": "/admin/LootLab/settings",
+        "anonymousStatus": 302,
+        "accessLogin": true
+      },
+      {
+        "path": "/admin/LootLab/app.js",
+        "anonymousStatus": 302,
+        "accessLogin": true
+      },
+      {
+        "path": "/admin/LootLab/style.css",
+        "anonymousStatus": 302,
+        "accessLogin": true
+      },
+      {
+        "path": "/admin/LootLab/provenance.json",
+        "anonymousStatus": 302,
+        "accessLogin": true
+      },
+      {
+        "path": "/admin/LootLab/README.md",
+        "anonymousStatus": 302,
+        "accessLogin": true
+      },
+      {
+        "url": "https://api.onemorehorde.com/v1/leaderboard?limit=1",
+        "status": 200
+      },
+      {
+        "url": "https://api.onemorehorde.com/v1/workshop-snapshots/latest",
+        "status": 200
+      }
+    ]
+  }
+}

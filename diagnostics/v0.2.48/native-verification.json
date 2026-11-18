@@ -1,0 +1,24 @@
+{
+  "write": {
+    "logSHA256": "5e9b8a062fb942b9fd5a74c6b6fa002430df45ed77811ee6e8d8c32a90279115",
+    "markers": [
+      "[OMHTT-Smoke] native-module-pack rewards=3 duplicates=distinct expansion=valid repeat=blocked corpse=once",
+      "[OMHTT-Smoke] native-rarity anchors=7 settings=registered defaults=owner-tiers colorsAndSurcharges=matched",
+      "[OMHTT-Smoke] native-power modules=16 aliases=once m9=0.00639 rifleShots=6776 generator=matched conditionals=valid",
+      "[OMHTT-Smoke] native-rarity-sounds tiers=7 clips=7 spatial=false",
+      "[OMHTT-Smoke] native-persistence mode=write parts=28 health=37 maxHealth=200 identity=valid collision=preserved owner=preserved legacy=8 edges=8 outline=4 reinforced=8 orientation=preserved",
+      "Shutdown handling finished"
+    ]
+  },
+  "read": {
+    "logSHA256": "6db524c2059dd9c7a00dc6e40ced74c98b3d14b2003bfe14d4a7834857e8fc5d",
+    "markers": [
+      "[OMHTT-Smoke] native-module-pack rewards=3 duplicates=distinct expansion=valid repeat=blocked corpse=once",
+      "[OMHTT-Smoke] native-rarity anchors=7 settings=registered defaults=owner-tiers colorsAndSurcharges=matched",
+      "[OMHTT-Smoke] native-power modules=16 aliases=once m9=0.00639 rifleShots=6776 generator=matched conditionals=valid",
+      "[OMHTT-Smoke] native-rarity-sounds tiers=7 clips=7 spatial=false",
+      "[OMHTT-Smoke] native-persistence mode=read parts=28 health=37 maxHealth=200 identity=valid collision=preserved owner=preserved legacy=8 edges=8 outline=4 reinforced=8 orientation=preserved",
+      "Shutdown handling finished"
+    ]
+  }
+}

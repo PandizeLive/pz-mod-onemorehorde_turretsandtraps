@@ -1,0 +1,39 @@
+# 0.2.40 test and verification
+
+Status: implemented, automated/native/package verified, tagged and installed. Owner acceptance is pending. One combined checklist replaces the held 0.2.39 Concertina test; the accepted 0.2.38.1 lag checklist stays closed.
+
+## Short owner test
+
+Use a fresh SP test world with both 0.2.40 entries. Debug-spawn the three loot-only modules and a Large Expansion Kit if needed; use a battery to see power cost.
+
+1. Place Concertina in two orientations. Confirm each is one 1x2 trap; damage either end, then repair/pick up from the other. Both halves share condition and leave together.
+2. Mount a potato head, then add one and two Magazine Modules: capacity should be 2 and 3. Add a Splitter and fire at a small spread of zombies: keep the central shot plus a side shot. Two ready potatoes cost two; one ready potato still fires the full volley.
+3. Add Fragment. A primary hit should create one five-ray burst; a missed primary should not. Nearby victims can be hit, but victims behind a solid wall should remain protected. Watch for obvious stalls during this same brief check.
+4. Mount a loaded pistol with two Magazine Modules. Reload, fire, remove a Magazine Module, eject the native magazine and recover the gun. Total remaining bullets across turret, gun/magazine, inventory and floor must equal the starting total minus fired rounds; the recovered gun/magazine retain normal capacity.
+5. Reinstall the expanded loaded gun, quit/reload, and confirm modules, ready ammo, reserve and battery are retained. Report any UI, ray-direction or sound problem; say "test complete" so console.txt and exact installed versions can be captured.
+
+## Automated evidence
+
+- 5,018 Kahlua assertions; 96 runtime/translation files compile; 608 native translation keys; 23 packet serializations. World/player/network/UI objects in logic tests are doubles; this is not rendered acceptance.
+- Formula examples at bases 1/7/14/30/60; native/chamber versus physical feed conservation; surplus return and repeated service protection; zero/partial/full volley consumption; native whole-shot critical budget; lethal-hit and eight-pellet single-burst integration.
+- Splitter counts through 40 preserve primary/180-degree fan and saved odd-side alternation. Fragment fixed-five separation, damage cap, distinct victims, wall/range/unloaded-path checks and direct-only damage pass. Queue admission caps total committed/reserved rays at 256; dense-object work yields within 128 steps per callback. Headless bounds are not an in-game lag benchmark.
+- Native 42.21 write/read pass in 81.1/80.8 seconds. All 20 admitted firearms preserve native capacity, total ammo, physical feed weight, three-round Splitter consumption and removal; fresh-process binary restore preserves the extension alongside exact gun identity/attachments/native magazine/chamber. Module scripts and 138 loot entries across sixteen native pools load correctly.
+- Integrated queue saturation and insufficient multiplied battery power reject firing before resource use; four offensive copies charge exactly twice the base battery cost.
+- Static split-package checks: 190 source files, 230 package files (105 Traps / 125 Turrets), 122 unique Sandbox options and 31 identical shared helpers.
+- Known stock asset/world-generation diagnostics remain. The first native write attempt reached persistence successfully but failed an obsolete 121-entry loot-count assertion; updated to 138 after verifying the additional pool entries, then reran successfully. First new logic run also exposed literal percent translation formatting, corrected to native-safe percent wording before completion. Test expectations were corrected for floating-point tolerance and the existing nil return of Cycle.consume; final checks pass.
+
+## Limits
+
+SP combat only; no owner/GPU/audio or maximum-load endurance acceptance claimed. Queued child effects and in-flight potatoes are runtime-only, discarded on reload without replay/refund. Real ammo and module state persist. Hosted LootLab still advertises its 0.2.28 baseline and does not yet contain the three new module entries. No new crafting or Workshop upload.
+
+## Installation and GitHub
+
+Native Traps-only/Turrets-only/both startup passed in 90.5/91.5/90.2 seconds. Installed through root OMH.cmd from immutable `test/v0.2.40` / `d916e78736197d10bb5f6f669ca9a59b24d292bf`. All 190 source and 230 package/tag/installed/archive files verify; both previous 0.2.39 backups verify. Archive SHA-256: `31acf498d107e63779e2d33db8a3da437079f559cc76039d24225fc36d607536`. [Install](../diagnostics/v0.2.40/install.json) | [Release verification](../diagnostics/v0.2.40/local-release.json). Development delivery uses the existing branch/draft PR #1 under C108/C119; no merge or Workshop publication.
+
+## Owner findings and console review - 2026-10-11 (C137)
+
+Owner reports slow M4/M16 cadence with Firearms, failure to place more Spike Barriers after many placements, and incomplete side tracers with two Splitters. No blanket pass was reported. Later clarifies that handheld rifles also feel slow; that is a separate undiagnosed finding.
+
+Capture `diagnostics/captures/20261011-023434-2341`, captured 2026-10-11 02:34:34 -04:00, source console SHA-256 `A105FE21AA9A42CAE36A57DD9437250B646A5C9116DC3DA0389D94D5B14BB88B`. Console and installed markers establish 0.2.40 on B42.21. Fifty-four construction-preview `status=Limit` records match the diagnostic 64-tile limit leaking into real placement; retired records counted too. Firearm audit records M4 Single/1333.333 ms and M16 Single/1111.111 ms, consistent with the reported 0.75/0.9 rates. Splitter code dispatched child visuals across later callbacks and hid whole tracers when endpoints were unseen; screenshot alone cannot establish missing damage.
+
+No OMHTT exception stack was found in the selected review. Stock asset/map warnings and Firearms Sandbox formatting errors exist, so this is not a clean-console claim. Logged stage maxima included fire 4 ms, audio 1 ms, effect/head rendering 2 ms; this limited sample is not universal performance acceptance. Raw captured console remains local; C137 patch/test records contain reviewed findings. Prior unreported checks remain pending.

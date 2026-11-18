@@ -1,0 +1,97 @@
+{
+  "version": "0.2.70.8",
+  "checkpoint": "C510",
+  "assertions": 40287,
+  "sourceFiles": 456,
+  "packageFiles": 629,
+  "sourceContinuity": {
+    "sourceFilesVerified": 456,
+    "testFilesVerified": 7,
+    "changesSinceC509": [
+      "version 0.2.70.7 -> 0.2.70.8 only"
+    ],
+    "sourceProof": "docs/evidence/c509-verification.json"
+  },
+  "nativeConnectedClients": 0,
+  "ownerConnectedAcceptance": "pending",
+  "workshopPublication": "none",
+  "githubMirror": "blocked by earlier automatic approval review of destination authorization",
+  "logs": {
+    "diagnostics/v0.2.70.8/validation.log": "2a26fa2010416c4cbc495d99dbbc355cbdd1aadb4dff70edc33b1ee923e00542",
+    "diagnostics/v0.2.70.8/server-write.log": "625a6c5c5ba85f45e954d226c815b9c6e61d620f1e8fd9843b6f2d55a3da7ed2",
+    "diagnostics/v0.2.70.8/server-read.log": "4c1d08414550f4e26f3f4f9569b6963812180f8e1f4e292cea4bc364db687650",
+    "diagnostics/v0.2.70.8/packages-traps.log": "a78e4d56ddb0e598cb158bb86488a35ab5e315b22bbeebb1856c39ba95635230",
+    "diagnostics/v0.2.70.8/packages-turrets.log": "0dde1d49d1134db5f1dd4b37bb7779c1bf07628389539d8a8b224e8bfe928f6f",
+    "diagnostics/v0.2.70.8/packages-both.log": "7933d855e406daf8fb8529dc63c1d03e23a9ac1c93c5a3256e54a29782272f02",
+    "diagnostics/v0.2.70.8/manifest.json": "726bf6269d67e743cb962bd89ebf48fe65b305643b357d5a84e60690d4003aed"
+  },
+  "nativeWriteSeconds": 60.4,
+  "nativeReadSeconds": 62.4,
+  "packageStarts": [
+    {
+      "selection": "traps",
+      "version": "0.2.70.8",
+      "passed": true,
+      "seconds": 59.0
+    },
+    {
+      "selection": "turrets",
+      "version": "0.2.70.8",
+      "passed": true,
+      "seconds": 57.9
+    },
+    {
+      "selection": "both",
+      "version": "0.2.70.8",
+      "passed": true,
+      "seconds": 52.0
+    }
+  ],
+  "localRelease": {
+    "version": "0.2.70.8",
+    "sourceCommit": "bd9f8f331e7b7c5fc05f1f6829fee26c8c3fa9b8",
+    "tag": "test/v0.2.70.8",
+    "installed": "C:\\Users\\bandi\\Zomboid\\mods",
+    "packages": {
+      "OneMoreHorde_Traps": 241,
+      "OneMoreHorde_Turrets": 388
+    },
+    "filesVerified": 629,
+    "sourceFilesVerified": 456,
+    "backup": "C:\\Users\\bandi\\Zomboid_Modding\\OMH\\Turrets & Traps\\diagnostics\\p1c1\\install-backups\\20261029-203927-1835",
+    "backupsVerified": [
+      {
+        "package": "OneMoreHorde_Traps",
+        "version": "0.2.70.7",
+        "filesVerified": 239
+      },
+      {
+        "package": "OneMoreHorde_Turrets",
+        "version": "0.2.70.7",
+        "filesVerified": 386
+      }
+    ],
+    "archive": "C:\\Users\\bandi\\Zomboid_Modding\\OMH\\Turrets & Traps\\artifacts\\OMHTT-0.2.70.8.zip",
+    "archiveSHA256": "760a52a8a0d8eb8c82ff8ca6b39e4207815ea93259c64811aec50830d5fb96e8",
+    "kahluaAssertions": 40287,
+    "nativeWrite": "passed",
+    "nativeRead": "passed",
+    "nativeSelections": [
+      "traps",
+      "turrets",
+      "both"
+    ],
+    "clientAcceptance": "pending focused owner test",
+    "savePolicy": "fresh worlds",
+    "publication": "none",
+    "hostedLootLab": "No hosted update recorded for this release"
+  },
+  "existingWorldPolicy": "No new world required; saved tuning preserved",
+  "staging": {
+    "path": "C:\\Users\\bandi\\Zomboid\\Workshop\\OneMoreHorde_TurretsAndTraps",
+    "filesVerified": 629,
+    "backup": "C:\\Users\\bandi\\Zomboid_Modding\\OMH\\Turrets & Traps\\diagnostics\\workshop\\stage-v0.2.70.8-20261030-003935-5478-ac24c899-previous",
+    "previousFilesVerified": 625,
+    "pageMetadataAndPreview": "unchanged"
+  }
+}

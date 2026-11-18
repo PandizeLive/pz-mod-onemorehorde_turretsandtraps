@@ -9,6 +9,15 @@ local store, keys = nil, nil
 local migrationWarnings = {}
 
 ---@param record table Barrier state
+---@return nil
+local function name(record)
+    if record.displayIdentity and record.displayTier == record.tier then return end
+    local fullType = record.tier == "reinforced" and "Base.OMHTTTrapSpikeBarrierReinforced" or "Base.OMHTTTrapSpikeBarrier"
+    require("OMHTT/DefenseNames").ensure(record, "Barrier", getItemNameFromFullType(fullType))
+    record.displayTier = record.tier
+end
+
+---@param record table Barrier state
 ---@param square IsoGridSquare Part location
 ---@return string name Sprite identity
 local function partSprite(record, square)
@@ -63,6 +72,7 @@ end
 ---@return string? failure Placement rejection
 ---@nodiscard
 function Footprint.canBuildPart(square, facing)
+    if require("OMHTT/ControlPokeFootprint").reserved(square) then return "Occupied" end
     if not square or not square:getFloor() then return "Blocked" end
     local reserved = store.tiles[Footprint.edgeKey(square:getX(), square:getY(), square:getZ(), facing)]
     if reserved and (reserved.device or reserved.anchor) then return "Occupied" end
@@ -207,13 +217,25 @@ end
 ---@nodiscard
 function Footprint.exact(object)
     if not store or not instanceof(object, "IsoThumpable") then return nil end
-    if object:hasModData() and object:getModData().OMHTTEdge then return Outline.exact(object) end
+    if isServer() then
+        local outline = Outline.exact(object)
+        if outline then return outline end
+    elseif object:hasModData() and object:getModData().OMHTTEdge then
+        return Outline.exact(object)
+    end
     local square = object:getSquare()
     if not square or object:getObjectIndex() < 0 or object:getHealth() <= 0 then return nil end
-    if not object:hasModData() then return nil end
-    local marker = object:getModData().OMHTT
-    if not marker then return nil end
-    local slot = Footprint.slot(square, marker.id)
+    local id
+    if isServer() then
+        local name = object:getName()
+        if type(name) ~= "string" or string.sub(name, 1, #F.PREFIX) ~= F.PREFIX then return nil end
+        id = string.sub(name, #F.PREFIX + 1)
+    else
+        local marker = object:hasModData() and object:getModData().OMHTT
+        if not marker then return nil end
+        id = marker.id
+    end
+    local slot = Footprint.slot(square, id)
     if not slot or not slot.device or slot.device.kind ~= "barrier" then return nil end
     local record = slot.device
     local exact, count = F.find(square, record.id)
@@ -250,7 +272,7 @@ function Footprint.place(square, player)
     createPart(square, record)
     createPart(second, record)
     Diagnostics.emit("barrier-footprint", {id = record.id, action = "place", x = record.x, y = record.y,
-        secondX = x, secondY = y, facing = record.facing, width = 2})
+        secondX = x, secondY = y, facing = record.facing, width = 2}, nil, nil, "traps")
     return "Placed", slot
 end
 
@@ -269,14 +291,6 @@ function Footprint.canBuild(x, y, z, facing)
     if failure then return failure end
     failure = Outline.canBuild({id = "candidate", x = x, y = y, z = z, facing = facing})
     if failure then return failure end
-    local needed = 0
-    if not store.tiles[Footprint.edgeKey(x, y, z, facing)] then
-        needed = needed + 1
-    end
-    if not store.tiles[Footprint.edgeKey(secondX, secondY, z, facing)] then
-        needed = needed + 1
-    end
-    if store.tileCount + needed > F.MAX_TILES then return "Limit" end
     return nil
 end
 
@@ -286,8 +300,9 @@ end
 ---@param y number Primary tile Y
 ---@param facing number Cardinal heading
 ---@param entity string Native construction recipe identity
+---@param consumed ArrayList? Exact native recipe inputs
 ---@return table record Persistent shared state
-function Footprint.adoptBuild(object, player, x, y, facing, entity)
+function Footprint.adoptBuild(object, player, x, y, facing, entity, consumed)
     local square = object:getSquare()
     local z = square:getZ()
     local anchor = Footprint.edgeKey(x, y, z, facing)
@@ -306,11 +321,23 @@ function Footprint.adoptBuild(object, player, x, y, facing, entity)
         store.nextId = store.nextId + 1
     end
     local record = slot.device
+    if not record.displayIdentity then
+        local names = require("OMHTT/DefenseNames")
+        names.restore(record, consumed)
+    end
+    if not record.owner then
+        record.owner = record.builderUsername
+    end
+    require("OMHTT/DefenseXP").register(record.id, record.owner, record.x, record.y, record.z)
     if entity == "OMHTTDeployReinforcedBarrier" and not record.tier then
         record.tier = "reinforced"
         record.maxHealth = F.barrierHealth(record)
         record.condition = record.maxHealth
     end
+    if record.recoveredHealth ~= nil then
+        record.condition = require("OMHTT/DefenseNames").health(record, record.maxHealth)
+    end
+    name(record)
     if record.kind ~= "barrier" or record.placementSource ~= "construction" or record.facing ~= facing
         or record.builderUsername ~= player:getUsername() or Sprites.entity(record) ~= entity then
         error("[OMHTT] Native construction callback conflicts with existing device at " .. anchor)
@@ -344,7 +371,7 @@ function Footprint.adoptBuild(object, player, x, y, facing, entity)
         anchorX = x, anchorY = y, facing = facing, complete = Footprint.parts(record) ~= nil,
         builder = player:getUsername(), buildCheat = player:isBuildCheat(), condition = record.condition, recipe = entity,
         sprite = object:getSpriteName(), nativeConfigValid = spriteConfig and spriteConfig:isValid(),
-        collisionModel = record.collisionModel, north = object:getNorth()})
+        collisionModel = record.collisionModel, north = object:getNorth()}, nil, nil, "traps")
     return record
 end
 
@@ -381,7 +408,7 @@ function Footprint.retire(slot, excluding)
     end
     -- Native multi-tile removal can include the sibling. Never nest world removal in its callback.
     if excluding then
-        Diagnostics.emit("barrier-footprint", {id = record.id, action = "retire-deferred", width = width})
+        Diagnostics.emit("barrier-footprint", {id = record.id, action = "retire-deferred", width = width}, nil, nil, "traps")
         return
     end
     if record.collisionModel == "outline-v1" then
@@ -404,7 +431,7 @@ function Footprint.retire(slot, excluding)
             end
         end
     end
-    Diagnostics.emit("barrier-footprint", {id = record.id, action = "retire", width = width})
+    Diagnostics.emit("barrier-footprint", {id = record.id, action = "retire", width = width}, nil, nil, "traps")
 end
 
 ---@param square IsoGridSquare Newly loaded tile
@@ -423,7 +450,7 @@ function Footprint.cleanRetired(square)
             if count == 1 then
                 square:transmitRemoveItemFromSquare(object)
                 square:RecalcAllWithNeighbours(true)
-                Diagnostics.emit("barrier-retired-part", {id = slot.retired, x = slot.x, y = slot.y})
+                Diagnostics.emit("barrier-retired-part", {id = slot.retired, x = slot.x, y = slot.y}, nil, nil, "traps")
                 slot.retired = nil
             elseif count == 0 then
                 slot.retired = nil
@@ -441,12 +468,9 @@ local function expandLegacy(record, slot)
     local x, y = Footprint.second(record, record.facing)
     local square = getCell():getGridSquare(x, y, record.z)
     local failure = available(square)
-    if not failure and not store.tiles[F.key(x, y, record.z)] and store.tileCount >= F.MAX_TILES then
-        failure = "Limit"
-    end
     if failure then
         if migrationWarnings[record.id] ~= failure then
-            Diagnostics.emit("barrier-expansion-deferred", {id = record.id, reason = failure, x = x, y = y})
+            Diagnostics.emit("barrier-expansion-deferred", {id = record.id, reason = failure, x = x, y = y}, nil, nil, "traps")
             migrationWarnings[record.id] = failure
         end
         return
@@ -458,7 +482,7 @@ local function expandLegacy(record, slot)
     slot.epoch = math.max(slot.epoch, other.epoch) + 1
     other.epoch = slot.epoch
     createPart(square, record)
-    Diagnostics.emit("barrier-footprint", {id = record.id, action = "expand", width = 2, secondX = x, secondY = y})
+    Diagnostics.emit("barrier-footprint", {id = record.id, action = "expand", width = 2, secondX = x, secondY = y}, nil, nil, "traps")
 end
 
 ---@param slot table Canonical barrier slot
@@ -466,15 +490,19 @@ end
 ---@return boolean complete All parts loaded and unambiguous
 function Footprint.sync(slot, reason)
     local record = slot.device
+    name(record)
     local parts = Footprint.parts(record)
     if not parts then return false end
     if record.collisionModel == "edge-v1" then
         record.collisionModel = "outline-v1"
         record.revision = record.revision + 1
         Outline.changed()
-        Diagnostics.emit("barrier-outline-migrate", {id = record.id, facing = record.facing})
+        Diagnostics.emit("barrier-outline-migrate", {id = record.id, facing = record.facing}, nil, nil, "traps")
     end
-    local healthObjects = Footprint.healthObjects(record)
+    local colliders = record.collisionModel == "outline-v1" and Outline.objects(record) or {}
+    local healthObjects = {}
+    for i = 1, #parts do healthObjects[#healthObjects + 1] = parts[i] end
+    for i = 1, #colliders do healthObjects[#healthObjects + 1] = colliders[i] end
     local loss = 0
     for i = 1, #healthObjects do
         loss = loss + math.max(0, record.condition - healthObjects[i]:getHealth())
@@ -484,7 +512,7 @@ function Footprint.sync(slot, reason)
         record.observedLoss = record.observedLoss + loss
         record.revision = record.revision + 1
         slot.epoch = slot.epoch + 1
-        Diagnostics.emit("barrier-health", {id = record.id, hp = record.condition, loss = loss, parts = #parts})
+        Diagnostics.emit("barrier-health", {id = record.id, hp = record.condition, loss = loss, parts = #parts}, nil, nil, "traps")
     end
     if record.condition <= 0 then
         Footprint.retire(slot, nil)
@@ -499,7 +527,7 @@ function Footprint.sync(slot, reason)
         record.revision = record.revision + 1
         slot.epoch = slot.epoch + 1
         Diagnostics.emit("barrier-settings", {id = record.id, previousMax = oldMaximum,
-            max = maximum, hp = record.condition, damage = F.barrierDamage(record)})
+            max = maximum, hp = record.condition, damage = F.barrierDamage(record)}, nil, nil, "traps")
     end
     local width = record.width
     expandLegacy(record, slot)
@@ -510,10 +538,10 @@ function Footprint.sync(slot, reason)
         local object = parts[i]
         if record.collisionModel == "outline-v1" then
             local changed = object:isBlockAllTheSquare() or not object:isCanPassThrough() or object:isThumpable()
-            object:setBlockAllTheSquare(false)
-            object:setCanPassThrough(true)
-            object:setIsThumpable(false)
             if changed then
+                object:setBlockAllTheSquare(false)
+                object:setCanPassThrough(true)
+                object:setIsThumpable(false)
                 object:getSquare():RecalcAllWithNeighbours(true)
             end
         end
@@ -537,18 +565,21 @@ function Footprint.sync(slot, reason)
             object:setHealth(record.condition)
         end
         if marker.revision ~= record.revision or marker.condition ~= record.condition or marker.width ~= record.width
-            or marker.facing ~= record.facing then
+            or marker.facing ~= record.facing or marker.displayName ~= record.displayName then
             F.writeMarker(object, record)
             object:transmitModData()
         end
     end
     if record.collisionModel == "outline-v1" then
-        local colliders = Outline.objects(record)
         for i = 1, #colliders do
-            colliders[i]:setMaxHealth(record.maxHealth)
-            colliders[i]:setHealth(record.condition)
+            if colliders[i]:getMaxHealth() ~= record.maxHealth then colliders[i]:setMaxHealth(record.maxHealth) end
+            if colliders[i]:getHealth() ~= record.condition then colliders[i]:setHealth(record.condition) end
         end
-        Outline.refresh(record)
+        local now = getTimestampMs()
+        if reason or slot.outlineGeneration ~= Outline.generation or not slot.outlineCheck or now >= slot.outlineCheck then
+            Outline.refresh(record)
+            slot.outlineGeneration, slot.outlineCheck = Outline.generation, now + 1000
+        end
     end
     return true
 end
@@ -564,7 +595,6 @@ function Footprint.rotate(slot)
     local square = getCell():getGridSquare(x, y, record.z)
     local failure = available(square)
     if failure then return failure end
-    if not store.tiles[F.key(x, y, record.z)] and store.tileCount >= F.MAX_TILES then return "Limit" end
     local oldX, oldY = Footprint.second(record, record.facing)
     if record.width == 2 then
         local oldSquare = getCell():getGridSquare(oldX, oldY, record.z)
@@ -583,7 +613,7 @@ function Footprint.rotate(slot)
     other.epoch = slot.epoch
     createPart(square, record)
     Footprint.sync(slot)
-    Diagnostics.emit("barrier-footprint", {id = record.id, action = "rotate", facing = facing, secondX = x, secondY = y})
+    Diagnostics.emit("barrier-footprint", {id = record.id, action = "rotate", facing = facing, secondX = x, secondY = y}, nil, nil, "traps")
     return "BarrierRotated"
 end
 

@@ -1,0 +1,28 @@
+{
+  "checkpoint": "C369",
+  "installedVersionUnchanged": "0.2.58",
+  "assertions": 26069,
+  "compiledFiles": 256,
+  "nativeTranslationKeys": 1117,
+  "packetFixtures": 27,
+  "sourceFiles": 313,
+  "packagedFiles": 409,
+  "nativeServerWrite": "passed",
+  "nativeFreshProcessRead": "passed after fixture cleanup correction",
+  "connectedPlayers": 0,
+  "renderedAcceptance": "pending",
+  "exactMultiplayerPlacement": "unfinished",
+  "conditionChecks": [
+    "mixed fresh/damaged Bed inputs with reverse callbacks",
+    "private Wire condition before fixture replacement on restart",
+    "Poke carried health 123 across restart",
+    "Controller health 37 across redeployment despite forged presentation"
+  ],
+  "evidence": [
+    "service-C369.log",
+    "service-C369-full-validation.log",
+    "service-C369-native-write.txt",
+    "service-C369-native-read.txt",
+    "service-C369-native-read-fixture-failure.log"
+  ]
+}

@@ -1,0 +1,9 @@
+{
+  "snapshotSHA256": "eb6d1cea17e70f471fda132bc1d0088f08af376ace6fe9ee23867e3f82f4d987",
+  "bytes": 1047756,
+  "loaded046": 107,
+  "capacityWarnings": 2922,
+  "formatterExceptions": 12,
+  "minutesDisplay": "TurretBenefits.battery lines 37-39 always formats in-game minutes; no hours unit selection",
+  "ownerAcceptance": "in progress, not complete"
+}

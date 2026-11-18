@@ -1,0 +1,45 @@
+{
+  "kind": "UI mockup only; not game runtime",
+  "passed": true,
+  "sourceSha256": "03ebd4e6bfe4db8cea121d661f83fd38fee0451b0c8e4f4e6c5477e0ab473e16",
+  "checks": [
+    "head subtitles for all three defenses",
+    "compact desktop rows",
+    "device selection and focus",
+    "background toggle",
+    "two-tap linking",
+    "drag linking",
+    "disconnect",
+    "Manage handoff",
+    "responsive widths",
+    "real mobile touch events"
+  ],
+  "desktopRowHeight": 52,
+  "widths": [
+    {
+      "viewport": 1040,
+      "width": 1008,
+      "scroll": 1008,
+      "body": 1008
+    },
+    {
+      "viewport": 736,
+      "width": 704,
+      "scroll": 704,
+      "body": 704
+    },
+    {
+      "viewport": 390,
+      "width": 358,
+      "scroll": 358,
+      "body": 358
+    },
+    {
+      "viewport": 320,
+      "width": 288,
+      "scroll": 288,
+      "body": 288
+    }
+  ],
+  "pageErrors": []
+}

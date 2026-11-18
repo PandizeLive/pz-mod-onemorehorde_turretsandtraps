@@ -1,0 +1,20 @@
+{
+  "status": "owner-confirmed",
+  "itemId": "3828638252",
+  "version": "0.2.70.2",
+  "visibility": "unlisted",
+  "sourceCommit": "42822d3a78a69f8b31ed1719db933196a23b6aa3",
+  "tag": "test/v0.2.70.2",
+  "confirmationDate": "2026-10-27",
+  "confirmationTimezone": "America/Indianapolis",
+  "confirmation": "Owner answered Yes, upload completed after being asked whether Zomboid reported a successful upload for item 3828638252.",
+  "transport": "Zomboid native Workshop uploader, operated by owner",
+  "metadataSha256": "525aa0d734f916bf182eaf0b827f53f9a8dd1f581a597cbab5f4b032ba36c870",
+  "previewSha256": "b0e1f96dfb2d1a94372d81c4a2e49d084d8eaac33af94ba4976b11c100c19a31",
+  "cumulativeDraftSha256": "e3272a3bb4d410e9e8eba1e759f328131f4675ac2ce7b3f0bbf514aa265775d6",
+  "nativeChangenote": "Not captured; retained file is the local cumulative draft, not proof of Steam change-note text.",
+  "officialRelease": false,
+  "contentFileCount": 614,
+  "fileHashesSha256": "5f87f50e9cc469ddc998af7cd28d8b1168f52aac788db010a0c6f1a1139c7d22",
+  "fullLocalReceipt": "diagnostics/workshop/native-v0.2.70.2-3828638252/upload-result.json"
+}

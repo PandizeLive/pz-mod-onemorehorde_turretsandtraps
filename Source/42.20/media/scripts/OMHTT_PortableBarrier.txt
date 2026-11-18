@@ -17,7 +17,7 @@ module Base {
             item 4 [Base.RippedSheets;Base.RippedSheetsDirty;Base.Twine],
         }
         outputs {
-            item 1 Base.OMHTTSpikeBarrierItem,
+            item 1 Base.OMHTTTrapSpikeBarrier,
         }
     }
     craftRecipe OMHTTPackSpikeBarriers {
@@ -31,10 +31,10 @@ module Base {
         OnTest = OMHTT_Construction.portableInputAllowed,
         OnCreate = OMHTT_Construction.onCrafted,
         inputs {
-            item 5 [Base.OMHTTSpikeBarrierItem],
+            item 5 [Base.OMHTTTrapSpikeBarrier],
         }
         outputs {
-            item 1 Base.OMHTTSpikeBarrierPack,
+            item 1 Base.OMHTTTrapSpikeBarrierPack,
         }
     }
     craftRecipe OMHTTUnpackSpikeBarriers {
@@ -48,10 +48,10 @@ module Base {
         OnTest = OMHTT_Construction.portableInputAllowed,
         OnCreate = OMHTT_Construction.onCrafted,
         inputs {
-            item 1 [Base.OMHTTSpikeBarrierPack],
+            item 1 [Base.OMHTTTrapSpikeBarrierPack],
         }
         outputs {
-            item 5 Base.OMHTTSpikeBarrierItem,
+            item 5 Base.OMHTTTrapSpikeBarrier,
         }
     }
     craftRecipe OMHTTPackReinforcedBarriers {
@@ -65,10 +65,10 @@ module Base {
         OnTest = OMHTT_Construction.portableInputAllowed,
         OnCreate = OMHTT_Construction.onCrafted,
         inputs {
-            item 5 [Base.OMHTTReinforcedBarrierItem],
+            item 5 [Base.OMHTTTrapSpikeBarrierReinforced],
         }
         outputs {
-            item 1 Base.OMHTTReinforcedBarrierPack,
+            item 1 Base.OMHTTTrapSpikeBarrierReinforcedPack,
         }
     }
     craftRecipe OMHTTUnpackReinforcedBarriers {
@@ -82,10 +82,44 @@ module Base {
         OnTest = OMHTT_Construction.portableInputAllowed,
         OnCreate = OMHTT_Construction.onCrafted,
         inputs {
-            item 1 [Base.OMHTTReinforcedBarrierPack],
+            item 1 [Base.OMHTTTrapSpikeBarrierReinforcedPack],
         }
         outputs {
-            item 5 Base.OMHTTReinforcedBarrierItem,
+            item 5 Base.OMHTTTrapSpikeBarrierReinforced,
         }
+    }
+    craftRecipe OMHTTReinforceSpikeBarrier {
+        timedAction = BuildLowHammer,
+        time = 200,
+        category = OMHTraps,
+        Tags = InHandCraft;Carpentry,
+        needToBeLearn = false,
+        SkillRequired = Woodwork:3,
+        xpAward = Woodwork:30,
+        OnAddToMenu = OMHTT_ConstructionMenuAvailable,
+        inputs {
+            item 1 tags[base:hammer] mode:keep flags[Prop1;DontRecordInput;NoBrokenItems],
+            item 1 [Base.OMHTTTrapSpikeBarrier],
+            item 2 [Base.Plank],
+            item 8 [Base.Nails],
+        }
+        outputs { item 1 Base.OMHTTTrapSpikeBarrierReinforced, }
+    }
+    craftRecipe OMHTTReinforceBedSpikes {
+        timedAction = BuildLowHammer,
+        time = 200,
+        category = OMHTraps,
+        Tags = InHandCraft;Carpentry,
+        needToBeLearn = false,
+        SkillRequired = Woodwork:3,
+        xpAward = Woodwork:15,
+        OnAddToMenu = OMHTT_BedMenuAvailable,
+        inputs {
+            item 1 tags[base:hammer] mode:keep flags[Prop1;DontRecordInput;NoBrokenItems],
+            item 1 [Base.OMHTTTrapBedSpikes],
+            item 1 [Base.Plank],
+            item 4 [Base.Nails],
+        }
+        outputs { item 1 Base.OMHTTTrapBedSpikesReinforced, }
     }
 }

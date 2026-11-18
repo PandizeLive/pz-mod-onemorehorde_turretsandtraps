@@ -1,0 +1,108 @@
+{
+  "version": "0.2.71.12",
+  "tag": "test/v0.2.71.12",
+  "sourceCommit": "41ef8f75663f06442478dd8a18e8a4db31504ea2",
+  "archiveSHA256": "fca198ecaae0ba633ad48cd177e7701ed21e6dc6b42ec821029690bfe3b404d4",
+  "filesVerified": 642,
+  "sourceFilesVerified": 466,
+  "packages": {
+    "OneMoreHorde_Traps": 246,
+    "OneMoreHorde_Turrets": 396
+  },
+  "backupsVerified": [
+    {
+      "package": "OneMoreHorde_Traps",
+      "version": "0.2.71.11",
+      "filesVerified": 246
+    },
+    {
+      "package": "OneMoreHorde_Turrets",
+      "version": "0.2.71.11",
+      "filesVerified": 396
+    }
+  ],
+  "kahluaAssertions": 51974,
+  "nativeWrite": "passed",
+  "nativeRead": "passed",
+  "nativeSelections": [
+    "traps",
+    "turrets",
+    "both"
+  ],
+  "stagedFilesVerified": 642,
+  "workshopMetadataAndPreview": "byte-identical",
+  "publication": "none",
+  "workshopItem": "3828638252",
+  "lastConfirmedWorkshopVersion": "0.2.71.11",
+  "connectedTest": "pending",
+  "newWorldRequiredForThisPatch": false,
+  "testedFilesSHA256": {
+    "Source/42.20/media/lua/server/OMHTT/Damage.lua": "15831eef856e50eff31c091eb26508091996b11a2915969c3d7b8c7ab968d72a",
+    "Source/42.20/media/lua/server/OMHTT/DefenseCombatServer.lua": "927cfe590d5edd20ed7da6be972b17b80acb33f4a315e6f00ecb00373d06fcc2"
+  },
+  "focusedChecks": 809,
+  "eightRotaryExpected": 3424,
+  "eightRotaryApplied": 3424,
+  "replayDisplayMs": {
+    "67": 336,
+    "62": 281
+  },
+  "mixedBase": [
+    {
+      "roundTripMs": 100,
+      "applied": 2621,
+      "requested": 2621,
+      "unsuccessful": {},
+      "incompleteCoverage": [],
+      "rotary": {
+        "RotaryBat": {
+          "shots": 0,
+          "requested": 42,
+          "applied": 42,
+          "distinctSources": 1,
+          "ackP50": 100,
+          "ackP95": 100,
+          "ownerP95": 50
+        },
+        "RotaryBlades": {
+          "shots": 0,
+          "requested": 42,
+          "applied": 42,
+          "distinctSources": 1,
+          "ackP50": 100,
+          "ackP95": 100,
+          "ownerP95": 50
+        }
+      }
+    },
+    {
+      "roundTripMs": 310,
+      "applied": 2395,
+      "requested": 2415,
+      "unsuccessful": {
+        "expired": 20
+      },
+      "incompleteCoverage": [],
+      "rotary": {
+        "RotaryBat": {
+          "shots": 0,
+          "requested": 43,
+          "applied": 35,
+          "distinctSources": 1,
+          "ackP50": 310,
+          "ackP95": 470,
+          "ownerP95": 315
+        },
+        "RotaryBlades": {
+          "shots": 0,
+          "requested": 43,
+          "applied": 34,
+          "distinctSources": 1,
+          "ackP50": 310,
+          "ackP95": 470,
+          "ownerP95": 315
+        }
+      }
+    }
+  ]
+}

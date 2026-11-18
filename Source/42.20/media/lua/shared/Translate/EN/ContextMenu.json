@@ -15,7 +15,7 @@
     "ContextMenu_OMHTT_RotateBarrier": "Rotate barrier arrow 90 degrees (visual test)",
     "ContextMenu_OMHTT_Barrier": "Spike Barrier",
     "ContextMenu_OMHTT_BarrierCondition": "Condition: %1/%2",
-    "ContextMenu_OMHTT_PickupBarrier": "Pick up",
+    "ContextMenu_OMHTT_PickupBarrier": "Pick Up",
     "ContextMenu_OMHTT_RepairBarrier": "Repair",
     "ContextMenu_OMHTT_VaultFront": "Vault (spike side)",
     "ContextMenu_OMHTT_VaultRear": "Vault (rear)",
@@ -28,7 +28,7 @@
     "ContextMenu_OMHTT_ReinforcedFacing": "Reinforced Spike Barrier (%1)",
     "ContextMenu_OMHTT_BarrierChoice": "%1 (%2)",
     "ContextMenu_OMHTT_TurretFire": "Fire",
-    "ContextMenu_OMHTT_PickupTurret": "Pick up turret",
+    "ContextMenu_OMHTT_PickupTurret": "Pick Up Turret",
     "ContextMenu_OMHTT_HybridProbe": "OMH: Hybrid render probe",
     "ContextMenu_OMHTT_HybridCreate": "Place cube probe",
     "ContextMenu_OMHTT_HybridRemove": "Remove probe",
@@ -38,5 +38,6 @@
     "ContextMenu_OMHTT_HybridLower": "Lower head",
     "ContextMenu_OMHTT_HybridLarger": "Enlarge head",
     "ContextMenu_OMHTT_HybridSmaller": "Shrink head",
-    "ContextMenu_OMHTT_RepairTurret": "Repair"
+    "ContextMenu_OMHTT_RepairTurret": "Repair",
+    "ContextMenu_OMHTT_RemoveBarbs": "Remove Barbs"
 }

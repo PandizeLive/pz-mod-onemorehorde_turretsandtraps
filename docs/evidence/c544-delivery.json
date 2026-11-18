@@ -1,0 +1,45 @@
+{
+  "version": "0.2.71.8",
+  "sourceCommit": "9e2d6368778a41878d708b27094394ad5b3b3d48",
+  "tag": "test/v0.2.71.8",
+  "packages": {
+    "OneMoreHorde_Traps": 246,
+    "OneMoreHorde_Turrets": 395
+  },
+  "filesVerified": 641,
+  "sourceFilesVerified": 465,
+  "backupsVerified": [
+    {
+      "package": "OneMoreHorde_Traps",
+      "version": "0.2.71.7",
+      "filesVerified": 246
+    },
+    {
+      "package": "OneMoreHorde_Turrets",
+      "version": "0.2.71.7",
+      "filesVerified": 394
+    }
+  ],
+  "archiveSHA256": "86e98c4b05262ac1abf38f3b54876c786eed7def567b116ff79d60c06dc12e4a",
+  "kahluaAssertions": 50554,
+  "nativeWrite": "passed",
+  "nativeRead": "passed",
+  "nativeSelections": [
+    "traps",
+    "turrets",
+    "both"
+  ],
+  "publication": "none",
+  "workshopStageFilesVerified": 641,
+  "previousStageVersion": "0.2.71.7",
+  "previousStageFilesVerified": 640,
+  "pageMetadataAndPreview": "byte-identical",
+  "connectedAcceptance": "pending",
+  "newWorldRequiredForThisPatch": false,
+  "githubMirror": {
+    "status": "verified",
+    "commit": "dc35286110bc7e0d224bd9439301f5add39280b7",
+    "tag": "test/v0.2.71.8",
+    "pullRequest": 1
+  }
+}

@@ -1,0 +1,79 @@
+local P = require("OMHTT/BarrierPlacement")
+local oldInfo, oldCursor, oldCell, oldPlayer = SpriteConfigManager, ISBuildIsoEntity, getCell, getSpecificPlayer
+testMode = "sp"
+SandboxVars.OMHTurretsTraps.Enabled = true
+SandboxVars.OMHTurretsTraps.SpikeBarrier = true
+SandboxVars.OMHTurretsTraps.BedSpikes = true
+SandboxVars.OMHTurretsTraps.BarbSections = true
+local selected, cursor, menuLabel
+local player = {}
+local inventory = {items = {}}
+function inventory:getAllTypeRecurse()
+    local result = ArrayList.new()
+    for i = 1, #self.items do result:add(self.items[i]) end
+    return result
+end
+function inventory:isInCharacterInventory(p) return p == player end
+function player:getInventory() return inventory end
+function player:isDead() return false end
+function player:getPlayerNum() return 0 end
+function player:isBuildCheat() return self.cheat == true end
+function player:setHaloNote(value) self.halo = value end
+local hammer, pliers = {}, {}
+function inventory:getFirstTagEvalRecurse(tag) return tag == ItemTag.HAMMER and hammer or pliers end
+local input = {}
+local recipe = {getInputs = function() return {get = function() return input end} end}
+SpriteConfigManager = {GetObjectInfo = function(name)
+    selected = name
+    return {getRecipe = function() return {getCraftRecipe = function() return recipe end} end}
+end}
+ISBuildIsoEntity = {new = function()
+    local offered = {}
+    local logic = {}
+    function logic:setManualSelectInputs(value) self.manual = value end
+    function logic:clearManualInputs() offered = {} end
+    function logic:offerInputItem(item) offered[#offered + 1] = item end
+    function logic:getRecipeData() return {getFirstManualInputFor = function() return offered[1] end} end
+    cursor = {buildPanelLogic = logic, isValid = function() return true end, render = function() end}
+    return cursor
+end}
+getCell = function() return {setDrag = function(_, c) check(c == cursor, "Native cursor is installed") end} end
+getSpecificPlayer = function() return player end
+local names = {"TrapSpikeBarrier", "TrapSpikeBarrierReinforced", "TrapBedSpikes", "TrapBedSpikesReinforced", "TrapBarbedPanel", "TrapConcertinaWire"}
+local entities = {"OMHTTDeploySpikeBarrier", "OMHTTDeployReinforcedBarrier", "OMHTTDeployBedSpikesSingle", "OMHTTDeployReinforcedBedSpikesSingle", "OMHTTBarbs", "OMHTTDeployConcertinaWire"}
+for i = 1, #names do
+    local item = {container = inventory}
+    function item:getFullType() return "Base.OMHTT" .. names[i] end
+    function item:getContainer() return self.container end
+    function item:getCondition() return 100 end
+    inventory.items = {item}
+    check(P.place(item, player) == cursor and selected == entities[i], "Each portable item resolves its native placement recipe")
+    check(cursor.buildPanelLogic.manual and cursor.dragNilAfterPlace and cursor:isValid({}), "Placement binds exact selected item and is single use")
+    if i == 3 or i == 4 then
+        local companion = {getFullType = item.getFullType, getContainer = function() return inventory end, getCondition = function() return 100 end}
+        inventory.items = {item, companion}
+        local route, exact = P.route(item, player)
+        check(exact == companion and route == string.sub(entities[i], 1, #entities[i] - 6), "Two carried tiles select exact pair placement")
+        P.place(item, player)
+        inventory.items = {item}
+    end
+    item.container = nil
+    check(not cursor:isValid({}) and not P.place(item, player), "Dropping selected item invalidates preview; no replacement item can be consumed")
+    item.container = inventory
+    local context = {addOption = function(_, label) menuLabel = label; return {} end}
+    P.menu(0, context, {{items = {item}}})
+    check(menuLabel == getText(i == 5 and "UI_OMHTT_AttachTrap" or "UI_OMHTT_PlaceTrap"), "Inventory action label is consistent")
+end
+local panelItem = {getFullType = function() return "Base.OMHTTTrapBarbedPanel" end,
+    getContainer = function() return inventory end, getCondition = function() return 100 end}
+local toolsLookup = inventory.getFirstTagEvalRecurse
+inventory.getFirstTagEvalRecurse = function() return nil end
+check(not P.place(panelItem, player) and player.halo, "Missing tools give explicit feedback")
+player.cheat = true
+check(P.place(panelItem, player) == cursor and cursor:isValid({}), "Build Cheat permits panel cursor without hammer or pliers")
+player.cheat = false
+check(not cursor:isValid({}), "Turning cheat off rechecks tools before completion")
+inventory.getFirstTagEvalRecurse = toolsLookup
+check(cursor:isValid({}), "Restoring tools restores legal placement")
+check(OMHTT_PlacementHidden() == false, "All private placement entities stay out of Building")
+SpriteConfigManager, ISBuildIsoEntity, getCell, getSpecificPlayer = oldInfo, oldCursor, oldCell, oldPlayer

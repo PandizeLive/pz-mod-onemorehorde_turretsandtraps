@@ -1,6 +1,7 @@
 {
   "repository": "PandizeLive/pz-mod-onemorehorde_turretsandtraps",
   "remote": "https://github.com/PandizeLive/pz-mod-onemorehorde_turretsandtraps.git",
+  "visibility": "public",
   "developmentBranch": "dev",
   "releaseBranch": "main"
 }

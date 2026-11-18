@@ -1,6 +1,19 @@
 {
     "IGUI_CraftingCategories_OMHTurretsTraps": "Turrets & Traps",
     "IGUI_ContainerTitle_OMHTTTurret": "Turret",
+    "IGUI_ContainerTitle_OMHTTController": "Controller Stockpile",
     "IGUI_CraftingCategories_OMHTurrets": "OMH: Turrets",
-    "IGUI_CraftingCategories_OMHTraps": "OMH: Traps"
+    "IGUI_CraftingCategories_OMHTraps": "OMH: Traps",
+    "IGUI_CraftingCategories_OMHNormal": "Normal",
+    "IGUI_CraftingCategories_OMHReinforced": "Reinforced",
+    "IGUI_CraftingCategories_OMHPacked": "Packed",
+    "IGUI_CraftingCategories_OMHHeads": "Heads",
+    "IGUI_CraftingCategories_OMHModules": "Modules",
+    "IGUI_CraftingCategories_OMHControls": "OMH: Triggers",
+    "IGUI_ContainerTitle_OMHTTPoke": "Poke Floor",
+    "IGUI_ItemCat_OMHTTPerformance": "Performance",
+    "IGUI_ItemCat_OMHTTAutomation": "Automation",
+    "IGUI_ItemCat_OMHTTEffects": "Effects",
+    "IGUI_ItemCat_OMHTTUtility": "Utility",
+    "IGUI_ItemCat_OMHTTExpansion": "Expansion Kits"
 }

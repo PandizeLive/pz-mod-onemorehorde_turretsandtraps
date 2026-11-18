@@ -1,0 +1,16 @@
+{
+  "status": "confirmed",
+  "itemId": "3828638252",
+  "version": "0.2.70.9",
+  "visibility": "unlisted",
+  "tag": "test/v0.2.70.9",
+  "sourceCommit": "4b3e9569df13806e36b210851e13fd1c7edefef1",
+  "toolingCommit": "a7f8538a942c50011de79a4af67ab38f6e0b4c5d",
+  "changelogSha256": "D81C427529A2E3B246AC5979E8A73E402F7092AF2F6E2E77910C769674E600E4",
+  "startedUtc": "2026-10-30T04:42:58.6167357Z",
+  "confirmedUtc": "2026-10-30T04:43:21.2450123Z",
+  "receiptPath": "diagnostics\\workshop\\upload-v0.2.70.9-20261030-044255-6949-b6fbad94\\upload-result.json",
+  "receiptSHA256": "179bd3b658c993bd513ca98563bd13fcc9dc851bdf5eea80a05568787b7f702a",
+  "steamResult": "Committing update...Success.",
+  "packagedFiles": 629
+}

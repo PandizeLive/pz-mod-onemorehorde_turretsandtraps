@@ -1,0 +1,32 @@
+2026-10-07; source baseline dev 5fc64467873ea81404927882cdeb5b07d2e1c50a.
+Compiled AuditProbe.java with JDK 17 javac into this directory.
+Ran installed ProjectZomboid/jre64/bin/java.exe with classpath projectzomboid.jar first, then this directory, main AuditProbe, argument project root.
+Exit code: 0.
+
+Actual unchanged Lua modules; mocked world and clock. Operation counts, not frame benchmarks.
+Empty scan range=6 squares=169 slices=3
+Empty scan range=12 squares=625 slices=10
+Empty scan range=20 squares=1681 slices=27
+Empty scan range=60 squares=14641 slices=229
+60 repeated unaligned aim requests: inventory summaries=60
+10 retained-target non-firing steps: clearLane calls=20
+3ms scheduler cannot preempt a simulated 500ms worker; next worker deferred.
+
+Existing tools/test_github_workflow.py rerun, exit code 0:
+PASS: untagged development checkpoint
+PASS: tagged development checkpoint
+PASS: untracked intended file refused
+PASS: documentation commit after test tag
+PASS: dirty tracked document refused
+PASS: wrong push destination refused
+PASS: official branch refused
+PASS: changed source does not reuse test tag
+PASS: all preflights left remote refs untouched (no network required)
+
+Root OMH.cmd -Action Mirror -ValidateOnly at baseline dev:
+Local mirror checks passed: dev at 5fc64467873ea81404927882cdeb5b07d2e1c50a; include current test tag: True. No network calls or remote changes.
+
+GitHub CLI live repository check: private=true, defaultBranchRef.name=dev.
+GitHub Actions workflow total_count=0; latest run listing=[].
+Connected GitHub app get_repo and fetch_file docs/CURRENT_STATUS.md at dev succeeded.
+Returned handoff blob: 18ff514455595cbcfbb5cea2f0418a2d75a2ca06.

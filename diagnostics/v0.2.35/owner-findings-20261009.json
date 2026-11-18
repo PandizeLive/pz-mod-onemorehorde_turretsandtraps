@@ -1,0 +1,26 @@
+{
+  "version": "0.2.35",
+  "capture": "diagnostics/captures/20261009-195420-8666",
+  "consoleSHA256": "39a4c144d4592830312ea3ef5f8efc28b4d5df7eed709f41ff559caaf58938fb",
+  "packagesReadyCount": 2,
+  "latestPackagesReady": "LOG  : Lua          f:0> [OMHTT] packages-ready version=0.2.35 traps=true turrets=true game=42.21",
+  "errorsAfterLatestPackagesReady": 0,
+  "eventTotalsAfterLatestReady": {
+    "bed-trip": 13,
+    "bed-fall": 10,
+    "damage-applied": 10
+  },
+  "buildCheatSeen": true,
+  "ownerReportedFailures": [
+    "Top-level categories changed instead of expandable group names",
+    "Zombies still fly forward when tripping on spikes",
+    "Building requires Place Trap again after each placement",
+    "No audible zombie trip or spike impact"
+  ],
+  "limits": [
+    "No paired per-zombie landing measurements",
+    "No audio recording",
+    "No inference of unmentioned passes",
+    "Cheat-enabled placement does not prove normal ingredient/time requirements"
+  ]
+}

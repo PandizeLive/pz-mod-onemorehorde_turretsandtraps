@@ -1,0 +1,38 @@
+module Base
+{
+    sound OMHTTReeling
+    {
+        category = Item,
+        maxInstancesPerEmitter = 1,
+        loop = true,
+        clip { file = media/sound/OMHTTReeling.wav, distanceMax = 20, volume = .38, }
+    }
+    sound OMHTTLaserDetected
+    {
+        category = Item,
+        maxInstancesPerEmitter = 1,
+
+        clip { file = media/sound/OMHTTLaserDetected.wav, distanceMax = 20, volume = .38, }
+    }
+    sound OMHTTLaserCleared
+    {
+        category = Item,
+        maxInstancesPerEmitter = 1,
+
+        clip { file = media/sound/OMHTTLaserCleared.wav, distanceMax = 20, volume = .60, }
+    }
+    sound OMHTTTurretAlert
+    {
+        category = Item,
+        maxInstancesPerEmitter = 1,
+
+        clip { file = media/sound/OMHTTTurretAlert.wav, distanceMax = 20, volume = .65, }
+    }
+    sound OMHTTTurretDeactivate
+    {
+        category = Item,
+        maxInstancesPerEmitter = 1,
+
+        clip { file = media/sound/OMHTTTurretDeactivate.wav, distanceMax = 20, volume = .50, }
+    }
+}

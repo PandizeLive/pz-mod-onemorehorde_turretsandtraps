@@ -1,0 +1,28 @@
+{
+  "version": "0.2.53",
+  "assertions": 20807,
+  "sourceFiles": 278,
+  "packageFiles": 348,
+  "nativeWrite": "passed",
+  "nativeRead": "passed; final ControlWorld source bytes verified in probe cache",
+  "independentSelections": [
+    "traps",
+    "turrets",
+    "both"
+  ],
+  "controlSourceSHA256": {
+    "Source/42.20/media/lua/client/OMHTT/ControlClient.lua": "cce84ffc193672746fc2d0451ede2805a88dff455374971f7895dc74f0f746fc",
+    "Source/42.20/media/lua/client/OMHTT/ControlManage.lua": "9977bf45616e52b68313f0c9c21a61c853c67485348d6a8b479891fabb29bf8b",
+    "Source/42.20/media/lua/client/OMHTT/ControlOverlay.lua": "04921b7c366b1c76ee6a8d950a774d4d605d5eba6c906b92eb7ee847f3504383",
+    "Source/42.20/media/lua/client/OMHTT/ControlPanel.lua": "7b612206cd0a194e652ecfc57352e3076870d80f2b47b2947da0f01616762faf",
+    "Source/42.20/media/lua/server/OMHTT/ControlWorld.lua": "8eef3754f538a6598d87ccb3bd34beebd47ea41ee7f490db5f56fedf56bf92ec",
+    "Source/42.20/media/lua/shared/OMHTT/ControlAccess.lua": "bf3826e69dfca032858c05adcfa37fa9b6e12ebdb948bf604b32427863a09543",
+    "Source/42.20/media/lua/shared/OMHTT/ControlAction.lua": "8bfa3d73256eeef519e16520b52d05011da641d92937c1d6244ba2fe1dee164f",
+    "Source/42.20/media/lua/shared/OMHTT/ControlDefinitions.lua": "875f49e69aa53a8dffb64a711b63a75d395d8fa2ab703a87e0331658f195d290",
+    "Source/42.20/media/lua/shared/OMHTT/ControlTransferAction.lua": "8d926046f01afbbf7dd85ccd62313baadffc1b95665981e4ebbf504fc6b68fbd"
+  },
+  "scope": "Zero-client stock B42.21 native probes and Kahlua regressions; rendered and connected dedicated/listen acceptance pending",
+  "nativeStorage": "500-weight controller admission; 167 exact items over100 weight; 5000 real rounds; two-handed full-weight pickup/redeployment",
+  "recovery": "Private identity, offline/remote revocation, packed assignments, broken input clearing, and saved battery lookup",
+  "performance": "Bounded signal/discovery work and twenty-round transfer batches. Native inventory/save cost still scales with item count; no connected frame-time guarantee."
+}

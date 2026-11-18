@@ -1,0 +1,12 @@
+LOG  : Lua          f:0 st:47,612,301> [OMHTT-Controls] native-summary rounds=5000 milliseconds=9
+LOG  : Lua          f:0 st:47,613,285> [OMHTT-Controls] native-platform-order other-head=valid stale=rejected cross-family=rejected publication=retained pickup=retained
+LOG  : Lua          f:0 st:47,613,349> [OMHTT-C327] native groups fresh-process=preserved
+LOG  : Lua          f:0 st:47,613,354> [OMHTT-C327] native groups=create/reorder/rename stale=rejected snapshot=detached
+LOG  : Lua          f:0 st:47,613,356> [OMHTT-Controls] adjacent-native-access directions=6 policy=valid
+LOG  : Lua          f:0 st:47,613,371> [OMHTT-C330] native-cycle turn/reload/shot=pass rapid-press=no-backlog real-ammo=one power=off
+LOG  : Lua          f:0 st:47,613,375> [OMHTT-C327] native groups device-move=serialized delete=ungroup-only cross-group-links=preserved permissions=checked replay=blocked
+LOG  : Lua          f:0 st:47,613,379> [OMHTT-Controls] native devices=3 ownership=private read=public replay=blocked remote=power-scoped plate=recovery-safe backup=48h heavy=exact capacities=30
+LOG  : General      f:0 st:47,617,190> [OMHTT-Controls] persistence mode=read items=250 weight=over100 owner=preserved
+LOG  : General      f:0 st:47,617,193> [OMHTT-Controls] native-stock-transfer selectedBag=exact removedBag=rejected constructorArgs=retained bytes=137
+LOG  : General      f:0 st:47,617,206> [OMHTT-Controls] ammunition-persistence mode=read rounds=5000 items=5002 exact=true
+LOG  : General      f:0 st:47,617,489> [OMHTT-Smoke] native-persistence mode=read parts=28 health=37 maxHealth=200 identity=valid collision=preserved owner=preserved legacy=8 edges=8 outline=4 reinforced=8 orientation=preserved

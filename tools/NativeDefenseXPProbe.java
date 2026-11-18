@@ -1,0 +1,127 @@
+import java.util.Arrays;
+import java.lang.reflect.Proxy;
+import java.nio.ByteBuffer;
+
+public final class NativeDefenseXPProbe {
+    private static Object get(Object table, Object key) throws Exception {
+        return table.getClass().getMethod("rawget", Object.class).invoke(table, key);
+    }
+
+    private static float health(Object actor) throws Exception {
+        return ((Number)actor.getClass().getMethod("getHealth").invoke(actor)).floatValue();
+    }
+
+    private static void verifyWounds(Object samples) throws Exception {
+        Object wounds = get(samples, "wounds");
+        Object body = get(wounds, "body");
+        Object owner = get(wounds, "owner");
+        Class<?> bodyType = body.getClass();
+        ByteBuffer buffer = ByteBuffer.allocate(65536);
+        bodyType.getMethod("save", ByteBuffer.class).invoke(body, buffer);
+        int bytes = buffer.position();
+        buffer.flip();
+        Object restored = bodyType.getConstructor(Class.forName("zombie.characters.IsoGameCharacter")).newInstance(owner);
+        int version = ((Number)Class.forName("zombie.iso.IsoWorld").getMethod("getWorldVersion").invoke(null)).intValue();
+        bodyType.getMethod("load", ByteBuffer.class, int.class).invoke(restored, buffer, version);
+        var originalParts = (java.util.List<?>)bodyType.getMethod("getBodyParts").invoke(body);
+        var restoredParts = (java.util.List<?>)bodyType.getMethod("getBodyParts").invoke(restored);
+        if (originalParts.size() != 17 || restoredParts.size() != 17 || buffer.hasRemaining())
+            throw new IllegalStateException("Native wound serialization shape changed");
+        for (int index = 0; index < originalParts.size(); index++) {
+            Object original = originalParts.get(index), copy = restoredParts.get(index);
+            for (String method : new String[]{"getHealth", "getScratchTime", "getCutTime", "getBleedingTime", "bandaged"}) {
+                Object expected = original.getClass().getMethod(method).invoke(original);
+                Object actual = copy.getClass().getMethod(method).invoke(copy);
+                if (!expected.equals(actual)) throw new IllegalStateException("Native wound round trip changed " + method);
+            }
+        }
+        System.out.println("[OMHTT-XPProbe] woundSerialization=true parts=17 fields=5 bytes=" + bytes
+            + " worldVersion=" + version + " restartTested=false");
+    }
+
+    private static void verify() throws Exception {
+        Object luaThread = Class.forName("zombie.Lua.LuaManager").getField("thread").get(null);
+        if (luaThread.getClass().getField("debugOwnerThread").get(luaThread) != Thread.currentThread())
+            throw new IllegalStateException("Probe must run on the actual Lua owner thread");
+        Object env = Class.forName("zombie.Lua.LuaManager").getField("env").get(null);
+        Object samples = get(env, "OMHTT_XPProbe");
+        if (samples == null) throw new IllegalStateException("Lua probe did not complete");
+        Object player = get(samples, "player");
+        Object zombie = get(samples, "zombie");
+        Object weapon = get(samples, "weapon");
+        Object observations = get(samples, "observations");
+        Class<?> hitType = Class.forName("zombie.network.fields.hit.WeaponHit");
+        Class<?> actorType = Class.forName("zombie.characters.IsoGameCharacter");
+        Class<?> weaponType = Class.forName("zombie.inventory.types.HandWeapon");
+        Object hit = hitType.getConstructor().newInstance();
+        hitType.getMethod("set", float.class, float.class, float.class, float.class, float.class,
+            boolean.class, boolean.class, boolean.class, boolean.class)
+            .invoke(hit, .2f, 1f, 0f, 1f, 0f, false, false, false, false);
+        float before = health(zombie);
+        hitType.getMethod("process", actorType, actorType, weaponType)
+            .invoke(hit, player, zombie, weapon);
+        float after = health(zombie);
+        int count = ((Number)observations.getClass().getMethod("len").invoke(observations)).intValue();
+        Object last = get(observations, Double.valueOf(count));
+        if (!"OnWeaponHitXp".equals(get(last, "kind"))) throw new IllegalStateException("Missing native post-hit event");
+        if (((Number)get(last, "health")).floatValue() != after || after >= before)
+            throw new IllegalStateException("Post-hit health does not match the native result");
+        System.out.println("[OMHTT-XPProbe] packetPostHit=true before=" + before + " after=" + after
+            + " callbackHealth=" + get(last, "health") + " callbackInput=" + get(last, "amount")
+            + " clients=0 packetTransportTested=false");
+        verifyWounds(samples);
+        Object credit = get(samples, "credit");
+        Object victim = get(credit, "victim");
+        Object store = get(credit, "store");
+        Object encounters = get(get(store, "defense"), "encounters");
+        hitType.getMethod("set", float.class, float.class, float.class, float.class, float.class,
+            boolean.class, boolean.class, boolean.class, boolean.class)
+            .invoke(hit, .2f, 1f, 0f, 1f, 0f, false, false, false, true);
+        hitType.getMethod("process", actorType, actorType, weaponType).invoke(hit, player, victim, weapon);
+        if (get(encounters, "victim") != null) throw new IllegalStateException("Ignored native player hit earned an assist");
+        hitType.getMethod("set", float.class, float.class, float.class, float.class, float.class,
+            boolean.class, boolean.class, boolean.class, boolean.class)
+            .invoke(hit, .2f, 1f, 0f, 1f, 0f, false, false, false, false);
+        hitType.getMethod("process", actorType, actorType, weaponType).invoke(hit, player, victim, weapon);
+        Object encounter = get(encounters, "victim");
+        if (encounter == null || !Double.valueOf(1).equals(get(get(encounter, "assists"), "attacker")))
+            throw new IllegalStateException("Confirmed native player injury did not register production assist credit");
+        System.out.println("[OMHTT-XPProbe] productionPlayerCredit=true ignoredRejected=true clients=0");
+        System.out.println("[OMHTT-XPProbe] packetCompleted=true");
+    }
+
+    public static void main(String[] args) throws Exception {
+        Thread dispatcher = new Thread(() -> {
+            try {
+                Class<?> lua = Class.forName("zombie.Lua.LuaManager");
+                Object samples = null;
+                long deadline = System.nanoTime() + 150_000_000_000L;
+                while (samples == null && System.nanoTime() < deadline) {
+                    Object env = lua.getField("env").get(null);
+                    if (env != null) samples = get(env, "OMHTT_XPProbe");
+                    if (samples == null) Thread.sleep(100);
+                }
+                if (samples == null) throw new IllegalStateException("Lua setup never completed");
+                Class<?> function = Class.forName("se.krka.kahlua.vm.JavaFunction");
+                Object callback = Proxy.newProxyInstance(function.getClassLoader(), new Class<?>[]{function}, (proxy, method, values) -> {
+                    if (!method.getName().equals("call")) return null;
+                    try { verify(); }
+                    catch (Throwable error) {
+                        error.printStackTrace();
+                        System.out.println("[OMHTT-XPProbe] packetFailed=true");
+                    }
+                    return 0;
+                });
+                Class.forName("zombie.Lua.LuaEventManager").getMethod("triggerEvent", String.class, Object.class)
+                    .invoke(null, "OnOMHTTXPProbeNative", callback);
+            } catch (Throwable error) {
+                error.printStackTrace();
+                System.out.println("[OMHTT-XPProbe] packetFailed=true");
+            }
+        }, "OMHTT-isolated-xp-dispatch");
+        dispatcher.setDaemon(true);
+        dispatcher.start();
+        Class.forName("zombie.network.GameServer").getMethod("main", String[].class)
+            .invoke(null, (Object)Arrays.copyOf(args, args.length));
+    }
+}

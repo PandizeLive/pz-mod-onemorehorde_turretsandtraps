@@ -1,0 +1,48 @@
+{
+  "checkpoint": "C502",
+  "build": "0.2.70.5",
+  "game": "42.21",
+  "sourceCommit": "6eb3aba648f7b888242a6ae256b4abbc0a9e1692",
+  "scope": "Read-only live logs; installed native bytecode; production Lua with test doubles. No connected reproduction launched.",
+  "console.txt": {
+    "sha256": "92265999332568239a97d3e886cd5be25251f08c2d8e0af232afb7d883e1bed1",
+    "summaryCounts": {},
+    "nonStartupErrorLines": 0
+  },
+  "server-2026-10-28_19-43_DebugLog-server.txt": {
+    "sha256": "581a7ddea674f21670facc85c90fe07c2dfe110fd0b5cb43bea7130895bf2dd0",
+    "summaryCounts": {
+      "presentation-send": 121,
+      "combat-settled": 42,
+      "shot-damage-confirmed": 37,
+      "combat-lethal": 7
+    },
+    "nonStartupErrorLines": 0
+  },
+  "Scheduler.javap.txt": {
+    "sha256": "3e5c10a16ae0bce1169ec560e7bb102dd09c87614fe5f3b58ba8d4221230958d"
+  },
+  "Bucket.javap.txt": {
+    "sha256": "6d9daf29888b2aa13bfa1abcb998dd0e69868300da6f1fa5b80674a43f114e79"
+  },
+  "audit": {
+    "assertions": 37066,
+    "sha256": "c2c84641e30ba66be7295d73ab546f4b421c9c336635b386ab460ba2b1fc9cad",
+    "reproductions": [
+      "Poke startup crossing ignored",
+      "Overdue Poke strike discarded",
+      "Persisted raw automatic name displayed",
+      "Multiplayer popup suppressed",
+      "Deferred health baseline becomes first-observed wounded health"
+    ]
+  },
+  "publication": {
+    "status": "confirmed",
+    "itemId": "3828638252",
+    "version": "0.2.70.5",
+    "sourceCommit": "6eb3aba648f7b888242a6ae256b4abbc0a9e1692",
+    "confirmedUtc": "2026-10-29T00:06:34.8249325Z",
+    "changelogSha256": "7DA81FDED099BE87533A8B86B78FBD3817BF9A06D044DB2429BB33F22F56BD3E",
+    "successLine": "Committing update...Success.Unloading Steam API...OK"
+  }
+}

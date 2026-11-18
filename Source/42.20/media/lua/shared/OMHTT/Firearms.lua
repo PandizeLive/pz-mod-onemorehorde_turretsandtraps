@@ -1,4 +1,6 @@
 local Clock = require("OMHTT/TurretClock")
+local Feed = require("OMHTT/FirearmFeed")
+local Impact = require("OMHTT/TurretImpactCycle")
 local G = {servicing = {}}
 G.PROFILES = {
     ["Base.Pistol"] = {reload = 2.7, rack = 1.2, muzzle = 0.0823, yaw = 0, roll = -90},
@@ -59,6 +61,7 @@ function G.registerAmmunition()
 end
 
 Events.OnGameStart.Add(G.registerAmmunition)
+Events.OnServerStarted.Add(G.registerAmmunition)
 
 ---@return boolean enabled
 ---@nodiscard
@@ -79,22 +82,21 @@ end
 function G.loaded(gun)
     local chamber = 0
     if gun:isRoundChambered() then chamber = 1 end
-    return gun:getCurrentAmmoCount() + chamber
+    return gun:getCurrentAmmoCount() + Feed.count(gun) + chamber
 end
 
 ---@param gun HandWeapon Supported firearm
 ---@return table state Persisted mechanical deadlines
 function G.state(gun)
-    local data = gun:getModData()
-    if not data.OMHTTGunCycle then data.OMHTTGunCycle = {schema = 1, nextShot = 0} end
-    return data.OMHTTGunCycle
+    return require("OMHTT/TurretItemState").get(gun, "gun", {schema = 1, nextShot = 0})
 end
 
 ---@param gun HandWeapon Supported firearm
 ---@return nil
 function G.cancelLoading(gun)
+    if isClient() then return end
     local state = G.state(gun)
-    state.reloadReady, state.rackReady = nil, nil
+    state.reloadReady, state.rackReady, state.manualReload = nil, nil, nil
 end
 
 ---@param contents table Exact inventory summary
@@ -104,11 +106,24 @@ end
 ---@return table cycle Real magazine state
 ---@return string status
 function G.update(contents, stats, now, operate)
+    if isClient() then return nil, "Unavailable" end
     local gun = contents.head
     local state = G.state(gun)
     Clock.restore(state, now)
+    if operate then
+        local before = Feed.count(gun)
+        Feed.restore(gun, stats.magazine, nil, false)
+        contents.reserve = contents.reserve + before - Feed.count(gun)
+    end
     state.loaded = G.loaded(gun)
-    if gun:getModData().OMHTTPowerOff then return state, "Off" end
+    Impact.observe(state, state.loaded)
+    local powerOff = gun:getModData().OMHTTPowerOff
+    if isServer() then
+        local storage = gun:getContainer()
+        local turret = storage and require("OMHTT/Turret").state(storage:getParent())
+        powerOff = not turret or not require("OMHTT/Turret").isOn(turret)
+    end
+    if powerOff then return state, "Off" end
     if G.servicing[gun] then return state, "Servicing" end
     if not G.enabled() then return state, "Disabled" end
     if gun:getCondition() <= 0 then return state, "NoHead" end
@@ -118,11 +133,15 @@ function G.update(contents, stats, now, operate)
         state.nextShot = now + math.min(1, (state.nextShot - now) / state.cooldownDuration) * stats.cooldown
     end
     state.cooldownDuration = stats.cooldown
-    if state.loaded == 0 then
+    if contents.reserve == 0 then
+        state.reloadReady, state.manualReload = nil, nil
+        if state.loaded == 0 then return state, "Empty" end
+    end
+    if state.loaded == 0 or state.manualReload then
         state.rackReady = nil
-        if contents.reserve == 0 then state.reloadReady = nil; return state, "Empty" end
         if not operate then return state, "Reloading" end
-        local amount = math.min(gun:getMaxAmmo(), contents.reserve)
+        local existing = gun:getCurrentAmmoCount() + Feed.count(gun)
+        local amount = math.min(math.max(0, stats.magazine - existing), contents.reserve)
         local duration = stats.reload
         if not gun:getMagazineType() then duration = duration * amount end
         if not state.reloadReady then state.reloadReady = now + duration end
@@ -132,19 +151,32 @@ function G.update(contents, stats, now, operate)
         state.reloadDuration = duration
         if now < state.reloadReady then return state, "Reloading" end
         local container, count = gun:getContainer(), 0
+        local reserved = Feed.count(gun)
         for i = 1, #contents.rounds do
             if count >= amount then break end
             local round = contents.rounds[i]
             if container:contains(round) and round:getFullType() == G.ammoType(gun) then
-                container:Remove(round)
-                count = count + 1
+                if reserved > 0 then
+                    reserved = reserved - 1
+                else
+                    if count < math.max(0, gun:getMaxAmmo() - gun:getCurrentAmmoCount()) then
+                        container:Remove(round)
+                        if isServer() then
+                            sendRemoveItemFromContainer(container, round)
+                        end
+                    end
+                    count = count + 1
+                end
             end
         end
-        gun:setCurrentAmmoCount(count)
+        local inserted = math.min(count, math.max(0, gun:getMaxAmmo() - gun:getCurrentAmmoCount()))
+        gun:setCurrentAmmoCount(gun:getCurrentAmmoCount() + inserted)
+        Feed.set(gun, Feed.count(gun) + count - inserted)
         if not gun:haveChamber() then gun:setSpentRoundCount(0) end
-        state.reloadReady = nil
+        state.reloadReady, state.manualReload = nil, nil
         contents.reserve = contents.reserve - count
         state.loaded = G.loaded(gun)
+        Impact.observe(state, state.loaded)
         if count == 0 then return state, "Empty" end
     end
     if gun:haveChamber() and not gun:isRoundChambered() then
@@ -153,7 +185,7 @@ function G.update(contents, stats, now, operate)
         if now < state.rackReady then return state, "Racking" end
         gun:setSpentRoundChambered(false)
         gun:setRoundChambered(true)
-        gun:setCurrentAmmoCount(gun:getCurrentAmmoCount() - 1)
+        Feed.spend(gun, 1)
         state.rackReady = nil
     end
     state.loaded = G.loaded(gun)
@@ -165,25 +197,35 @@ end
 ---@param stats table Effective values
 ---@param now number Milliseconds
 ---@return boolean consumed
+---@return number? cost Actual whole-round charge
 function G.consume(contents, stats, now)
+    if isClient() then return false end
     local gun = contents.head
     local cycle, status = G.update(contents, stats, now, false)
     if status ~= "Ready" then return false end
+    Impact.consume(cycle)
+    local cost = require("OMHTT/TurretConservation").consume(cycle, math.min(G.loaded(gun), 1 + (stats.splitter or 0)), stats.conservation or 1)
+    if cost == 0 then
+        cycle.nextShot, cycle.cooldownDuration = now + stats.cooldown, stats.cooldown
+        return true, 0
+    end
     if gun:haveChamber() then
         gun:setRoundChambered(false)
         gun:setSpentRoundChambered(gun:isRackAfterShoot())
-        if not gun:isRackAfterShoot() and gun:getCurrentAmmoCount() > 0 then
-            gun:setCurrentAmmoCount(gun:getCurrentAmmoCount() - 1)
+        Feed.spend(gun, cost - 1)
+        if not gun:isRackAfterShoot() and gun:getCurrentAmmoCount() + Feed.count(gun) > 0 then
+            Feed.spend(gun, 1)
             gun:setRoundChambered(true)
         end
     else
-        gun:setCurrentAmmoCount(gun:getCurrentAmmoCount() - 1)
-        gun:setSpentRoundCount(gun:getSpentRoundCount() + 1)
+        Feed.spend(gun, cost)
+        gun:setSpentRoundCount(math.min(gun:getMaxAmmo(), gun:getSpentRoundCount() + cost))
     end
     cycle.nextShot, cycle.cooldownDuration = now + stats.cooldown, stats.cooldown
     if gun:isRackAfterShoot() then cycle.rackReady = now + stats.rack end
     cycle.loaded = G.loaded(gun)
-    return true
+    Impact.observe(cycle, cycle.loaded)
+    return true, cost
 end
 
 ---@param player IsoPlayer Operator
@@ -200,7 +242,11 @@ function G.magazineRejection(player, storage, gun, magazine, token)
     if G.servicing[gun] and G.servicing[gun] ~= token then return "TransferPending" end
     if magazine then
         local source = magazine:getContainer()
-        if not source or not source:isInCharacterInventory(player) or not source:contains(magazine) then return "TransferCarried" end
+        if not source or not source:contains(magazine) then return "TransferCarried" end
+        if not source:isInCharacterInventory(player) then
+            local controller = require("OMHTT/ControlAccess").stockpile(player, storage:getParent(), token and token.controller)
+            if not controller or source ~= controller:getContainer() then return "TransferCarried" end
+        end
         if magazine:getFullType() ~= gun:getMagazineType() then return "WrongMagazine" end
         if gun:isContainsClip() then return "MagazineFull" end
         if magazine:isFavorite() then return "TransferFavorite" end
@@ -219,20 +265,43 @@ end
 ---@param token table Active action identity
 ---@return InventoryItem? magazine Transferred native magazine
 function G.transferMagazine(player, storage, gun, magazine, token)
+    if isClient() then return nil end
     if G.magazineRejection(player, storage, gun, magazine, token) then return nil end
+    require("OMHTT/TurretFeed").cancel(gun)
     if magazine then
-        magazine:getContainer():Remove(magazine)
+        local source = magazine:getContainer()
+        source:Remove(magazine)
         player:removeFromHands(magazine)
         gun:setCurrentAmmoCount(magazine:getCurrentAmmoCount())
         gun:setContainsClip(true)
+        if isServer() then
+            sendRemoveItemFromContainer(source, magazine)
+        end
     else
         magazine = instanceItem(gun:getMagazineType())
+        if not magazine then return nil end
         magazine:setCurrentAmmoCount(gun:getCurrentAmmoCount())
-        player:getInventory():AddItem(magazine)
+        local inventory = player:getInventory()
+        if token and token.stockpile then
+            local controller = require("OMHTT/ControlAccess").stockpile(player, storage:getParent(), token and token.controller)
+            if not controller then return nil end
+            inventory = controller:getContainer()
+            if inventory:getCapacityWeight() + magazine:getUnequippedWeight() > 500 then return nil end
+        elseif not inventory:hasRoomFor(player, magazine) then
+            return nil
+        end
+        if inventory:AddItem(magazine) ~= magazine then return nil end
+        Feed.restore(gun, gun:getMaxAmmo(), player, true)
         gun:setContainsClip(false)
         gun:setCurrentAmmoCount(0)
+        if isServer() then
+            sendAddItemToContainer(inventory, magazine)
+        end
     end
     G.cancelLoading(gun)
+    if isServer() then
+        require("OMHTT/TurretItemState").publish(gun, player)
+    end
     return magazine
 end
 

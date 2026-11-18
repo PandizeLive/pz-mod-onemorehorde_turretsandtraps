@@ -72,7 +72,7 @@ The visual can be more noticeable than the damage. Keep debris temporary and bou
 
 Recipes, skills, tool requirements, power sources, ammo conversion, and spoilage policy are TBD. Recommend ordinary material families: wood/metal/wire/electronics, with distinct manual work or capacity costs.
 
-Barbed barricades retain their host's current health on upgrade. No free repairs or duplicate structural HP. A separate wire-condition concept is proposed, not approved. Punji placement in a grave versus a distinct stake bed remains Q06.
+Barbed sections require a wall/fence behind them and share that support's current health (C97). No free repairs, separate wire-health pool or duplicate structural HP. Prove native health/contact support before committing to particular map or crafted surfaces; see checkpoints/R2C3_BACKED_BARBED_SECTIONS.md. C91-C95 settle the former punji/grave question as the distinct Bed Spikes bed.
 
 Servicing must be possible through a concise context flow: inspect status, load/unload, arm/disarm, repair/rearm, connect/disconnect where supported, and dismantle. Show empty, worn, disabled, unpowered, and obstructed states. Do not refill, reset wear, or award materials by picking up/replacing an object.
 

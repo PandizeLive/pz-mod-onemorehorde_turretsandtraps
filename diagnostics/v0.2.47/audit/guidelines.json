@@ -1,0 +1,25 @@
+{
+  "source": {
+    "luaFiles": 101,
+    "pcallTokens": 0,
+    "xpcallTokens": 0,
+    "utf8BOM": 0,
+    "tabs": 0
+  },
+  "packaged": {
+    "luaFiles": 117,
+    "pcallTokens": 0,
+    "xpcallTokens": 0,
+    "utf8BOM": 0,
+    "tabs": 0
+  },
+  "installed": {
+    "luaFiles": 117,
+    "pcallTokens": 0,
+    "xpcallTokens": 0,
+    "utf8BOM": 0,
+    "tabs": 0
+  },
+  "scope": "Owned source, generated packages and both installed mod entries. Does not certify external mods or every style/performance guideline.",
+  "remaining": "C178 performance/layout/empty-pool corrections plus non-guard inline conditional style cleanup in new pack code."
+}

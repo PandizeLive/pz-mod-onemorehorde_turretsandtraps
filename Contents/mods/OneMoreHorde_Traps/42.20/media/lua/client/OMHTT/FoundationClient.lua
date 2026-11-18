@@ -18,7 +18,7 @@ local menuSerial = 0
 local function dispatch(player, command, args)
     Diagnostics.emit("client-request", {request = args.request, command = command,
         tile = Foundation.key(args.x, args.y, args.z), id = args.id, epoch = args.epoch, revision = args.revision,
-        playerX = player:getX(), playerY = player:getY(), playerZ = player:getZ()})
+        playerX = player:getX(), playerY = player:getY(), playerZ = player:getZ()}, nil, nil, "traps")
     if isClient() then
         sendClientCommand(player, Foundation.MODULE, command, args)
     elseif isServer() then
@@ -97,7 +97,7 @@ local function dumpNearby(target)
         end
     end
     Diagnostics.emit("nearby-summary", {playerX = player:getX(), playerY = player:getY(), playerZ = player:getZ(),
-        examined = examined, found = found, capped = examined >= 128})
+        examined = examined, found = found, capped = examined >= 128}, nil, nil, "traps")
     player:setHaloNote(getText("UI_OMHTT_Dumped"), 255, 255, 255, 180)
 end
 
@@ -117,7 +117,7 @@ local function fillMenu(playerNum, context, worldobjects, test)
     Diagnostics.emit("menu-pick", {menu = menuSerial, pickedObjects = #worldobjects,
         selected = Foundation.key(target.x, target.y, target.z), selection = "first-worldobject",
         playerX = player:getX(), playerY = player:getY(), playerZ = player:getZ(),
-        mouseX = getMouseXScaled(), mouseY = getMouseYScaled(), zoom = getCore():getZoom(playerNum)})
+        mouseX = getMouseXScaled(), mouseY = getMouseYScaled(), zoom = getCore():getZoom(playerNum)}, nil, nil, "traps")
     for i = 1, math.min(8, #worldobjects) do
         Diagnostics.object(worldobjects[i], "menu-" .. menuSerial .. "-pick-" .. i, playerNum)
     end
@@ -200,7 +200,7 @@ local function onResult(module, command, result)
     Diagnostics.emit("client-result", {request = result.request, command = result.command, status = result.status,
         tile = Foundation.key(result.x, result.y, result.z), id = result.id, kind = result.kind,
         authorityRevision = result.revision, localRevision = localRevision, ammo = result.ammo, shots = result.shots,
-        facing = result.facing, nextShot = result.nextShot, agreement = agreement, stateIncluded = result.stateIncluded})
+        facing = result.facing, nextShot = result.nextShot, agreement = agreement, stateIncluded = result.stateIncluded}, nil, nil, "traps")
     if result.command ~= "Inspect" then
         local player = getSpecificPlayer(result.playerNum)
         if player then
@@ -215,7 +215,7 @@ local function onResult(module, command, result)
         getCore():getScreenHeight() / 2 - 160, 600, 320, text, false)
     dialog:initialise()
     dialog:addToUIManager()
-    Diagnostics.emit("report-open", {request = result.request, status = result.status, width = 600, height = 320})
+    Diagnostics.emit("report-open", {request = result.request, status = result.status, width = 600, height = 320}, nil, nil, "traps")
 end
 
 ---@return nil
@@ -227,7 +227,7 @@ local function onStart()
     print("[OMHTT] client-ready version=" .. Foundation.VERSION .. " game=" .. getCore():getVersionNumber())
     Diagnostics.auditTranslations()
     Diagnostics.emit("client-ready", {game = getCore():getVersionNumber(), screenWidth = getCore():getScreenWidth(),
-        screenHeight = getCore():getScreenHeight(), apiSprite = tostring(IsoSprite), apiDirections = tostring(IsoDirections)})
+        screenHeight = getCore():getScreenHeight(), apiSprite = tostring(IsoSprite), apiDirections = tostring(IsoDirections)}, nil, nil, "traps")
 end
 
 Events.OnFillWorldObjectContextMenu.Add(fillMenu)

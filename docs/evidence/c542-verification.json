@@ -1,0 +1,71 @@
+{
+  "version": "0.2.71.7",
+  "ownerChoice": "C541 1A; simple shared mechanisms for custom heads",
+  "assertions": 44794,
+  "connectedClients": 0,
+  "renderedAcceptance": "pending",
+  "nativeChecks": {
+    "server-write.log": {
+      "passed": true,
+      "sha256": "bdba0e3fcd0b349d90088b7cecd9f074c28737d2b9e27a6271caebd03eece480"
+    },
+    "server-read.log": {
+      "passed": true,
+      "sha256": "375683c9b33426474326acd90439a4090988698c98de1e8333d50f529e11bee3"
+    },
+    "packages-traps.json": {
+      "passed": true,
+      "sha256": "ce1f1d080e6582974cf613e960c9fefaf7628d6d76aaf2d0fcc224efcf77a55d"
+    },
+    "packages-turrets.json": {
+      "passed": true,
+      "sha256": "bff25e42d2ab3d0d8d12fed7a7c89026460a2164c31e25a1edfc169f53751422"
+    },
+    "packages-both.json": {
+      "passed": true,
+      "sha256": "a65ab5ebfbe05dc1779d127b4160f9b5105b85adea6e07b01bc9d1a208650672"
+    }
+  },
+  "frozenOldCodeControls": [
+    {
+      "case": "rotary",
+      "returncode": 1,
+      "expectedFailure": "fresh contact survives a scan",
+      "matched": true
+    },
+    {
+      "case": "tether",
+      "returncode": 1,
+      "expectedFailure": "in-lane report in the same packet",
+      "matched": true
+    },
+    {
+      "case": "stance",
+      "returncode": 1,
+      "expectedFailure": "standing owner state overrides",
+      "matched": true
+    },
+    {
+      "case": "marker",
+      "returncode": 1,
+      "expectedFailure": "marker renders behind player",
+      "matched": true
+    }
+  ],
+  "productionCases": [
+    "rotary owner observation ages 0/75/150/225/250ms against a 300ms-old scan",
+    "pending/rejected/confirmed rotary contact and duplicate prevention",
+    "custom rotary range 3 and cones 90/180/270",
+    "same-packet off-lane and in-lane Tether actors",
+    "owner/native standing and prone disagreement",
+    "stable pause, reset and resume interpolation",
+    "facing-independent marker, wall occlusion and light lifecycle",
+    "160 tracked lights, 64-entry bounded slices and unload cleanup"
+  ],
+  "testObjects": "Kahlua world/network/UI test doubles; native probes without connected clients",
+  "serverPauseOscillation": "unresolved native/MPFF interaction; no external-mod changes",
+  "historicalTetherMisses": "not all individually attributed",
+  "newWorldRequired": false,
+  "changelogBaseline": "confirmed 0.2.71.6 upload",
+  "ownerDocuments": "four existing edits preserved byte-for-byte"
+}

@@ -1,0 +1,21 @@
+{
+  "scope": "Periodic 10x10 grid geometry only; no PZ runtime, damage, AI, paths or finite-edge behavior. Counts attain density upper bounds: pairs for cardinal, 2x2 blocks for eight-neighbor, five exclusive tiles per cross.",
+  "results": {
+    "cardinal_exclusion": {
+      "centers": 50,
+      "tiles": 100,
+      "density": 0.5
+    },
+    "eight_neighbor_exclusion": {
+      "centers": 25,
+      "tiles": 100,
+      "density": 0.25
+    },
+    "exclusive_cross_footprints": {
+      "centers": 20,
+      "tiles": 100,
+      "density": 0.2
+    }
+  },
+  "diagonal_cross_overlap_tiles": 2
+}

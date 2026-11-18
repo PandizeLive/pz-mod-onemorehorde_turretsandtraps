@@ -1,0 +1,139 @@
+{
+  "version": "0.2.71.5",
+  "connectedClients": 0,
+  "assertions": 44490,
+  "frozenControls": {
+    "baseline": "63947d3",
+    "connectedClients": 0,
+    "cases": [
+      {
+        "case": "child-confirmation",
+        "expectedFailure": "C538 child projectile ignores unconfirmed actor",
+        "reproduced": true,
+        "files": [
+          {
+            "path": "Source/42.20/media/lua/server/OMHTT/TurretVolley.lua",
+            "beforeSHA256": "f6cf5f1b97a58b4cd6591716d193bd0d87b04a1d7642a382ccc97e32ba74ccd9",
+            "afterSHA256": "a2b4ca8d9235e9079b9774b0ea42d9afb3076dce7c9deebbdbdf68bce792d406"
+          }
+        ]
+      },
+      {
+        "case": "confirmed-target",
+        "expectedFailure": "C538 target requires current owner confirmation",
+        "reproduced": true,
+        "files": [
+          {
+            "path": "Source/42.20/media/lua/shared/OMHTT/ControlCombat.lua",
+            "beforeSHA256": "c9cf07af310c8ba7ed477183b0f5ec959cf3138f8f65832456f9d89ccee5976d",
+            "afterSHA256": "98a1353eb0e31d443470551af017784d8475b00af3f4ddf4bd2b11d81614aafd"
+          }
+        ]
+      },
+      {
+        "case": "missing-retry",
+        "expectedFailure": "C538 missing actor cannot recover on timer alone",
+        "reproduced": true,
+        "files": [
+          {
+            "path": "Source/42.20/media/lua/server/OMHTT/Damage.lua",
+            "beforeSHA256": "4e0abad2255811fd776c7becd9121eda0d11a301b079375f9eda7c04b3bcd14f",
+            "afterSHA256": "fb106785c22bb25f8389cdb83c5ae0aefa3c291afc5705999d6b5993ffbeccfe"
+          }
+        ]
+      },
+      {
+        "case": "owner-radius",
+        "expectedFailure": "C538 proc uses owner position inside radius",
+        "reproduced": true,
+        "files": [
+          {
+            "path": "Source/42.20/media/lua/server/OMHTT/TurretProc.lua",
+            "beforeSHA256": "b237be198c474cae4f31f243e1518bb8cf86c3ec48b66d9b33ef5dd814f301ee",
+            "afterSHA256": "ddca98823bcf3d590fe9c2cc5059519d8e7815f8c81769ed54c2ff8b197deeae"
+          }
+        ]
+      },
+      {
+        "case": "idle-sweep",
+        "expectedFailure": "C538 multiplayer idle sweep is cosmetic",
+        "reproduced": true,
+        "files": [
+          {
+            "path": "Source/42.20/media/lua/client/OMHTT/TurretRenderer.lua",
+            "beforeSHA256": "d1bbc6a8f4e6df2cb67f7cc355ae1dd796b76f4a89990590fc6a1e1fb1030d8b",
+            "afterSHA256": "4c38fb9df31964bdc14ce92a361b4ca55083f5f64c5ace36a0c203a1baa04f50"
+          }
+        ]
+      },
+      {
+        "case": "counted-loading",
+        "expectedFailure": "C538 counted batch cannot bypass per-item loading time",
+        "reproduced": true,
+        "files": [
+          {
+            "path": "Source/42.20/media/lua/shared/OMHTT/TurretTransferAction.lua",
+            "beforeSHA256": "894790aa15ee6bc56ca26de0589a1d3e059ef17445fde4450905ad98dd2225f7",
+            "afterSHA256": "7eed046a5fb2fa7ec65bd6392be465e18e737a9af77267eaade48cb1aa559141"
+          }
+        ]
+      },
+      {
+        "case": "native-reconcile",
+        "expectedFailure": "C538 client reconciles native actor lifecycle",
+        "reproduced": true,
+        "files": [
+          {
+            "path": "Source/42.20/media/lua/client/OMHTT/DefenseCombatClient.lua",
+            "beforeSHA256": "3db94264e1e656b2eaa0f74fe4affe6f5f7559c624d9a644f0fc8f2ffd5edb81",
+            "afterSHA256": "9eba4a5b5620f1612757931dd6e2a1c34da31a3d9925b0f8e52d9174996add42"
+          }
+        ]
+      },
+      {
+        "case": "native-spear",
+        "expectedFailure": "C538 native spear uses opaque world rendering",
+        "reproduced": true,
+        "files": [
+          {
+            "path": "Source/42.20/media/lua/client/OMHTT/PrototypeEffects.lua",
+            "beforeSHA256": "d203142a66a14eb1f347623e9a6df391decc486f1b2ff75a3607a0299de2987e",
+            "afterSHA256": "26a886dec909b167915c981abaec14a4534048045390d3c54c9f470f5c9e525e"
+          }
+        ]
+      }
+    ],
+    "correctedPassed": true,
+    "result": "Assertions passed: 44490.0"
+  },
+  "nativeChecks": {
+    "server-write.log": {
+      "sha256": "794e024fcfd0d2cb51dfc5a844479a17365aa3cbeb3d3bfdeeea63257827b63e",
+      "passed": true
+    },
+    "server-read.log": {
+      "sha256": "b3a813e3d71bda87c484797d0579cac79fee4f2db9d1213c5b96715ab19788bc",
+      "passed": true
+    },
+    "packages-traps.json": {
+      "sha256": "114d87a4a93e6b271e31be7a5f1a2255f7cfa08f7d0e42cbe27328c24c8fe53f",
+      "passed": true
+    },
+    "packages-turrets.json": {
+      "sha256": "4b4ad93ed073bb695058b7dac8e73e2511424e7310f45fb89b8e294dd5f1cccb",
+      "passed": true
+    },
+    "packages-both.json": {
+      "sha256": "818999f8145024c5e2048c8a93defaf5504f7f4b011ae7ddc8f005c8c897b947",
+      "passed": true
+    }
+  },
+  "nativeAuthorityOutputSHA256": "dcd545a5b695f8abd91fc758c0cc427e10b8b1c9d265815d2264544f054b3d8a",
+  "sourceFiles": 464,
+  "packagedFiles": 640,
+  "ownerDocuments": "unchanged",
+  "connectedAcceptance": "pending",
+  "nativeContainerErrors": "unattributed",
+  "pauseConflict": "unchanged",
+  "lobberLiveEightTileCause": "not established"
+}

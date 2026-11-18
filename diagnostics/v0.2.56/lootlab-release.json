@@ -1,0 +1,94 @@
+{
+  "version": "0.2.56",
+  "url": "https://admin.onemorehorde.com/admin/LootLab/",
+  "workerVersion": "aad919e4-cf26-47b1-ba68-a84766afe388",
+  "workerSHA256": "e0a6c2e9d1a1a376416b1c2b6a0bfef00747e1518293a8f7c174b82b7b7fc205",
+  "workerCodeUnchanged": true,
+  "assetsChanged": [
+    "tier-list.js",
+    "style.css"
+  ],
+  "assetHashes": {
+    "tier-list.js": "bef62872cfcf4e426fabafd5fff113d17bdb0346bb3149a14c2ad973da10532e",
+    "style.css": "14fa6326d7b6eb8c735813a3e2ff89de5ac73c3ef6c2fadcada43532af44c85c"
+  },
+  "savedWeights": "No database writes; existing browser and server settings preserved",
+  "browserChecks": "Card drag, keyboard moves, rarity colors, confirm/cancel, custom weights, reload persistence and mobile bounds passed",
+  "remoteChecks": [
+    {
+      "path": "/admin/",
+      "anonymousStatus": 302,
+      "accessLogin": true
+    },
+    {
+      "path": "/admin/LootLab",
+      "anonymousStatus": 302,
+      "accessLogin": true
+    },
+    {
+      "path": "/admin/LootLab/",
+      "anonymousStatus": 302,
+      "accessLogin": true
+    },
+    {
+      "path": "/admin/LootLab/data.js",
+      "anonymousStatus": 302,
+      "accessLogin": true
+    },
+    {
+      "path": "/admin/LootLab/model.js",
+      "anonymousStatus": 302,
+      "accessLogin": true
+    },
+    {
+      "path": "/admin/LootLab/tier-list.js",
+      "anonymousStatus": 302,
+      "accessLogin": true
+    },
+    {
+      "path": "/admin/LootLab/map-controls.js",
+      "anonymousStatus": 302,
+      "accessLogin": true
+    },
+    {
+      "path": "/admin/LootLab/settings-sync.js",
+      "anonymousStatus": 302,
+      "accessLogin": true
+    },
+    {
+      "path": "/admin/LootLab/settings",
+      "anonymousStatus": 302,
+      "accessLogin": true
+    },
+    {
+      "path": "/admin/LootLab/app.js",
+      "anonymousStatus": 302,
+      "accessLogin": true
+    },
+    {
+      "path": "/admin/LootLab/style.css",
+      "anonymousStatus": 302,
+      "accessLogin": true
+    },
+    {
+      "path": "/admin/LootLab/provenance.json",
+      "anonymousStatus": 302,
+      "accessLogin": true
+    },
+    {
+      "path": "/admin/LootLab/README.md",
+      "anonymousStatus": 302,
+      "accessLogin": true
+    },
+    {
+      "url": "https://api.onemorehorde.com/v1/leaderboard?limit=1",
+      "status": 200
+    },
+    {
+      "url": "https://api.onemorehorde.com/v1/workshop-snapshots/latest",
+      "status": 200
+    }
+  ],
+  "publication": "Hosted assets deployed; anonymous protected routes remain protected; authenticated rendered acceptance pending",
+  "productionSettingsUnchangedExceptReleaseMetadata": true
+}

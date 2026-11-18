@@ -1,0 +1,75 @@
+{
+  "checkpoint": "C541",
+  "date": "2026-11-01",
+  "version": "0.2.71.6",
+  "status": "investigation; no gameplay changes",
+  "versions": {
+    "client": "0.2.71.6",
+    "server": "0.2.71.6"
+  },
+  "captures": {
+    "client-console.txt": "394be4b6744f25d2f73d320d474ecc4c70e3cfa772c92f09f91cf30b404712f0",
+    "server-console.txt": "3a99fe938452ec2cbe590ad51f1eb13bb42812b09c9204699c50590450d3141f",
+    "server-mod.info": "20854a5215a73d2db739358d77a8c197e2d18618fc326344967191adc0d1aa28",
+    "IsoPlayer-current.txt": "62d321743cfbdb7147458c786e649f6703c3aac42ae20c72533794e1438fe933",
+    "audit-output.txt": "7a5496965820442180d1a3edc17752a6a7d15d2f8ae31999183534422c24f0a2"
+  },
+  "logMetrics": {
+    "summaryCounters": {
+      "owner-contact-accepted": 87606,
+      "combat-result-applied": 370,
+      "owner-contact-position-rejected": 6973,
+      "rotary-hit": 14
+    },
+    "combatResultKinds": {
+      "poke-floor": 47,
+      "bed-spikes": 3,
+      "barrier": 4,
+      "tether-dart": 23,
+      "tether-pull": 16,
+      "barbs": 12
+    },
+    "combatResultReasons": {
+      "applied": 105
+    },
+    "tetherPhases": {
+      "out": 27,
+      "hold": 23,
+      "back": 22,
+      "reset": 27,
+      "idle": 21
+    },
+    "tetherReasons": {
+      "zombie": 23
+    },
+    "clientPauseMs": 62100,
+    "serverPauseTransitionsDuringClientPause": 411,
+    "pauseCombatResults": 0
+  },
+  "focusedChecks": 10,
+  "totalHarnessAssertions": 44493,
+  "connectedClientsInHarness": 0,
+  "reproduced": [
+    "Fresh rotary owner sample discarded solely because scan job is200ms old",
+    "Rejected rotary damage consumes observation and arm/pass",
+    "Still-loaded powered world light expires201ms after renderer stops drawing"
+  ],
+  "notProven": [
+    "Exact cause of each live rotary miss",
+    "Exact cause of intermittent Tether nonactivation",
+    "Exclusive attribution of all paused sliding to MPFF/native speed conflict"
+  ],
+  "limitations": [
+    "TurretDetailedLogging=false; rotary-hit summary counts are attempts, not confirmed damage",
+    "Tether logs record launched phases, not every idle detection rejection",
+    "Position-rejected counts do not identify individual actors or devices",
+    "World/player/network/UI objects in the replay are test doubles"
+  ],
+  "githubMirror": {
+    "status": "verified",
+    "commit": "ff8a69ed36c9d0a62288f97f1686f53ef570ac90",
+    "pullRequest": "https://github.com/PandizeLive/pz-mod-onemorehorde_turretsandtraps/pull/1",
+    "authorization": "Owner explicitly approved C541 findings and sanitized evidence export on 2026-11-01; approval-review block resolved."
+  },
+  "ownerDocuments": "four hashes unchanged"
+}

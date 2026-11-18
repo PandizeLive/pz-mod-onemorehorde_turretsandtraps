@@ -46,24 +46,26 @@ function Server.initialize()
             record.facing = Foundation.normalizeFacing(record.facing)
             if record.kind == "barrier" then
                 record.x, record.y, record.z = slot.x, slot.y, slot.z
+                require("OMHTT/DefenseXP").register(record.id, record.owner or record.builderUsername,
+                    record.x, record.y, record.z)
                 if record.collisionModel == "edge-v1" then
                     record.collisionModel = "outline-v1"
                     record.revision = record.revision + 1
-                    Diagnostics.emit("barrier-outline-migrate", {id = record.id, facing = record.facing})
+                    Diagnostics.emit("barrier-outline-migrate", {id = record.id, facing = record.facing}, nil, nil, "traps")
                 end
             end
             if record.cooldownClock ~= "realtime-ms-v1" then
                 record.nextShot = 0
                 record.cooldownClock = "realtime-ms-v1"
                 Diagnostics.emit("combat-migration", {id = record.id, facing = record.facing,
-                    cooldownClock = record.cooldownClock})
+                    cooldownClock = record.cooldownClock}, nil, nil, "traps")
             end
         end
     end
     print("[OMHTT] server-ready version=" .. Foundation.VERSION .. " game=" .. getCore():getVersionNumber())
     Diagnostics.emit("authority-ready", {game = getCore():getVersionNumber(), schema = store.schema,
         barrierDamage = Foundation.barrierDamage(), barrierMaxHealth = Foundation.barrierHealth(),
-        slots = #keys, nextId = store.nextId, controls = SandboxVars.OMHTurretsTraps.FoundationTestControls})
+        slots = #keys, nextId = store.nextId, controls = SandboxVars.OMHTurretsTraps.FoundationTestControls}, nil, nil, "traps")
 end
 
 ---@param object IsoObject Exact prototype object
@@ -75,7 +77,7 @@ local function refreshVisual(object, record)
     object:setSprite(desired)
     object:invalidateRenderChunkLevel(FBORenderChunk.DIRTY_OBJECT_MODIFY)
     object:transmitUpdatedSpriteToClients()
-    Diagnostics.emit("visual-refresh", {id = record.id, kind = record.kind, facing = record.facing, sprite = desired})
+    Diagnostics.emit("visual-refresh", {id = record.id, kind = record.kind, facing = record.facing, sprite = desired}, nil, nil, "traps")
     return true
 end
 
@@ -127,7 +129,7 @@ local function reply(player, command, args, status, square, slot)
         playerZ = player:getZ(), dx = player:getX() - args.x - 0.5, dy = player:getY() - args.y - 0.5,
         requestedId = tostring(args.id), expectedEpoch = tostring(args.epoch), actualEpoch = result.epoch,
         id = result.id, revision = result.revision, ammo = result.ammo, shots = result.shots,
-        nextShot = result.nextShot, facing = result.facing, stateIncluded = result.stateIncluded})
+        nextShot = result.nextShot, facing = result.facing, stateIncluded = result.stateIncluded}, nil, nil, "traps")
     if isClient() then
         error("[OMHTT] Server reply attempted on client")
     elseif isServer() then
@@ -175,14 +177,17 @@ end
 function Server.tick()
     if not store or #keys == 0 then return end
     local visited = 0
+    local deadline = getTimestampMs() + 1
     for i = 1, math.min(4, #keys) do
+        if visited > 0 and getTimestampMs() >= deadline then break end
         if cursor > #keys then
             cursor = 1
         end
         local slot = store.tiles[keys[cursor]]
         cursor = cursor + 1
         visited = visited + 1
-        if slot.retired then
+        if slot.retired and (not slot.cleanupAt or getTimestampMs() >= slot.cleanupAt) then
+            slot.cleanupAt = getTimestampMs() + 1000
             if slot.outlineRetired then
                 Outline.refresh(slot.outlineRetired)
             end
@@ -198,7 +203,7 @@ function Server.tick()
     stats.visits = stats.visits + visited
     stats.peak = math.max(stats.peak, visited)
     if stats.ticks % 600 == 0 then
-        Diagnostics.emit("scheduler", {ticks = stats.ticks, visits = stats.visits, peak = stats.peak, slots = #keys})
+        Diagnostics.emit("scheduler", {ticks = stats.ticks, visits = stats.visits, peak = stats.peak, slots = #keys}, nil, nil, "traps")
     end
 end
 
@@ -237,7 +242,7 @@ function Server.onCommand(module, command, player, args)
     Diagnostics.emit("authority-request", {command = command, request = tostring(args.request),
         x = tostring(args.x), y = tostring(args.y), z = tostring(args.z), version = tostring(args.version),
         id = tostring(args.id), revision = tostring(args.revision), epoch = tostring(args.epoch),
-        playerX = player:getX(), playerY = player:getY(), playerZ = player:getZ()})
+        playerX = player:getX(), playerY = player:getY(), playerZ = player:getZ()}, nil, nil, "traps")
     if not Foundation.isInteger(args.x, 0, 1000000) or not Foundation.isInteger(args.y, 0, 1000000)
         or not Foundation.isInteger(args.z, -32, 31) or not Foundation.isInteger(args.request, 1, 1000000000) then return end
     if not Foundation.canUse(player) then
@@ -306,7 +311,7 @@ function Server.onCommand(module, command, player, args)
             kind = "foundation", ammo = 0, shots = 0, nextShot = 0, facing = 0, observedLoss = 0,
         }
         store.nextId = store.nextId + 1
-        Diagnostics.emit("placement-stage", {request = args.request, stage = "construct", kind = command, id = record.id})
+        Diagnostics.emit("placement-stage", {request = args.request, stage = "construct", kind = command, id = record.id}, nil, nil, "traps")
         local object = nil
         if command == "PlacePotato" then
             record.kind = "potato"
@@ -314,7 +319,7 @@ function Server.onCommand(module, command, player, args)
         end
         object = IsoObject.new(square, Foundation.spriteFor(record.kind, record.facing), Foundation.PREFIX .. record.id)
         object:setOutlineOnMouseover(true)
-        Diagnostics.emit("placement-stage", {request = args.request, stage = "attach", id = record.id, kind = record.kind})
+        Diagnostics.emit("placement-stage", {request = args.request, stage = "attach", id = record.id, kind = record.kind}, nil, nil, "traps")
         Foundation.writeMarker(object, record)
         square:AddTileObject(object)
         slot.device = record

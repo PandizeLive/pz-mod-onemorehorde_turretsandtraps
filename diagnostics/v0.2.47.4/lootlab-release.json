@@ -1,0 +1,90 @@
+{
+  "decision": "C185",
+  "modVersion": "0.2.47.4",
+  "workerVersion": "7670c6d9-58a6-446f-a3e3-aa433c5f8d46",
+  "previousWorker": "01b226e9-cd75-42f6-bada-d8b33c008d27",
+  "apiTests": 82,
+  "browser": "Exact custom anchors across seven bands; drag/drop, override, invalid/duplicate feedback, Sandbox download, actual page reload and direct-weight regression passed; zero page errors",
+  "persistence": "Existing optional account tierWeights fields and native Sandbox options; no D1 schema change",
+  "ownerData": "No account values or gameplay loot defaults changed by deployment",
+  "verification": {
+    "phase": "after",
+    "productionBundleMatches": true,
+    "sha256": "42af24d0b65c7c01dd06885aec57b50981f6df94bf70862f1b2ba652f99c8cce",
+    "checks": [
+      {
+        "path": "/admin/",
+        "anonymousStatus": 302,
+        "accessLogin": true
+      },
+      {
+        "path": "/admin/LootLab",
+        "anonymousStatus": 302,
+        "accessLogin": true
+      },
+      {
+        "path": "/admin/LootLab/",
+        "anonymousStatus": 302,
+        "accessLogin": true
+      },
+      {
+        "path": "/admin/LootLab/data.js",
+        "anonymousStatus": 302,
+        "accessLogin": true
+      },
+      {
+        "path": "/admin/LootLab/model.js",
+        "anonymousStatus": 302,
+        "accessLogin": true
+      },
+      {
+        "path": "/admin/LootLab/tier-list.js",
+        "anonymousStatus": 302,
+        "accessLogin": true
+      },
+      {
+        "path": "/admin/LootLab/map-controls.js",
+        "anonymousStatus": 302,
+        "accessLogin": true
+      },
+      {
+        "path": "/admin/LootLab/settings-sync.js",
+        "anonymousStatus": 302,
+        "accessLogin": true
+      },
+      {
+        "path": "/admin/LootLab/settings",
+        "anonymousStatus": 302,
+        "accessLogin": true
+      },
+      {
+        "path": "/admin/LootLab/app.js",
+        "anonymousStatus": 302,
+        "accessLogin": true
+      },
+      {
+        "path": "/admin/LootLab/style.css",
+        "anonymousStatus": 302,
+        "accessLogin": true
+      },
+      {
+        "path": "/admin/LootLab/provenance.json",
+        "anonymousStatus": 302,
+        "accessLogin": true
+      },
+      {
+        "path": "/admin/LootLab/README.md",
+        "anonymousStatus": 302,
+        "accessLogin": true
+      },
+      {
+        "url": "https://api.onemorehorde.com/v1/leaderboard?limit=1",
+        "status": 200
+      },
+      {
+        "url": "https://api.onemorehorde.com/v1/workshop-snapshots/latest",
+        "status": 200
+      }
+    ]
+  }
+}

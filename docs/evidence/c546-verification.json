@@ -1,0 +1,78 @@
+{
+  "version": "0.2.71.9",
+  "movingPaths": 786,
+  "heads": [
+    "RotaryBlades",
+    "RotaryBat",
+    "registered two-arm test head"
+  ],
+  "matchesReference": 786,
+  "missed": 0,
+  "extra": 0,
+  "stationaryExpectedHits": 6,
+  "hitsByArrivalPhase": {
+    "15ms": 6,
+    "85ms": 6
+  },
+  "perHeadPhaseChecks": 6,
+  "simulatedTransitMs": 65,
+  "realDamageChecks": "Bat, Blades and custom damage and duplicate suppression with native-authority test actors. Production MP owner transaction covered separately by C509 on Bat and Blades.",
+  "otherChecks": [
+    "two unprocessed observations",
+    "pivot and grazing",
+    "near-graze miss",
+    "cone reversals",
+    "13 Rapid Fire",
+    "stop between ticks",
+    "pause epoch",
+    "ownership handoff",
+    "down/get-up",
+    "power-off",
+    "expiry",
+    "Siphon pass",
+    "custom reach"
+  ],
+  "replayBenchmark": {
+    "movingActorsPerPacket": 32,
+    "samples": 40,
+    "p95Ms": 2.454,
+    "maxMs": 2.74
+  },
+  "assertions": 51902,
+  "native": {
+    "write": "f7565984ed7c6c9633765b334608726061dd547e747e13586516b6ff05991214",
+    "read": "aa400e762fff597df992d821914c7b97beb0b3b4534a78544c21e46c8de58ac7",
+    "traps": {
+      "selection": "traps",
+      "version": "0.2.71.9",
+      "passed": true,
+      "seconds": 69.4
+    },
+    "turrets": {
+      "selection": "turrets",
+      "version": "0.2.71.9",
+      "passed": true,
+      "seconds": 68.2
+    },
+    "both": {
+      "selection": "both",
+      "version": "0.2.71.9",
+      "passed": true,
+      "seconds": 53.9
+    }
+  },
+  "connectedClients": 0,
+  "releaseControl": {
+    "tag": "test/v0.2.71.8",
+    "rotarySHA256": "cfaa441c675128475b48cb45c512a40ceaca67175ce576231ceeeb64f7a73f63",
+    "failedAt": "Rotary Bat spurious crossing at radius .45, -9 to +11 degrees"
+  },
+  "priorWorkshopUpload": {
+    "status": "confirmed",
+    "version": "0.2.71.8",
+    "itemId": "3828638252",
+    "sourceCommit": "9e2d6368778a41878d708b27094394ad5b3b3d48",
+    "changelogSha256": "92932C258869FADED9C0169CC79BEAEB02A154171E5824A7F36D62F60735E50C",
+    "confirmedUtc": "2026-11-02T05:39:30.9165031Z"
+  }
+}

@@ -1,0 +1,47 @@
+{
+  "$schema": "../node_modules/wrangler/config-schema.json",
+  "name": "omh-leaderboard-api",
+  "main": "dist/index.js",
+  "compatibility_date": "2026-08-25",
+  "compatibility_flags": ["nodejs_compat"],
+  "workers_dev": true,
+  "assets": {
+    "directory": "assets",
+    "binding": "LOOT_LAB_ASSETS",
+    "run_worker_first": true,
+    "html_handling": "none",
+    "not_found_handling": "none"
+  },
+  "routes": [
+    { "pattern": "api.onemorehorde.com", "custom_domain": true },
+    { "pattern": "admin.onemorehorde.com", "custom_domain": true }
+  ],
+  "observability": { "enabled": true, "head_sampling_rate": 1 },
+  "vars": {
+    "ALLOWED_ORIGINS": "https://onemorehorde.com,https://www.onemorehorde.com,https://one-more-horde-leaderboard.pandize.chatgpt.site",
+    "ADMIN_ENABLED": "true",
+    "ADMIN_HOSTS": "admin.onemorehorde.com,omh-leaderboard-api.pandize.workers.dev",
+    "ADMIN_EMAIL_ALLOWLIST": "abandiofficial@gmail.com",
+    "MEDIA_PUBLIC_URL": "https://media.onemorehorde.com",
+    "SUPPORTED_MOD_VERSION": "0.6.3,0.6.9.6,0.6.9.7,0.6.16.3,0.6.16.4",
+    "SUPPORTED_GAME_VERSION": "42.20.3,42.20.4"
+  },
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "omh-leaderboard",
+      "database_id": "d02d82dd-1d2c-4813-b4de-5ef41f2e2965",
+      "migrations_dir": "migrations"
+    }
+  ],
+  "r2_buckets": [
+    {
+      "binding": "SCORE_EXPORTS",
+      "bucket_name": "omh-score-exports"
+    },
+    {
+      "binding": "MEDIA",
+      "bucket_name": "omh-media"
+    }
+  ]
+}

@@ -1,0 +1,167 @@
+{
+  "version": "0.2.70.11",
+  "connectedClients": 0,
+  "stages": [
+    {
+      "stage": "packages-build",
+      "passed": true,
+      "seconds": 0.8,
+      "log": "diagnostics/c517/final-packages-build.log",
+      "sha256": "fc6a096f0c1a52a3f5ec0c17b4774cfdd779e60a7b5ec54baa2c0bc385b350c4"
+    },
+    {
+      "stage": "negative-controls",
+      "passed": true,
+      "seconds": 53.8,
+      "log": "diagnostics/c517/final-negative-controls.log",
+      "sha256": "962db9c978aa9f843791f54d78f6c01309fe28da8ddf20e066f75cac49c5789d"
+    },
+    {
+      "stage": "validation",
+      "passed": true,
+      "seconds": 20.5,
+      "log": "diagnostics/c517/final-validation.log",
+      "sha256": "d41decf8f1f54cd277f4198a1061059be4f09a0549d1fb3515cfe77e0e4eab37"
+    },
+    {
+      "stage": "native-write",
+      "passed": true,
+      "seconds": 68.0,
+      "log": "diagnostics/c517/final-native-write.log",
+      "sha256": "b1cfc48a8f98b1232ae3652c3441f5379dd7c4067b455fc3be4d5c0d163c90cd"
+    },
+    {
+      "stage": "native-read",
+      "passed": true,
+      "seconds": 60.8,
+      "log": "diagnostics/c517/final-native-read.log",
+      "sha256": "9bf81ec8342b58fbf2d5281e7f090f5c8ab8b4645066d951eb7d0034b34f1928"
+    },
+    {
+      "stage": "package-isolation",
+      "passed": true,
+      "seconds": 172.5,
+      "log": "diagnostics/c517/final-package-isolation.log",
+      "sha256": "7b428f6070c4c86c7b06b03112bc241995e033d560b3196e4f5a02c5ba9da13a"
+    },
+    {
+      "stage": "native-combat",
+      "passed": true,
+      "seconds": 61.8,
+      "log": "diagnostics/c517/final-native-combat.log",
+      "sha256": "3e4378e6dc18eb90cb50a8f85ff939a2bdb64f94416806a8817a17cd39c0ef72"
+    }
+  ],
+  "regressions": {
+    "baseline": "f0b8702",
+    "connectedClients": 0,
+    "cases": [
+      {
+        "case": "fresh-membership",
+        "expectedFailure": "C517 spatial membership consumes",
+        "reproduced": true,
+        "files": [
+          {
+            "path": "Source/42.20/media/lua/server/OMHTT/DefenseContactServer.lua",
+            "beforeSHA256": "318378d793d776ad87e4a9d81b7bb53f29d421929bfcd6fb535a422d2b5d52b1",
+            "afterSHA256": "a052d4dd69f30856147d35d19e068fcfaa0a0b3cc9c68ab99fe92dd83dfefd2e"
+          }
+        ]
+      },
+      {
+        "case": "first-laser",
+        "expectedFailure": "C517 first reported laser contact",
+        "reproduced": true,
+        "files": [
+          {
+            "path": "Source/42.20/media/lua/server/OMHTT/ControlSensor.lua",
+            "beforeSHA256": "d80f93cbf39326a6a4d6cc9c583ce82ce935c1c03b0f9cca3bc5ecafe04b5d30",
+            "afterSHA256": "0cd62848904e542bebcfc8ffac69740872420c2b8c2ed4da64f05da9df55e80b"
+          }
+        ]
+      },
+      {
+        "case": "late-trap-view",
+        "expectedFailure": "C517 delayed wire metadata",
+        "reproduced": true,
+        "files": [
+          {
+            "path": "Source/42.20/media/lua/client/OMHTT/ControlDiscovery.lua",
+            "beforeSHA256": "c9e1231cc5a3c8d9e398183dc0f5aea07764eb76ee57cad4b250eac2e8b2f263",
+            "afterSHA256": "27bdd34ed0a7a65991b932de0a678667c5c8897c303e6aa7745a0bfea3a176fb"
+          },
+          {
+            "path": "Source/42.20/media/lua/client/OMHTT/BedPlayer.lua",
+            "beforeSHA256": "a260ca16341e336d91c3c475dabe769fe4d170b8700a8c51c032b973598bfc0e",
+            "afterSHA256": "01582fa13c87a62270892f0003052537e54e48f371c0bbbe26a8c1417c8dd8a4"
+          }
+        ]
+      },
+      {
+        "case": "continuous-dart",
+        "expectedFailure": "C517 outbound dart continues",
+        "reproduced": true,
+        "files": [
+          {
+            "path": "Source/42.20/media/lua/shared/OMHTT/TetherCycle.lua",
+            "beforeSHA256": "fdf9fdb437e7a8ffbf1373181e877c280c48c42f8aebfdfe01399aeacabcb01e",
+            "afterSHA256": "b77a38a1fe71fece3e7ed42b9dd4f6dac6953f31f658610be4afecaa5990f3f7"
+          }
+        ]
+      },
+      {
+        "case": "attached-dart",
+        "expectedFailure": "C517 embedded nail follows",
+        "reproduced": true,
+        "files": [
+          {
+            "path": "Source/42.20/media/lua/client/OMHTT/TetherView.lua",
+            "beforeSHA256": "0f7fe90e5adcb2298b72a165e28cffef84bcd9d2e5c861d3ff4c3fb91a9d439c",
+            "afterSHA256": "83c3bd1d591e9b17dcd24e0ecd1d1704a1bef377856ac842adafa1cb90496182"
+          }
+        ]
+      },
+      {
+        "case": "flight-transit",
+        "expectedFailure": "C517 projectile travel accounts",
+        "reproduced": true,
+        "files": [
+          {
+            "path": "Source/42.20/media/lua/client/OMHTT/PrototypeEffects.lua",
+            "beforeSHA256": "500e1977cc42abcc9e520efbb47cb27b47fbb33846c39ff08c0d44f457669f9f",
+            "afterSHA256": "2b65050a2704d9c8ccefa0ddea718f67a5650c90e73071896dc0ee18d6101a86"
+          }
+        ]
+      },
+      {
+        "case": "visible-aim",
+        "expectedFailure": "C517 actual renderer follows",
+        "reproduced": true,
+        "files": [
+          {
+            "path": "Source/42.20/media/lua/client/OMHTT/TurretRenderer.lua",
+            "beforeSHA256": "8adbeda4ff66fc4d541010bb430b35adb25c5b3c0a4b11db7af4705f3ed16199",
+            "afterSHA256": "37e88e1c4abcafbc659a09102045b16baac87651cf8c1b3b7793abf88ff1c1ef"
+          }
+        ]
+      },
+      {
+        "case": "trigger-expiry",
+        "expectedFailure": "C517 expired owner report",
+        "reproduced": true,
+        "files": [
+          {
+            "path": "Source/42.20/media/lua/server/OMHTT/ControlWorld.lua",
+            "beforeSHA256": "a0bea9897ec0c9c144b9fa0388e108271e1ad1816f362bcc83407d9c167ea595",
+            "afterSHA256": "6cb01e9ae023e877cb27bc5922a06b580e5071c1d5149173d606fbdb38646789"
+          }
+        ]
+      }
+    ],
+    "correctedPassed": true,
+    "result": "Assertions passed: 40498.0"
+  },
+  "nativeFixtureCorrection": "Initial ownership fixture exposed grid squares too late for the shared actor index. Expose its real IsoGridSquare objects before reporting; native actor/connection userdata retained. Initial failure is preserved in diagnostics/c517/native-ownership-fixture-before.log.",
+  "testFixtureCorrection": "Expiry replay now reindexes the stale native actor and asserts it remains an occupant before checking that expired reports cannot activate the plate.",
+  "acceptance": "Controlled and native zero-client checks passed; connected rendered acceptance remains pending."
+}

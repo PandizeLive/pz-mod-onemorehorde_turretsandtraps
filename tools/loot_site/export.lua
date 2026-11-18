@@ -20,6 +20,7 @@ local function export()
     local definitions = require("OMHTT/LootDefinitions")
     local wanted = {}
     for i = 1, #definitions.POOLS do wanted[definitions.POOLS[i]] = true end
+    for _, name in pairs({"LibraryBooks", "BookstoreBlueCollar", "BookstoreScience", "LivingRoomShelf", "MagazineRackMixed"}) do wanted[name] = true end
     local routes, pools, explicit = {}, {}, {}
     for room, distribution in pairs(SuburbsDistributions) do
         if type(distribution) == "table" then

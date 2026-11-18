@@ -1,0 +1,2 @@
+contactSavedMode=testMode
+testMode="server"

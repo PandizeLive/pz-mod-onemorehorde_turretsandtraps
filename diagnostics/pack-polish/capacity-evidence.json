@@ -1,0 +1,12 @@
+{
+  "versionObserved": "0.2.47.1",
+  "bytes": 217603,
+  "sha256": "f5dcf6af3cd74509d93719ea8e4a408964d05e4a65be6f49928c7f758899abd3",
+  "capacityWarnings": 23,
+  "sample": [
+    "WARN : General      f:1224 at InventoryContainer.setCapacity      > Attempting to set capacity of Base.OMHTTTurretBase:zombie.inventory.types.InventoryContainer@2102d45over maximum capacity of 44.0",
+    "WARN : General      f:1225 at InventoryContainer.setCapacity      > Attempting to set capacity of Base.OMHTTTurretBase:zombie.inventory.types.InventoryContainer@2102d45over maximum capacity of 44.0"
+  ],
+  "cause": "Carried turret base weighs 6; InventoryContainer limit is 50 - actualWeight = 44. T.configure requested 50 and tooltip called it every frame.",
+  "nativeWrite0472CapacityWarnings": 0
+}

@@ -1,0 +1,41 @@
+{
+  "version": "0.2.71.6",
+  "ownerChoice": "C539 1B",
+  "assertions": 44580,
+  "connectedClients": 0,
+  "nativeChecks": {
+    "server-write.log": {
+      "passed": true,
+      "sha256": "28a026f0cbab3ae07c60631b6056ffd04fba7006b91456f710b9100249e2897c"
+    },
+    "server-read.log": {
+      "passed": true,
+      "sha256": "1bb96b3cff5a59f8570aff9659c1de02a76bb73384967e11bea91836c9d3d362"
+    },
+    "packages-traps.json": {
+      "passed": true,
+      "sha256": "ba4ff8a8c6664128a7198de0a448c8fb8b00e4fa8aa697aa4319112a99a24cb6"
+    },
+    "packages-turrets.json": {
+      "passed": true,
+      "sha256": "251b8030033000a47a95cd40a73b55407025eb1ced7c1e92d0b960aadb307a77"
+    },
+    "packages-both.json": {
+      "passed": true,
+      "sha256": "a9e30e0bd569fb710447e9e80461bb31ba6163f79cea770829ebc2190eb981b4"
+    }
+  },
+  "closeBlastCases": 12,
+  "payloads": 3,
+  "ranges": [
+    0,
+    0.1,
+    1,
+    5
+  ],
+  "damageSink": "test double",
+  "landingFuse": "unchanged",
+  "newWorldRequired": false,
+  "changelogBaseline": "confirmed 0.2.71.4; unuploaded 0.2.71.5 notes retained",
+  "ownerDocuments": "unchanged"
+}

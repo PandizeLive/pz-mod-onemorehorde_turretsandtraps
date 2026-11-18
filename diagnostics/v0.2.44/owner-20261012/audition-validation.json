@@ -1,0 +1,50 @@
+[
+  {
+    "code": "4A",
+    "name": "BloodSplatter",
+    "event": "event:/Character/Combat/BloodSplatter",
+    "seconds": 0.9793958333333334,
+    "peak": 0.572418212890625,
+    "previewGain": 1
+  },
+  {
+    "code": "4B",
+    "name": "AerosolBombExplode",
+    "event": "event:/Weapon/Throwable/AerosolBomb/Explode",
+    "seconds": 7.3152083333333335,
+    "peak": 1.0,
+    "previewGain": 0.9
+  },
+  {
+    "code": "4C",
+    "name": "PipeBombExplode",
+    "event": "event:/Weapon/Throwable/PipeBomb/Explode",
+    "seconds": 7.3152083333333335,
+    "peak": 1.0,
+    "previewGain": 0.9
+  },
+  {
+    "code": "5A",
+    "name": "BoxOfShellsPlaceAll",
+    "event": "event:/Weapon/Firearm/BoxOfShells/PlaceAll",
+    "seconds": 2.310875,
+    "peak": 0.1568603515625,
+    "previewGain": 1
+  },
+  {
+    "code": "5B",
+    "name": "MetalworkingPunchDrop",
+    "event": "event:/Weapon/Melee/BluntShort/MetalworkingPunch/Drop",
+    "seconds": 0.7407916666666666,
+    "peak": 1.0,
+    "previewGain": 0.9
+  },
+  {
+    "code": "5C",
+    "name": "DropSoilFromGravelBag",
+    "event": "event:/Character/Survival/Farming/Soil/Drop/FromGravelBag",
+    "seconds": 3.5576875,
+    "peak": 0.044464111328125,
+    "previewGain": 1
+  }
+]

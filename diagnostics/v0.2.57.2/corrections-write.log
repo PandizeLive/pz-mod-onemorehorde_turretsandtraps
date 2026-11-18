@@ -1,0 +1,4 @@
+LOG  : Lua          f:0 st:95,853,063> [OMHTT-C344] native input-unload=retained retired-input=disconnected public-authority=matched
+LOG  : General      f:0 st:95,855,666> [OMHTT-Controls] persistence mode=write items=250 weight=over100 owner=preserved
+LOG  : General      f:0 st:95,856,164> [OMHTT-Smoke] native-persistence mode=write parts=28 health=37 maxHealth=200 identity=valid collision=preserved owner=preserved legacy=8 edges=8 outline=4 reinforced=8 orientation=preserved
+LOG  : General      f:0 st:95,866,077> Shutdown handling finished

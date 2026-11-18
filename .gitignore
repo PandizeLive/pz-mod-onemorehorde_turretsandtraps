@@ -52,3 +52,18 @@ diagnostics/v*/server-cache/
 diagnostics/v*/package-cache-*/
 diagnostics/v*/modded-firearms-cache/
 diagnostics/p1c1/install-stage/
+
+# Local Cloudflare deployment cache
+.wrangler/
+
+# Native validation library extraction cache
+.lwjgl/
+
+# Workspace-local probe runners and extracted native libraries
+/.tmp/
+
+# Local audition embeds installed-game audio; mirror its generator only.
+/art/DEVICE_AUDIO.html
+/art/DEVICE_AUDIO_BALANCED.html
+
+/art/ARC_AUDIO.html

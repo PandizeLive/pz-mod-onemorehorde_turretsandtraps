@@ -1,0 +1,61 @@
+{
+  "checkpoint": "C147",
+  "version": "0.2.42",
+  "status": "installed; focused owner test pending",
+  "approval": "Owner Approved following C146 formula and generator recommendation",
+  "assertions": 5241,
+  "nativeTranslationKeys": 664,
+  "compiledFiles": 98,
+  "packetCount": 23,
+  "largestPacketBytes": 390,
+  "sourceFiles": 192,
+  "packageFiles": 232,
+  "nativeWriteSeconds": 114.0,
+  "nativeReadSeconds": 138.8,
+  "firearmsIntegration": {
+    "accepted": 51,
+    "skipped": 2,
+    "conservedShots": 153
+  },
+  "limits": [
+    "SP combat only",
+    "Rendered piercing/stagger/health feedback and crowd performance pending owner test",
+    "Saved custom base power costs remain unchanged"
+  ],
+  "issuesFixedDuringValidation": [
+    "Native float precision at health thresholds: fractional tolerance 1e-7",
+    "Power-cost row exceeded 720p height: reuse existing status line",
+    "Conditional pure helper loadability in native probe; combat entry points retain SP gates"
+  ],
+  "sha256": {
+    "manifest.json": "0dcdc46160d055f8d4dab6e12b6b274486f11a46e5cfe52b31c8add579c2f004",
+    "validation.log": "fc0a11beaea8624dc842a5c76a88bad2d3941734b9cddd5d0fc3914d604ed69c",
+    "server-write.log": "aabe51d137c7760eedc96e0382141f646ee80fc809564ca520cdf9f9d77c0110",
+    "server-read.log": "b4933043b139e3e8b0fd75eca5b7c1591bd533092b60fdb416ae0a9bc35e2d15",
+    "lootlab-release.json": "4f94676f93a73b1b65d0eef782f40708d7351757f0ec09f856c70a9a8489a8a0"
+  },
+  "sourceCommit": "2354a7ff3ed4ef174a0bbeb4d7d0051a620bc5d7",
+  "tag": "test/v0.2.42",
+  "independentPackageStartups": [
+    {
+      "selection": "traps",
+      "version": "0.2.42",
+      "passed": true,
+      "seconds": 110.3
+    },
+    {
+      "selection": "turrets",
+      "version": "0.2.42",
+      "passed": true,
+      "seconds": 108.2
+    },
+    {
+      "selection": "both",
+      "version": "0.2.42",
+      "passed": true,
+      "seconds": 111.4
+    }
+  ],
+  "installedFilesVerified": 232,
+  "sourceFilesVerified": 192
+}

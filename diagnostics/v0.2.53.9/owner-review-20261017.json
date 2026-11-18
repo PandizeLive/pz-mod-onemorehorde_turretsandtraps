@@ -1,0 +1,18 @@
+{
+  "version": "0.2.53.9",
+  "date": "2026-10-17",
+  "mode": "single-player",
+  "consoleBytes": 2254783,
+  "consoleSHA256": "7118cfb14b878abc234240888522c74e378c9a720b2ba4f28cb24f9be218c4fc",
+  "consoleLines": 10047,
+  "lastOMHTTDiagnostic": "LOG  : Lua          f:97167> [OMHTT-Diag] version=0.2.53.9 side=sp seq=7287 ms=1792287035742 event=summary suppressed=0 active-update-gapCount=298 active-update-gapMaxMs=35 active-update-gapTotalMs=5000 head-animationCount=298 head-animationMaxMs=1 head-animationTotalMs=9 head-renderCount=298 head-renderMaxMs=1 head-renderTotalMs=11 range-renderCount=298 range-renderMaxMs=0 range-renderTotalMs=0",
+  "review": "No T&T Lua exception found. Native asset/map warnings and Firearms translation-format warnings are present. This does not prove absence of gameplay defects.",
+  "ownerReported": {
+    "silhouettesAndMenus": "Tentatively working; no exhaustive checklist completion claimed",
+    "pressurePlateActivation": "Working",
+    "pressurePlateThumping": "Zombies thump plates; correction required",
+    "linking": "Confusing; improve setup feedback"
+  },
+  "connectedMultiplayer": "Not tested",
+  "sourceInvestigation": "ControlWorld.create sets pass-through/non-blocking but does not disable thumping; installed native TrapBO uses setIsThumpable(false) for pass-through snares."
+}

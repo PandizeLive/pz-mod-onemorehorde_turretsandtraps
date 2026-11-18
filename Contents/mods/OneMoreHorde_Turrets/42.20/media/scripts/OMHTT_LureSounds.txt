@@ -1,0 +1,10 @@
+module Base {
+    sound OMHTTLure {
+        category = Object,
+        is3D = true,
+        clip {
+            file = media/sound/OMHTTLure.wav,
+            distanceMax = 20,
+        }
+    }
+}

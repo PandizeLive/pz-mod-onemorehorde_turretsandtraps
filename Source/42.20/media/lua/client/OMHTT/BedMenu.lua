@@ -1,4 +1,4 @@
-if isClient() or isServer() then
+if isServer() then
     return
 end
 require("OMHTT/BedServiceAction")
@@ -48,22 +48,24 @@ local function menu(playerIndex, context, objects, test)
         return
     end
     local parts = B.parts(record)
-    if #parts ~= 2 then
+    if #parts ~= 1 then
         return
     end
     local title = record.tier == "reinforced" and "UI_OMHTT_ReinforcedBedSpikes" or "UI_OMHTT_BedSpikes"
-    local option = context:addOption(getText(title), nil, nil)
+    local option = context:addOption(require("OMHTT/DefenseNames").label(record, getText(title)), nil, nil)
     option.onHighlight, option.onHighlightParams = Highlight.highlight, {parts}
     local submenu = ISContextMenu:getNew(context)
     context:addSubMenu(option, submenu)
     submenu:addOption(getText("ContextMenu_OMHTT_BarrierCondition", record.health, record.maxHealth), nil, nil).notAvailable = true
     submenu:addOption(getText("ContextMenu_OMHTT_PickupBarrier"), parts[1], queue, player, record.id, "Pickup")
-    submenu:addOption(getText("ContextMenu_OMHTT_RepairBarrier"), parts[1], queue, player, record.id, "Repair").notAvailable = record.health >= record.maxHealth
+    local repair = submenu:addOption(getText("ContextMenu_OMHTT_RepairBarrier"), parts[1], queue, player, record.id, "Repair")
+    repair.notAvailable = record.health >= record.maxHealth or not require("OMHTT/ControlRepair").ready(player, "Bed")
+    require("OMHTT/ControlRepairTooltip").bind(repair, "Bed", player)
     if record.tier ~= "reinforced" then
         local upgrade = submenu:addOption(getText("ContextMenu_OMHTT_Reinforce"), parts[1], queue, player, record.id, "Reinforce")
         upgrade.notAvailable = require("OMHTT/BedService").materials(player, record) == nil
         upgrade.toolTip = ISWorldObjectContextMenu.addToolTip()
-        upgrade.toolTip.description = getText("UI_OMHTT_ReinforceRequirements")
+        upgrade.toolTip.description = getText("UI_OMHTT_BedReinforceRequirements")
     end
     for i = 1, submenu.numOptions - 1 do
         local entry = submenu.options[i]

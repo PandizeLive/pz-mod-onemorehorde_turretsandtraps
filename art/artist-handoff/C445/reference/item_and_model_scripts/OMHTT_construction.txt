@@ -1,0 +1,159 @@
+module Base {
+    entity OMHTTSpikeBarrier {
+        component UiConfig {
+            xuiSkin = default,
+            entityStyle = ES_OMHTTSpikeBarrier,
+            uiEnabled = false,
+        }
+        component SpriteConfig {
+            health = 100,
+            skillBaseHealth = 0,
+            bonusHealth = 0,
+            isThumpable = true,
+            breakSound = BreakObject,
+            OnIsValid = OMHTT_Construction.onIsValid,
+            OnCreate = OMHTT_Construction.onCreate,
+            face E {
+                layer {
+                    row = omhtt_barrier_01_0,
+                    row = omhtt_barrier_01_1,
+                }
+            }
+            face N {
+                layer {
+                    row = omhtt_barrier_01_2 omhtt_barrier_01_3,
+                }
+            }
+            face W {
+                layer {
+                    row = omhtt_barrier_01_5,
+                    row = omhtt_barrier_01_4,
+                }
+            }
+            face S {
+                layer {
+                    row = omhtt_barrier_01_7 omhtt_barrier_01_6,
+                }
+            }
+        }
+        component CraftRecipe {
+            timedAction = SharpenStakeWood,
+            time = 200,
+            category = OMHTraps,
+            Tooltip = UI_OMHTT_SpikeBarrierDescription,
+            Tags = Carpentry,
+            needToBeLearn = false,
+            SkillRequired = Woodwork:1,
+            xpAward = Woodwork:10,
+            OnAddToMenu = OMHTT_PlacementHidden,
+            inputs {
+                item 1 tags[base:sharpknife;base:meatcleaver] mode:keep flags[Prop1;DontRecordInput;IsNotDull;MayDegradeLight],
+                item 4 [Base.Plank;Base.SpearCrafted],
+                item 4 [Base.RippedSheets;Base.RippedSheetsDirty;Base.Twine],
+            }
+        }
+    }
+
+    entity OMHTTDeploySpikeBarrier {
+        component UiConfig {
+            xuiSkin = default,
+            entityStyle = ES_OMHTTDeploySpikeBarrier,
+            uiEnabled = false,
+        }
+        component SpriteConfig {
+            health = 100,
+            skillBaseHealth = 0,
+            bonusHealth = 0,
+            isThumpable = true,
+            breakSound = BreakObject,
+            OnIsValid = OMHTT_Construction.onIsValid,
+            OnCreate = OMHTT_Construction.onCreate,
+            face E {
+                layer {
+                    row = omhtt_barrier_01_8,
+                    row = omhtt_barrier_01_9,
+                }
+            }
+            face N {
+                layer {
+                    row = omhtt_barrier_01_10 omhtt_barrier_01_11,
+                }
+            }
+            face W {
+                layer {
+                    row = omhtt_barrier_01_13,
+                    row = omhtt_barrier_01_12,
+                }
+            }
+            face S {
+                layer {
+                    row = omhtt_barrier_01_15 omhtt_barrier_01_14,
+                }
+            }
+        }
+        component CraftRecipe {
+            timedAction = BuildLowNoTool,
+            Tooltip = UI_OMHTT_SpikeBarrierDescription,
+            time = 200,
+            category = OMHTraps,
+            Tags = Carpentry,
+            needToBeLearn = false,
+            OnAddToMenu = OMHTT_PlacementMenu,
+            OnTest = OMHTT_Construction.deploymentInputAllowed,
+            inputs {
+                item 1 [Base.OMHTTTrapSpikeBarrier],
+            }
+        }
+    }
+    entity OMHTTDeployReinforcedBarrier {
+        component UiConfig {
+            xuiSkin = default,
+            entityStyle = ES_OMHTTDeployReinforcedBarrier,
+            uiEnabled = false,
+        }
+        component SpriteConfig {
+            health = 100,
+            skillBaseHealth = 0,
+            bonusHealth = 0,
+            isThumpable = true,
+            breakSound = BreakObject,
+            OnIsValid = OMHTT_Construction.onIsValid,
+            OnCreate = OMHTT_Construction.onCreate,
+            face E {
+                layer {
+                    row = omhtt_barrier_01_20,
+                    row = omhtt_barrier_01_21,
+                }
+            }
+            face N {
+                layer {
+                    row = omhtt_barrier_01_22 omhtt_barrier_01_23,
+                }
+            }
+            face W {
+                layer {
+                    row = omhtt_barrier_01_25,
+                    row = omhtt_barrier_01_24,
+                }
+            }
+            face S {
+                layer {
+                    row = omhtt_barrier_01_27 omhtt_barrier_01_26,
+                }
+            }
+        }
+        component CraftRecipe {
+            timedAction = BuildLowNoTool,
+            Tooltip = UI_OMHTT_ReinforcedBarrierDescription,
+            time = 200,
+            category = OMHTraps,
+            Tags = Carpentry,
+            needToBeLearn = false,
+            OnAddToMenu = OMHTT_PlacementMenu,
+            OnTest = OMHTT_Construction.deploymentInputAllowed,
+            inputs {
+                item 1 [Base.OMHTTTrapSpikeBarrierReinforced],
+            }
+        }
+    }
+}

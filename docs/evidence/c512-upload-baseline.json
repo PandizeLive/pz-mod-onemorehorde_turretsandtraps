@@ -1,0 +1,10 @@
+{
+  "status": "confirmed",
+  "itemId": "3828638252",
+  "version": "0.2.70.8",
+  "sourceCommit": "bd9f8f331e7b7c5fc05f1f6829fee26c8c3fa9b8",
+  "confirmedUtc": "2026-10-30T01:01:21.1296601Z",
+  "changelogSha256": "E93E1741763CB3D7BDC8FAAB5DBA63476BB60151E2C4AEF62A12B0B4BE671241",
+  "filesVerified": 629,
+  "receipt": "diagnostics/workshop/upload-v0.2.70.8-20261030-010039-4998-8ce4f03f/upload-result.json"
+}
